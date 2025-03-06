@@ -73,6 +73,7 @@ function certifications_plugin_acf_missing_notice() {
 
 // Register front-end assets
 function certifications_plugin_register_assets() {
+    // Main CSS
     wp_register_style(
         'certifications-plugin-style',
         CERTIFICATIONS_PLUGIN_URL . 'assets/css/certifications.css',
@@ -80,6 +81,15 @@ function certifications_plugin_register_assets() {
         CERTIFICATIONS_PLUGIN_VERSION
     );
 
+    // Responsive CSS
+    wp_register_style(
+        'certifications-plugin-responsive-style',
+        CERTIFICATIONS_PLUGIN_URL . 'assets/css/responsive-certifications.css',
+        array('certifications-plugin-style'), // This makes it load after the main CSS
+        CERTIFICATIONS_PLUGIN_VERSION
+    );
+
+    // JavaScript
     wp_register_script(
         'certifications-plugin-script',
         CERTIFICATIONS_PLUGIN_URL . 'assets/js/certifications.js',
@@ -90,6 +100,7 @@ function certifications_plugin_register_assets() {
 
     // Enqueue the assets
     wp_enqueue_style( 'certifications-plugin-style' );
+    wp_enqueue_style( 'certifications-plugin-responsive-style' );
     wp_enqueue_script( 'certifications-plugin-script' );
 }
 
