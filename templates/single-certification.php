@@ -75,36 +75,6 @@ get_header();
                     </div>
                 </div>
 
-                <!-- Social Sharing Section -->
-                <div class="container mt-5">
-                    <div class="row">
-                        <div class="blog-detail-metadata-share col-12">
-                            <div class="social-sharing float-right">
-                                <ul class="share-tools inline-list">
-                                    <li class="list-inline-item twitter">
-                                        <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode(get_permalink()); ?>" target="_blank">
-                                            <i class="icon-twitter"></i>
-                                            <span class="social-media-text">Tweet</span>
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item facebook">
-                                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_permalink()); ?>&amp;display=popup&amp;ref=plugin&amp;src=share_button" target="_blank">
-                                            <i class="icon-facebook"></i>
-                                            <span class="social-media-text">Share</span>
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item linkedin">
-                                        <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=<?php echo urlencode(get_permalink()); ?>&amp;title=<?php echo urlencode(get_the_title()); ?>" target="_blank">
-                                            <i class="icon-linkedin"></i>
-                                            <span class="social-media-text">Share</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Overview Section -->
                 <div id="overview" class="section-wrapper">
                     <div class="container pb-5">
@@ -130,8 +100,8 @@ get_header();
                                         <section class="pt-5">
                                             <h3 class="text-to-uppercase">INTRO</h3>
                                             <span class="back-to-top">
-                            <a href="#sticky-menu">Back to Top</a>
-                        </span>
+                                                <a href="#sticky-menu">Back to Top</a>
+                                             </span>
 
                                             <div class="row">
                                                 <div class="col-md-9">
@@ -149,7 +119,13 @@ get_header();
                                                 <div class="col-md-3">
                                                     <?php if (has_post_thumbnail()) : ?>
                                                         <div class="certification-featured-image">
-                                                            <?php the_post_thumbnail('medium', array('class' => 'img-fluid')); ?>
+                                                            <?php
+                                                            $id = get_the_ID();
+                                                            echo get_the_post_thumbnail($id, 'medium', array(
+                                                                'class' => 'certification-thumbnail',
+                                                                'loading' => 'lazy'
+                                                            ));
+                                                            ?>
                                                         </div>
                                                     <?php endif; ?>
                                                 </div>

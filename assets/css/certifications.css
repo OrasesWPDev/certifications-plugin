@@ -218,55 +218,6 @@
     margin-left: 8px;
 }
 
-/* Social Sharing */
-.social-sharing {
-    margin-bottom: 20px;
-}
-
-.share-tools {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-    justify-content: flex-end;
-}
-
-.share-tools li {
-    margin-left: 15px;
-}
-
-.share-tools a {
-    color: #666;
-    font-size: 14px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.share-tools a:hover {
-    color: #007bff;
-}
-
-.share-tools .icon-twitter:before,
-.share-tools .icon-facebook:before,
-.share-tools .icon-linkedin:before {
-    font-family: "Font Awesome 5 Brands";
-    margin-right: 5px;
-    font-size: 16px;
-}
-
-.share-tools .icon-twitter:before {
-    content: "\f099";
-}
-
-.share-tools .icon-facebook:before {
-    content: "\f39e";
-}
-
-.share-tools .icon-linkedin:before {
-    content: "\f0e1";
-}
-
 /* Content Formatting */
 .certification-field-content {
     line-height: 1.6;
