@@ -104,7 +104,7 @@ get_header();
                 <div class="row overview pt-0" id="overview">
                     <div class="container pb-5">
                         <div class="checkmark-heading-green pt-3">
-                            <h2><?php the_title(); ?></h2>
+                            <h2><?php the_title(); ?> <i class="icon-checkmark"></i></h2>
                             <p><?php echo get_the_excerpt(); ?></p>
                         </div>
                     </div>

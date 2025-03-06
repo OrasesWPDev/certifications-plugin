@@ -89,6 +89,7 @@
     z-index: 100;
     background-color: #fff;
     border-bottom: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .credential-sections-links {
@@ -113,15 +114,14 @@
     font-weight: 500;
     text-transform: uppercase;
     font-size: 14px;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
-.sticky-menu a:hover {
-    color: #007bff;
-}
-
+.sticky-menu a:hover,
 .sticky-menu a.active {
     color: #007bff;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 /* Section Styling */
@@ -135,28 +135,50 @@
 
 .section-content {
     position: relative;
+    padding: 30px 0;
 }
 
 .back-to-top {
     position: absolute;
-    top: 25px;
-    right: 15px;
+    top: 30px;
+    right: 0;
 }
 
 .back-to-top a {
     font-size: 14px;
     color: #666;
+    text-decoration: none;
+}
+
+.back-to-top a:hover {
+    color: #007bff;
+    text-decoration: underline;
 }
 
 /* Overview Section */
 .checkmark-heading-green {
     color: #28a745;
     margin-bottom: 20px;
+    position: relative;
 }
 
 .checkmark-heading-green h2 {
     color: inherit;
     margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.checkmark-heading-green i.icon-checkmark {
+    margin-left: 10px;
+}
+
+/* Add checkmark icon using a class */
+.icon-checkmark:after {
+    content: "✓";
+    font-size: 24px;
+    font-weight: bold;
+    display: inline-block;
+    margin-left: 8px;
 }
 
 /* Social Sharing */
@@ -179,10 +201,33 @@
 .share-tools a {
     color: #666;
     font-size: 14px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
 }
 
 .share-tools a:hover {
     color: #007bff;
+}
+
+.share-tools .icon-twitter:before,
+.share-tools .icon-facebook:before,
+.share-tools .icon-linkedin:before {
+    font-family: "Font Awesome 5 Brands";
+    margin-right: 5px;
+    font-size: 16px;
+}
+
+.share-tools .icon-twitter:before {
+    content: "\f099";
+}
+
+.share-tools .icon-facebook:before {
+    content: "\f39e";
+}
+
+.share-tools .icon-linkedin:before {
+    content: "\f0e1";
 }
 
 /* Content Formatting */
@@ -193,6 +238,7 @@
 .certification-field-content h4 {
     margin-top: 1.5rem;
     margin-bottom: 1rem;
+    font-weight: 600;
 }
 
 .certification-field-content ul,
@@ -204,4 +250,11 @@
 .certification-field-content table {
     width: auto;
     margin-bottom: 1rem;
+}
+
+/* Section headings */
+.text-to-uppercase {
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 20px;
 }
