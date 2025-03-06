@@ -1,4 +1,4 @@
-name: Deploy Plugin
+name: Increment Version
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  update-version:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +25,7 @@ jobs:
         run: |
           CURRENT_VERSION=$(grep "Version:" certifications-plugin.php | awk -F': ' '{print $2}' | tr -d ' ')
           echo "Current version: $CURRENT_VERSION"
+          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
           
           # Split version into major.minor.patch
           IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
@@ -52,14 +53,3 @@ jobs:
           git add certifications-plugin.php
           git commit -m "Bump version to ${{ env.NEW_VERSION }}"
           git push
-
-      - name: Deploy to server
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-avz --delete"
-          SOURCE: "./"
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_PATH }}/wp-content/plugins/certifications-plugin/
-          EXCLUDE: ".git/, .github/, .gitignore, README.md"
