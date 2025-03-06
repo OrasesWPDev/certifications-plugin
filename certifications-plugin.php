@@ -3,7 +3,7 @@
  * Plugin Name: Certifications Plugin
  * Plugin URI: https://yourwebsite.com/
  * Description: A custom plugin for managing and displaying certifications with ACF integration.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: Orases
  * Author URI: https://orases.com/
  * Text Domain: certifications-plugin
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'CERTIFICATIONS_PLUGIN_VERSION', '1.0.3' );
+define( 'CERTIFICATIONS_PLUGIN_VERSION', '1.0.4' );
 define( 'CERTIFICATIONS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CERTIFICATIONS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'CERTIFICATIONS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
