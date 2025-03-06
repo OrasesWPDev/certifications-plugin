@@ -1,0 +1,73 @@
+/**
+ * Certifications Plugin Responsive Styles
+ */
+
+/* Small screens (mobile) */
+@media (max-width: 767px) {
+    /* Sticky Menu */
+    .sticky-menu li {
+        margin: 0 8px;
+    }
+
+    .sticky-menu a {
+        font-size: 12px;
+    }
+
+    .back-to-top {
+        position: relative;
+        top: 0;
+        right: 0;
+        text-align: center;
+        margin-top: 10px;
+        display: block;
+    }
+
+    /* Social Sharing */
+    .share-tools {
+        justify-content: center;
+    }
+
+    /* Certification Cards */
+    .certification-title {
+        font-size: 14px;
+    }
+
+    .certification-description {
+        font-size: 12px;
+    }
+
+    .certification-button .button {
+        font-size: 12px;
+        padding: 3px 10px;
+    }
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .certification-item {
+        padding: 10px;
+    }
+
+    .certification-card-body {
+        padding: 15px;
+    }
+
+    .certification-title {
+        font-size: 15px;
+    }
+
+    .certification-description {
+        font-size: 13px;
+    }
+
+    .sticky-menu li {
+        margin: 0 10px;
+    }
+}
+
+/* Large screens adjustments */
+@media (min-width: 992px) {
+    .certification-card:hover {
+        transform: translateY(-5px);
+    }
+}

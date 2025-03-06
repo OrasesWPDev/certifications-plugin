@@ -1,0 +1,1065 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+================================================================
+File Summary
+================================================================
+
+Purpose:
+--------
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+
+File Format:
+------------
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Multiple file entries, each consisting of:
+  a. A separator line (================)
+  b. The file path (File: path/to/file)
+  c. Another separator line
+  d. The full contents of the file
+  e. A blank line
+
+Usage Guidelines:
+-----------------
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+
+Notes:
+------
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+
+Additional Info:
+----------------
+
+================================================================
+Directory Structure
+================================================================
+.github/
+  workflows/
+    deploy.yml
+includes/
+  class-certifications-acf.php
+  class-certifications-cpt.php
+  class-certifications-shortcode.php
+.gitignore
+certifications-plugin.php
+readme.txt
+
+================================================================
+Files
+================================================================
+
+================
+File: .github/workflows/deploy.yml
+================
+name: Increment Version
+
+on:
+  push:
+    branches:
+      - main
+
+# Add permissions to allow the workflow to push changes
+permissions:
+  contents: write
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Get version from branch
+        id: get_version
+        run: |
+          CURRENT_VERSION=$(grep "Version:" certifications-plugin.php | awk -F': ' '{print $2}' | tr -d ' ')
+          echo "Current version: $CURRENT_VERSION"
+          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
+          
+          # Split version into major.minor.patch
+          IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+          MAJOR=${VERSION_PARTS[0]}
+          MINOR=${VERSION_PARTS[1]}
+          PATCH=${VERSION_PARTS[2]}
+          
+          # Increment patch version
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "New version will be: $NEW_VERSION"
+
+      - name: Update version in files
+        run: |
+          # Update version in main plugin file
+          sed -i "s/Version: ${{ env.CURRENT_VERSION }}/Version: ${{ env.NEW_VERSION }}/" certifications-plugin.php
+          
+          # Update version constant in main plugin file
+          sed -i "s/define( 'CERTIFICATIONS_PLUGIN_VERSION', '${{ env.CURRENT_VERSION }}' );/define( 'CERTIFICATIONS_PLUGIN_VERSION', '${{ env.NEW_VERSION }}' );/" certifications-plugin.php
+          
+          # Commit the version change
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add certifications-plugin.php
+          git commit -m "Bump version to ${{ env.NEW_VERSION }}"
+          git push
+
+================
+File: includes/class-certifications-acf.php
+================
+<?php
+/**
+ * ACF Field Group Registration
+ *
+ * @package Certifications_Plugin
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+/**
+ * Class to handle registration and synchronization of ACF field groups.
+ */
+class Certifications_ACF {
+
+    /**
+     * Constructor.
+     */
+    public function __construct() {
+        // Register local JSON save point
+        add_filter( 'acf/settings/save_json', array( $this, 'acf_json_save_point' ) );
+
+        // Register local JSON load point
+        add_filter( 'acf/settings/load_json', array( $this, 'acf_json_load_point' ) );
+
+        // Register field groups via PHP if needed
+        add_action( 'acf/init', array( $this, 'register_field_groups' ) );
+
+        // Add logging for debugging
+        if ( WP_DEBUG ) {
+            error_log( 'Certifications_ACF initialized' );
+        }
+    }
+
+    /**
+     * Define ACF JSON save point
+     *
+     * @param string $path The path to save ACF JSON files.
+     * @return string The modified path.
+     */
+    public function acf_json_save_point( $path ) {
+        // Create acf-json directory in plugin if it doesn't exist
+        $plugin_acf_path = CERTIFICATIONS_PLUGIN_PATH . 'acf-json';
+
+        if ( ! file_exists( $plugin_acf_path ) ) {
+            mkdir( $plugin_acf_path, 0755, true );
+
+            if ( WP_DEBUG ) {
+                error_log( 'Created ACF JSON directory at: ' . $plugin_acf_path );
+            }
+        }
+
+        // Set save point to plugin directory
+        return $plugin_acf_path;
+    }
+
+    /**
+     * Register ACF JSON load point
+     *
+     * @param array $paths Array of paths ACF will load JSON files from.
+     * @return array Modified array of paths.
+     */
+    public function acf_json_load_point( $paths ) {
+        // Add our path to the load paths
+        $paths[] = CERTIFICATIONS_PLUGIN_PATH . 'acf-json';
+
+        if ( WP_DEBUG ) {
+            error_log( 'Added ACF JSON load path: ' . CERTIFICATIONS_PLUGIN_PATH . 'acf-json' );
+        }
+
+        return $paths;
+    }
+
+    /**
+     * Register field groups programmatically if needed
+     *
+     * This is a fallback in case the JSON synchronization doesn't work
+     * or if you prefer to register fields via PHP.
+     */
+    public function register_field_groups() {
+        // If no field groups exist in ACF, register them programmatically
+        if ( ! $this->field_groups_exist() ) {
+            $this->register_certifications_fields();
+
+            if ( WP_DEBUG ) {
+                error_log( 'Registered certification field groups programmatically' );
+            }
+        }
+    }
+
+    /**
+     * Check if certification field groups already exist
+     *
+     * @return bool True if field groups exist, false otherwise.
+     */
+    private function field_groups_exist() {
+        // Check if ACF function exists
+        if ( ! function_exists( 'acf_get_field_groups' ) ) {
+            return false;
+        }
+
+        // Get field groups
+        $field_groups = acf_get_field_groups( array(
+            'post_type' => 'certification',
+        ) );
+
+        // Return true if certification field groups exist
+        return ! empty( $field_groups );
+    }
+
+    /**
+     * Register certification field groups
+     */
+    private function register_certifications_fields() {
+        // Only proceed if ACF function exists
+        if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+            return;
+        }
+
+        // Register Certifications Field Group
+        acf_add_local_field_group( array(
+            'key' => 'group_67bf615a25b23',
+            'title' => 'Certifications Field Group',
+            'fields' => array(
+                array(
+                    'key' => 'field_67bf615add99b',
+                    'label' => 'Intro',
+                    'name' => 'intro',
+                    'aria-label' => '',
+                    'type' => 'wysiwyg',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'relevanssi_exclude' => 0,
+                    'default_value' => '',
+                    'allow_in_bindings' => 0,
+                    'tabs' => 'all',
+                    'toolbar' => 'full',
+                    'media_upload' => 1,
+                    'delay' => 0,
+                ),
+                array(
+                    'key' => 'field_67bf6184dd99c',
+                    'label' => 'Prepare & Apply',
+                    'name' => 'prepare_&_apply',
+                    'aria-label' => '',
+                    'type' => 'wysiwyg',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'relevanssi_exclude' => 0,
+                    'default_value' => '',
+                    'allow_in_bindings' => 0,
+                    'tabs' => 'all',
+                    'toolbar' => 'full',
+                    'media_upload' => 1,
+                    'delay' => 0,
+                ),
+                array(
+                    'key' => 'field_67bf6196dd99d',
+                    'label' => 'Get Certified',
+                    'name' => 'get_certified',
+                    'aria-label' => '',
+                    'type' => 'wysiwyg',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'relevanssi_exclude' => 0,
+                    'default_value' => '',
+                    'allow_in_bindings' => 0,
+                    'tabs' => 'all',
+                    'toolbar' => 'full',
+                    'media_upload' => 1,
+                    'delay' => 0,
+                ),
+                array(
+                    'key' => 'field_67bf61a3dd99e',
+                    'label' => 'After The Exam',
+                    'name' => 'after_the_exam',
+                    'aria-label' => '',
+                    'type' => 'wysiwyg',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'relevanssi_exclude' => 0,
+                    'default_value' => '',
+                    'allow_in_bindings' => 0,
+                    'tabs' => 'all',
+                    'toolbar' => 'full',
+                    'media_upload' => 1,
+                    'delay' => 0,
+                ),
+                array(
+                    'key' => 'field_67bf61afdd99f',
+                    'label' => 'Documents',
+                    'name' => 'documents',
+                    'aria-label' => '',
+                    'type' => 'wysiwyg',
+                    'instructions' => '',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'relevanssi_exclude' => 0,
+                    'default_value' => '',
+                    'allow_in_bindings' => 0,
+                    'tabs' => 'all',
+                    'toolbar' => 'full',
+                    'media_upload' => 1,
+                    'delay' => 0,
+                ),
+            ),
+            'location' => array(
+                array(
+                    array(
+                        'param' => 'post_type',
+                        'operator' => '==',
+                        'value' => 'certification',
+                    ),
+                ),
+            ),
+            'menu_order' => 0,
+            'position' => 'normal',
+            'style' => 'default',
+            'label_placement' => 'top',
+            'instruction_placement' => 'label',
+            'hide_on_screen' => '',
+            'active' => true,
+            'description' => '',
+            'show_in_rest' => 0,
+        ));
+    }
+}
+
+================
+File: includes/class-certifications-cpt.php
+================
+<?php
+/**
+ * Custom Post Type Registration
+ *
+ * @package Certifications_Plugin
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+/**
+ * Class to handle registration of the Certifications custom post type.
+ */
+class Certifications_CPT {
+
+    /**
+     * Constructor.
+     */
+    public function __construct() {
+        // Register the custom post type.
+        add_action( 'init', array( $this, 'register_post_type' ) );
+
+        // Add meta boxes
+        add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+        add_action( 'save_post_certification', array( $this, 'save_meta_box_data' ) );
+
+        // Add custom admin columns
+        add_filter( 'manage_certification_posts_columns', array( $this, 'add_admin_columns' ) );
+        add_action( 'manage_certification_posts_custom_column', array( $this, 'custom_column_content' ), 10, 2 );
+        add_filter( 'manage_edit-certification_sortable_columns', array( $this, 'sortable_columns' ) );
+        add_action( 'pre_get_posts', array( $this, 'sort_by_display_order' ) );
+
+        // Add template filters
+        add_filter( 'single_template', array( $this, 'single_template' ) );
+        add_filter( 'archive_template', array( $this, 'archive_template' ) );
+
+        // Add logging for debugging.
+        if ( WP_DEBUG ) {
+            error_log( 'Certifications_CPT initialized' );
+        }
+    }
+
+    /**
+     * Register Certifications custom post type.
+     */
+    public function register_post_type() {
+        register_post_type( 'certification', $this->get_post_type_args() );
+
+        // Log registration for debugging
+        if ( WP_DEBUG ) {
+            error_log( 'Certification post type registered' );
+        }
+    }
+
+    /**
+     * Get post type arguments
+     */
+    private function get_post_type_args() {
+        return array(
+            'labels'              => $this->get_post_type_labels(),
+            'description'         => __( 'Certifications custom post type', 'certifications-plugin' ),
+            'public'              => true,
+            'hierarchical'        => false,
+            'exclude_from_search' => false,
+            'publicly_queryable'  => true,
+            'show_ui'             => true,
+            'show_in_menu'        => true,
+            'show_in_admin_bar'   => true,
+            'show_in_nav_menus'   => true,
+            'show_in_rest'        => true,
+            'menu_position'       => null,
+            'menu_icon'           => 'dashicons-media-document',
+            'capability_type'     => 'post',
+            'supports'            => array(
+                'title',
+                'editor',
+                'page-attributes',
+                'thumbnail',
+                'custom-fields',
+            ),
+            'taxonomies'          => array(
+                'category',
+                'post_tag',
+            ),
+            'has_archive'         => false,
+            'rewrite'             => array(
+                'slug'       => 'certification',
+                'with_front' => true,
+                'feeds'      => false,
+                'pages'      => true,
+            ),
+            'query_var'           => true,
+            'can_export'          => true,
+        );
+    }
+
+    /**
+     * Get post type labels
+     */
+    private function get_post_type_labels() {
+        return array(
+            'name'                  => _x( 'Certifications', 'Post type general name', 'certifications-plugin' ),
+            'singular_name'         => _x( 'Certification', 'Post type singular name', 'certifications-plugin' ),
+            'menu_name'             => _x( 'Certifications', 'Admin Menu text', 'certifications-plugin' ),
+            'all_items'             => __( 'All Certifications', 'certifications-plugin' ),
+            'edit_item'             => __( 'Edit Certification', 'certifications-plugin' ),
+            'view_item'             => __( 'View Certification', 'certifications-plugin' ),
+            'view_items'            => __( 'View Certifications', 'certifications-plugin' ),
+            'add_new_item'          => __( 'Add New Certification', 'certifications-plugin' ),
+            'add_new'               => __( 'Add New Certification', 'certifications-plugin' ),
+            'new_item'              => __( 'New Certification', 'certifications-plugin' ),
+            'parent_item_colon'     => __( 'Parent Certification:', 'certifications-plugin' ),
+            'search_items'          => __( 'Search Certifications', 'certifications-plugin' ),
+            'not_found'             => __( 'No certifications found', 'certifications-plugin' ),
+            'not_found_in_trash'    => __( 'No certifications found in Trash', 'certifications-plugin' ),
+            'archives'              => __( 'Certification Archives', 'certifications-plugin' ),
+            'attributes'            => __( 'Certification Attributes', 'certifications-plugin' ),
+            'insert_into_item'      => __( 'Insert into certification', 'certifications-plugin' ),
+            'uploaded_to_this_item' => __( 'Uploaded to this certification', 'certifications-plugin' ),
+            'filter_items_list'     => __( 'Filter certifications list', 'certifications-plugin' ),
+            'filter_by_date'        => __( 'Filter certifications by date', 'certifications-plugin' ),
+            'items_list_navigation' => __( 'Certifications list navigation', 'certifications-plugin' ),
+            'items_list'            => __( 'Certifications list', 'certifications-plugin' ),
+            'item_published'        => __( 'Certification published.', 'certifications-plugin' ),
+            'item_published_privately' => __( 'Certification published privately.', 'certifications-plugin' ),
+            'item_reverted_to_draft' => __( 'Certification reverted to draft.', 'certifications-plugin' ),
+            'item_scheduled'        => __( 'Certification scheduled.', 'certifications-plugin' ),
+            'item_updated'          => __( 'Certification updated.', 'certifications-plugin' ),
+            'item_link'             => __( 'Certification Link', 'certifications-plugin' ),
+            'item_link_description' => __( 'A link to a certification.', 'certifications-plugin' ),
+        );
+    }
+
+    /**
+     * Add meta boxes for certification post type
+     */
+    public function add_meta_boxes() {
+        add_meta_box(
+            'certification_display_order',
+            __( 'Display Order', 'certifications-plugin' ),
+            array( $this, 'display_order_meta_box' ),
+            'certification',
+            'side',
+            'high'
+        );
+    }
+
+    /**
+     * Display order meta box callback
+     */
+    public function display_order_meta_box( $post ) {
+        // Add nonce for security
+        wp_nonce_field( 'certification_display_order_nonce', 'certification_display_order_nonce' );
+
+        // Get current value
+        $value = get_post_meta( $post->ID, '_certification_display_order', true );
+
+        echo '<label for="certification_display_order">';
+        echo __( 'Enter display order (lower numbers appear first):', 'certifications-plugin' );
+        echo '</label> ';
+        echo '<input type="number" id="certification_display_order" name="certification_display_order" value="' . esc_attr( $value ) . '" min="1" step="1" style="width: 100%">';
+    }
+
+    /**
+     * Save meta box data
+     */
+    public function save_meta_box_data( $post_id ) {
+        // Check if our nonce is set and verify it
+        if ( ! isset( $_POST['certification_display_order_nonce'] ) ||
+            ! wp_verify_nonce( $_POST['certification_display_order_nonce'], 'certification_display_order_nonce' ) ) {
+            return;
+        }
+
+        // Check user permissions
+        if ( ! current_user_can( 'edit_post', $post_id ) ) {
+            return;
+        }
+
+        // Don't save on autosave
+        if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+            return;
+        }
+
+        // Save the display order
+        if ( isset( $_POST['certification_display_order'] ) ) {
+            $display_order = sanitize_text_field( $_POST['certification_display_order'] );
+            update_post_meta( $post_id, '_certification_display_order', $display_order );
+        }
+    }
+
+    /**
+     * Add custom columns to admin list
+     */
+    public function add_admin_columns( $columns ) {
+        $new_columns = array();
+
+        // Insert display order after checkbox but before title
+        foreach( $columns as $key => $value ) {
+            if ( $key === 'cb' ) {
+                $new_columns[$key] = $value;
+                $new_columns['display_order'] = __( 'Order', 'certifications-plugin' );
+            } else {
+                $new_columns[$key] = $value;
+            }
+        }
+
+        return $new_columns;
+    }
+
+    /**
+     * Display content for custom columns
+     */
+    public function custom_column_content( $column, $post_id ) {
+        if ( 'display_order' === $column ) {
+            $order = get_post_meta( $post_id, '_certification_display_order', true );
+            echo esc_html( $order ?: '-' );
+        }
+    }
+
+    /**
+     * Make custom columns sortable
+     */
+    public function sortable_columns( $columns ) {
+        $columns['display_order'] = 'display_order';
+        return $columns;
+    }
+
+    /**
+     * Sort by display order in admin
+     */
+    public function sort_by_display_order( $query ) {
+        if ( ! is_admin() ) {
+            return;
+        }
+
+        $orderby = $query->get( 'orderby' );
+
+        if ( 'display_order' === $orderby ) {
+            $query->set( 'meta_key', '_certification_display_order' );
+            $query->set( 'orderby', 'meta_value_num' );
+        }
+    }
+
+    /**
+     * Use custom template for single certification
+     *
+     * @param string $template The path of the template to include.
+     * @return string The path of the template to include.
+     */
+    public function single_template( $template ) {
+        if ( is_singular( 'certification' ) ) {
+            // Check if a custom template exists in the theme
+            $theme_template = locate_template( array( 'single-certification.php' ) );
+
+            // If a theme template exists, use that
+            if ( $theme_template ) {
+                return apply_filters( 'certifications_plugin_theme_single_template', $theme_template );
+            }
+
+            // Otherwise use the plugin template
+            $plugin_template = CERTIFICATIONS_PLUGIN_PATH . 'templates/single-certification.php';
+
+            if ( file_exists( $plugin_template ) ) {
+                return apply_filters( 'certifications_plugin_single_template', $plugin_template );
+            }
+        }
+
+        return $template;
+    }
+
+    /**
+     * Use custom template for certification archives
+     *
+     * @param string $template The path of the template to include.
+     * @return string The path of the template to include.
+     */
+    public function archive_template( $template ) {
+        if ( is_post_type_archive( 'certification' ) ) {
+            // Check if a custom template exists in the theme
+            $theme_template = locate_template( array( 'archive-certification.php' ) );
+
+            // If a theme template exists, use that
+            if ( $theme_template ) {
+                return apply_filters( 'certifications_plugin_theme_archive_template', $theme_template );
+            }
+
+            // Otherwise use the plugin template
+            $plugin_template = CERTIFICATIONS_PLUGIN_PATH . 'templates/archive-certification.php';
+
+            if ( file_exists( $plugin_template ) ) {
+                return apply_filters( 'certifications_plugin_archive_template', $plugin_template );
+            }
+        }
+
+        return $template;
+    }
+}
+
+================
+File: includes/class-certifications-shortcode.php
+================
+<?php
+/**
+ * Shortcode for displaying certifications
+ *
+ * @package Certifications_Plugin
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+/**
+ * Class to handle certification shortcodes.
+ */
+class Certifications_Shortcode {
+
+    /**
+     * Constructor.
+     */
+    public function __construct() {
+        // Register shortcodes
+        add_shortcode( 'certifications', array( $this, 'certifications_grid_shortcode' ) );
+
+        // Add logging for debugging
+        if ( WP_DEBUG ) {
+            error_log( 'Certifications_Shortcode initialized' );
+        }
+    }
+
+    /**
+     * Shortcode to display certifications in a grid layout
+     *
+     * @param array $atts Shortcode attributes.
+     * @return string HTML output.
+     */
+    public function certifications_grid_shortcode( $atts ) {
+        // Enqueue styles
+        wp_enqueue_style( 'certifications-plugin-style' );
+
+        // Shortcode attributes
+        $atts = shortcode_atts(
+            array(
+                'count'    => -1,         // How many to display. -1 for all.
+                'columns'  => 4,          // Number of columns per row
+                'category' => '',         // Filter by category slug
+                'order'    => 'ASC',      // ASC or DESC
+            ),
+            $atts,
+            'certifications'
+        );
+
+        // Start output buffering
+        ob_start();
+
+        // Get certifications
+        $certifications = $this->get_certifications( $atts );
+
+        // Check if any certifications exist
+        if ( $certifications && $certifications->have_posts() ) {
+
+            // Output grid container
+            echo '<div class="certifications-grid row">';
+
+            $count = 0;
+            while ( $certifications->have_posts() ) {
+                $certifications->the_post();
+
+                // Calculate column classes based on Flatsome's grid system
+                $column_class = 'small-12 large-' . (12 / intval($atts['columns']));
+
+                // New row every X items (where X is the columns setting)
+                if ( $count > 0 && $count % intval($atts['columns']) === 0 ) {
+                    echo '</div><div class="certifications-grid row">';
+                }
+
+                // Get certification data
+                $title = get_the_title();
+                $permalink = get_permalink();
+                $description = has_excerpt() ? get_the_excerpt() : wp_trim_words(get_the_content(), 20);
+
+                // Output certification item
+                ?>
+                <div class="certification-item col <?php echo esc_attr($column_class); ?>">
+                    <a href="<?php echo esc_url($permalink); ?>" class="certification-link">
+                        <div class="certification-card">
+                            <div class="certification-card-body">
+                                <?php if (has_post_thumbnail()) : ?>
+                                    <div class="certification-image">
+                                        <?php the_post_thumbnail('medium', array('class' => 'certification-thumbnail')); ?>
+                                    </div>
+                                <?php endif; ?>
+
+                                <div class="certification-content">
+                                    <h3 class="certification-title"><?php echo esc_html($title); ?></h3>
+                                    <div class="certification-description">
+                                        <?php echo wp_kses_post($description); ?>
+                                    </div>
+                                    <div class="certification-button">
+                                        <span class="button secondary">Learn More</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <?php
+
+                $count++;
+            }
+
+            // Close grid container
+            echo '</div>';
+
+            // Reset post data
+            wp_reset_postdata();
+
+        } else {
+            // No certifications found
+            echo '<p class="no-certifications">No certifications found.</p>';
+        }
+
+        // Get buffer contents and clean buffer
+        $output = ob_get_clean();
+
+        return $output;
+    }
+
+    /**
+     * Get certifications query
+     *
+     * @param array $atts Query parameters.
+     * @return WP_Query Certifications query.
+     */
+    private function get_certifications( $atts ) {
+        // Query arguments
+        $args = array(
+            'post_type'      => 'certification',
+            'posts_per_page' => $atts['count'],
+            'order'          => $atts['order'],
+            'orderby'        => 'meta_value_num',
+            'meta_key'       => '_certification_display_order',
+        );
+
+        // Add category filter if specified
+        if ( ! empty( $atts['category'] ) ) {
+            $args['tax_query'] = array(
+                array(
+                    'taxonomy' => 'category',
+                    'field'    => 'slug',
+                    'terms'    => explode( ',', $atts['category'] ),
+                ),
+            );
+        }
+
+        // Create and return query
+        return new WP_Query( $args );
+    }
+}
+
+================
+File: .gitignore
+================
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Build/dependency directories
+node_modules/
+vendor/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Compiled assets
+*.min.css
+*.min.js
+
+================
+File: certifications-plugin.php
+================
+<?php
+/**
+ * Plugin Name: Certifications Plugin
+ * Plugin URI: https://yourwebsite.com/
+ * Description: A custom plugin for managing and displaying certifications with ACF integration.
+ * Version: 1.0.0
+ * Author: Orases
+ * Author URI: https://orases.com/
+ * Text Domain: certifications-plugin
+ * Domain Path: /languages
+ * Requires at least: 5.8
+ * Requires PHP: 7.4
+ *
+ * @package Certifications_Plugin
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+// Define plugin constants.
+define( 'CERTIFICATIONS_PLUGIN_VERSION', '1.0.0' );
+define( 'CERTIFICATIONS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'CERTIFICATIONS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'CERTIFICATIONS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+
+// Check if ACF is active
+function certifications_plugin_has_acf() {
+    return class_exists( 'ACF' );
+}
+
+// Plugin initialization
+function certifications_plugin_init() {
+    // Load plugin textdomain
+    load_plugin_textdomain( 'certifications-plugin', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+
+    // Include required files
+    require_once CERTIFICATIONS_PLUGIN_PATH . 'includes/class-certifications-cpt.php';
+
+    // Only load ACF integration if ACF is active
+    if ( certifications_plugin_has_acf() ) {
+        require_once CERTIFICATIONS_PLUGIN_PATH . 'includes/class-certifications-acf.php';
+    } else {
+        // Admin notice if ACF is not active
+        add_action( 'admin_notices', 'certifications_plugin_acf_missing_notice' );
+    }
+
+    // Load shortcode functionality
+    require_once CERTIFICATIONS_PLUGIN_PATH . 'includes/class-certifications-shortcode.php';
+
+    // Initialize classes
+    new Certifications_CPT();
+    if ( certifications_plugin_has_acf() ) {
+        new Certifications_ACF();
+    }
+    new Certifications_Shortcode();
+
+    // Register assets
+    add_action( 'wp_enqueue_scripts', 'certifications_plugin_register_assets' );
+    add_action( 'admin_enqueue_scripts', 'certifications_plugin_register_admin_assets' );
+}
+add_action( 'plugins_loaded', 'certifications_plugin_init' );
+
+// Admin notice for missing ACF
+function certifications_plugin_acf_missing_notice() {
+    ?>
+    <div class="notice notice-error">
+        <p><?php _e( 'Certifications Plugin requires Advanced Custom Fields PRO to be installed and activated.', 'certifications-plugin' ); ?></p>
+    </div>
+    <?php
+}
+
+// Register front-end assets
+function certifications_plugin_register_assets() {
+    wp_register_style(
+        'certifications-plugin-style',
+        CERTIFICATIONS_PLUGIN_URL . 'assets/css/certifications.css',
+        array(),
+        CERTIFICATIONS_PLUGIN_VERSION
+    );
+
+    wp_register_script(
+        'certifications-plugin-script',
+        CERTIFICATIONS_PLUGIN_URL . 'assets/js/certifications.js',
+        array( 'jquery' ),
+        CERTIFICATIONS_PLUGIN_VERSION,
+        true
+    );
+
+    // Enqueue the assets
+    wp_enqueue_style( 'certifications-plugin-style' );
+    wp_enqueue_script( 'certifications-plugin-script' );
+}
+
+// Register admin assets
+function certifications_plugin_register_admin_assets( $hook ) {
+    // Only load on specific admin pages if needed
+    if ( 'post.php' === $hook || 'post-new.php' === $hook ) {
+        global $post;
+        if ( $post && 'certification' === $post->post_type ) {
+            wp_enqueue_style(
+                'certifications-plugin-admin-style',
+                CERTIFICATIONS_PLUGIN_URL . 'assets/css/admin.css',
+                array(),
+                CERTIFICATIONS_PLUGIN_VERSION
+            );
+
+            wp_enqueue_script(
+                'certifications-plugin-admin-script',
+                CERTIFICATIONS_PLUGIN_URL . 'assets/js/admin.js',
+                array( 'jquery' ),
+                CERTIFICATIONS_PLUGIN_VERSION,
+                true
+            );
+        }
+    }
+}
+
+// Activation hook
+register_activation_hook( __FILE__, 'certifications_plugin_activate' );
+function certifications_plugin_activate() {
+    // Flush rewrite rules on activation
+    require_once CERTIFICATIONS_PLUGIN_PATH . 'includes/class-certifications-cpt.php';
+    $cpt = new Certifications_CPT();
+    $cpt->register_post_type();
+    flush_rewrite_rules();
+
+    // Debug log on activation
+    if ( WP_DEBUG ) {
+        error_log( 'Certifications Plugin activated' );
+    }
+}
+
+// Deactivation hook
+register_deactivation_hook( __FILE__, 'certifications_plugin_deactivate' );
+function certifications_plugin_deactivate() {
+    // Flush rewrite rules on deactivation
+    flush_rewrite_rules();
+
+    // Debug log on deactivation
+    if ( WP_DEBUG ) {
+        error_log( 'Certifications Plugin deactivated' );
+    }
+}
+
+================
+File: readme.txt
+================
+# Certifications Plugin
+
+A custom WordPress plugin for managing and displaying certifications with ACF integration.
+
+## Development
+
+This plugin uses Git for version control and GitHub Actions for automated deployment.
+
+### Workflow
+
+1. Create a feature branch from `develop`
+2. Make your changes
+3. Test thoroughly
+4. Push to GitHub and create a PR to `develop`
+5. Once approved, merge to `develop`
+6. When ready to deploy, create a PR from `develop` to `main`
+7. Merging to `main` will automatically:
+   - Increment the version number
+   - Deploy to the production server
+
+### Requirements
+
+- Advanced Custom Fields Pro
+- WordPress 5.8+
+- PHP 7.4+
+
+
+
+================================================================
+End of Codebase
+================================================================

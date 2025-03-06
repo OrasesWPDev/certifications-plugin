@@ -1,0 +1,207 @@
+/**
+ * Certifications Plugin Styles
+ */
+
+/* Grid Layout for Shortcode and Archive */
+.certifications-grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.certification-item {
+    padding: 15px;
+    margin-bottom: 30px;
+}
+
+.certification-card {
+    height: 100%;
+    background-color: #F4F4F4;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.certification-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+}
+
+.certification-card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.certification-image {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.certification-thumbnail {
+    max-width: 140px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.certification-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.certification-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.certification-description {
+    font-size: 14px;
+    color: #7C7C7C;
+    margin-bottom: 15px;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.certification-button {
+    text-align: center;
+    margin-top: auto;
+}
+
+.certification-button .button {
+    font-size: 14px;
+    padding: 5px 15px;
+}
+
+/* Single Certification Page Styles */
+.certification-single .container-of-boxes {
+    margin-bottom: 40px;
+}
+
+/* Sticky Menu */
+.sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.credential-sections-links {
+    padding: 10px 0;
+}
+
+.sticky-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.sticky-menu li {
+    margin: 0 15px;
+}
+
+.sticky-menu a {
+    color: #333;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.sticky-menu a:hover {
+    color: #007bff;
+}
+
+.sticky-menu a.active {
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* Section Styling */
+.alternate-background-lightgrey {
+    background-color: #F4F4F4;
+}
+
+.alternate-background-white {
+    background-color: #FFFFFF;
+}
+
+.section-content {
+    position: relative;
+}
+
+.back-to-top {
+    position: absolute;
+    top: 25px;
+    right: 15px;
+}
+
+.back-to-top a {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Overview Section */
+.checkmark-heading-green {
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+.checkmark-heading-green h2 {
+    color: inherit;
+    margin-bottom: 15px;
+}
+
+/* Social Sharing */
+.social-sharing {
+    margin-bottom: 20px;
+}
+
+.share-tools {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    justify-content: flex-end;
+}
+
+.share-tools li {
+    margin-left: 15px;
+}
+
+.share-tools a {
+    color: #666;
+    font-size: 14px;
+}
+
+.share-tools a:hover {
+    color: #007bff;
+}
+
+/* Content Formatting */
+.certification-field-content {
+    line-height: 1.6;
+}
+
+.certification-field-content h4 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.certification-field-content ul,
+.certification-field-content ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.certification-field-content table {
+    width: auto;
+    margin-bottom: 1rem;
+}
