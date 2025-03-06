@@ -77,6 +77,43 @@
     padding: 5px 15px;
 }
 
+/* Full-width section handling */
+.section-wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.section-wrapper.alternate-background-lightgrey {
+    background-color: #F4F4F4;
+}
+
+.section-wrapper.alternate-background-white {
+    background-color: #FFFFFF;
+}
+
+/* Certification featured image */
+.certification-featured-image {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.certification-featured-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+/* Action buttons */
+.certification-action-buttons {
+    margin: 20px 0;
+}
+
+.certification-action-buttons .button {
+    margin-right: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 8px 15px;
+}
+
 /* Single Certification Page Styles */
 .certification-single .container-of-boxes {
     margin-bottom: 40px;
