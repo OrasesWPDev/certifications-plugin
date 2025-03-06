@@ -48,10 +48,15 @@ Directory Structure
 .github/
   workflows/
     deploy.yml
+acf-json/
+  group_certifications.json
+  README.md
 assets/
   css/
     certifications.css
     responsive-certifications.css
+  js/
+    certifications.js
 includes/
   class-certifications-acf.php
   class-certifications-cpt.php
@@ -129,6 +134,161 @@ jobs:
           git add certifications-plugin.php
           git commit -m "Bump version to ${{ env.NEW_VERSION }}"
           git push
+
+================
+File: acf-json/group_certifications.json
+================
+[
+  {
+    "key": "group_67bf615a25b23",
+    "title": "Certifications Field Group",
+    "fields": [
+      {
+        "key": "field_67bf615add99b",
+        "label": "Intro",
+        "name": "intro",
+        "aria-label": "",
+        "type": "wysiwyg",
+        "instructions": "",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "relevanssi_exclude": 0,
+        "default_value": "",
+        "allow_in_bindings": 0,
+        "tabs": "all",
+        "toolbar": "full",
+        "media_upload": 1,
+        "delay": 0
+      },
+      {
+        "key": "field_67bf6184dd99c",
+        "label": "Prepare & Apply",
+        "name": "prepare_&_apply",
+        "aria-label": "",
+        "type": "wysiwyg",
+        "instructions": "",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "relevanssi_exclude": 0,
+        "default_value": "",
+        "allow_in_bindings": 0,
+        "tabs": "all",
+        "toolbar": "full",
+        "media_upload": 1,
+        "delay": 0
+      },
+      {
+        "key": "field_67bf6196dd99d",
+        "label": "Get Certified",
+        "name": "get_certified",
+        "aria-label": "",
+        "type": "wysiwyg",
+        "instructions": "",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "relevanssi_exclude": 0,
+        "default_value": "",
+        "allow_in_bindings": 0,
+        "tabs": "all",
+        "toolbar": "full",
+        "media_upload": 1,
+        "delay": 0
+      },
+      {
+        "key": "field_67bf61a3dd99e",
+        "label": "After The Exam",
+        "name": "after_the_exam",
+        "aria-label": "",
+        "type": "wysiwyg",
+        "instructions": "",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "relevanssi_exclude": 0,
+        "default_value": "",
+        "allow_in_bindings": 0,
+        "tabs": "all",
+        "toolbar": "full",
+        "media_upload": 1,
+        "delay": 0
+      },
+      {
+        "key": "field_67bf61afdd99f",
+        "label": "Documents",
+        "name": "documents",
+        "aria-label": "",
+        "type": "wysiwyg",
+        "instructions": "",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "relevanssi_exclude": 0,
+        "default_value": "",
+        "allow_in_bindings": 0,
+        "tabs": "all",
+        "toolbar": "full",
+        "media_upload": 1,
+        "delay": 0
+      }
+    ],
+    "location": [
+      [
+        {
+          "param": "post_type",
+          "operator": "==",
+          "value": "certification"
+        }
+      ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+  }
+]
+
+================
+File: acf-json/README.md
+================
+# ACF JSON Synchronization
+
+This directory is used by Advanced Custom Fields (ACF) for field group synchronization.
+
+## How it works
+
+1. When field groups are created or modified through the WordPress admin, ACF will save the JSON definitions in this directory.
+2. When the plugin is installed on a new site, ACF will read the JSON files from this directory and import the field groups.
+3. This ensures that your field definitions stay consistent across different environments.
+
+Do not delete this directory, as it's required for the proper functioning of field synchronization.
 
 ================
 File: assets/css/certifications.css
@@ -212,6 +372,43 @@ File: assets/css/certifications.css
     padding: 5px 15px;
 }
 
+/* Full-width section handling */
+.section-wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.section-wrapper.alternate-background-lightgrey {
+    background-color: #F4F4F4;
+}
+
+.section-wrapper.alternate-background-white {
+    background-color: #FFFFFF;
+}
+
+/* Certification featured image */
+.certification-featured-image {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.certification-featured-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+/* Action buttons */
+.certification-action-buttons {
+    margin: 20px 0;
+}
+
+.certification-action-buttons .button {
+    margin-right: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 8px 15px;
+}
+
 /* Single Certification Page Styles */
 .certification-single .container-of-boxes {
     margin-bottom: 40px;
@@ -224,6 +421,7 @@ File: assets/css/certifications.css
     z-index: 100;
     background-color: #fff;
     border-bottom: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .credential-sections-links {
@@ -248,15 +446,14 @@ File: assets/css/certifications.css
     font-weight: 500;
     text-transform: uppercase;
     font-size: 14px;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
-.sticky-menu a:hover {
-    color: #007bff;
-}
-
+.sticky-menu a:hover,
 .sticky-menu a.active {
     color: #007bff;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 /* Section Styling */
@@ -270,54 +467,50 @@ File: assets/css/certifications.css
 
 .section-content {
     position: relative;
+    padding: 30px 0;
 }
 
 .back-to-top {
     position: absolute;
-    top: 25px;
-    right: 15px;
+    top: 30px;
+    right: 0;
 }
 
 .back-to-top a {
     font-size: 14px;
     color: #666;
+    text-decoration: none;
+}
+
+.back-to-top a:hover {
+    color: #007bff;
+    text-decoration: underline;
 }
 
 /* Overview Section */
 .checkmark-heading-green {
     color: #28a745;
     margin-bottom: 20px;
+    position: relative;
 }
 
 .checkmark-heading-green h2 {
     color: inherit;
     margin-bottom: 15px;
+    font-weight: 600;
 }
 
-/* Social Sharing */
-.social-sharing {
-    margin-bottom: 20px;
+.checkmark-heading-green i.icon-checkmark {
+    margin-left: 10px;
 }
 
-.share-tools {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-    justify-content: flex-end;
-}
-
-.share-tools li {
-    margin-left: 15px;
-}
-
-.share-tools a {
-    color: #666;
-    font-size: 14px;
-}
-
-.share-tools a:hover {
-    color: #007bff;
+/* Add checkmark icon using a class */
+.icon-checkmark:after {
+    content: "✓";
+    font-size: 24px;
+    font-weight: bold;
+    display: inline-block;
+    margin-left: 8px;
 }
 
 /* Content Formatting */
@@ -328,6 +521,7 @@ File: assets/css/certifications.css
 .certification-field-content h4 {
     margin-top: 1.5rem;
     margin-bottom: 1rem;
+    font-weight: 600;
 }
 
 .certification-field-content ul,
@@ -339,6 +533,13 @@ File: assets/css/certifications.css
 .certification-field-content table {
     width: auto;
     margin-bottom: 1rem;
+}
+
+/* Section headings */
+.text-to-uppercase {
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 20px;
 }
 
 ================
@@ -417,6 +618,49 @@ File: assets/css/responsive-certifications.css
         transform: translateY(-5px);
     }
 }
+
+================
+File: assets/js/certifications.js
+================
+/**
+ * Certifications Plugin Scripts
+ */
+(function($) {
+    'use strict';
+
+    // Document ready
+    $(document).ready(function() {
+        // Smooth scroll for sticky menu links
+        $('.sticky-menu a, .back-to-top a').on('click', function(e) {
+            if (this.hash !== '') {
+                e.preventDefault();
+
+                const hash = this.hash;
+
+                $('html, body').animate({
+                    scrollTop: $(hash).offset().top - 100
+                }, 800);
+            }
+        });
+
+        // Highlight sticky menu items on scroll
+        $(window).on('scroll', function() {
+            const scrollPosition = $(window).scrollTop();
+
+            $('.row[id]').each(function() {
+                const currentSection = $(this);
+                const sectionTop = currentSection.offset().top - 120;
+                const sectionBottom = sectionTop + currentSection.outerHeight();
+
+                if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                    $('.sticky-menu a').removeClass('active');
+                    $('.sticky-menu a[href="#' + currentSection.attr('id') + '"]').addClass('active');
+                }
+            });
+        });
+    });
+
+})(jQuery);
 
 ================
 File: includes/class-certifications-acf.php
@@ -568,6 +812,44 @@ class Certifications_ACF {
                     'toolbar' => 'full',
                     'media_upload' => 1,
                     'delay' => 0,
+                ),
+                array(
+                    'key' => 'field_67bf617add99g',  // Using a pattern similar to your existing field keys
+                    'label' => 'Apply Button URL',
+                    'name' => 'apply_button_url',
+                    'aria-label' => '',
+                    'type' => 'url',
+                    'instructions' => 'Enter the URL for the Apply Now button',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'relevanssi_exclude' => 0,
+                    'default_value' => '',
+                    'allow_in_bindings' => 0,
+                    'placeholder' => '',
+                ),
+                array(
+                    'key' => 'field_67bf618add99h',  // Using a pattern similar to your existing field keys
+                    'label' => 'Renew Button URL',
+                    'name' => 'renew_button_url',
+                    'aria-label' => '',
+                    'type' => 'url',
+                    'instructions' => 'Enter the URL for the Renew button',
+                    'required' => 0,
+                    'conditional_logic' => 0,
+                    'wrapper' => array(
+                        'width' => '',
+                        'class' => '',
+                        'id' => '',
+                    ),
+                    'relevanssi_exclude' => 0,
+                    'default_value' => '',
+                    'allow_in_bindings' => 0,
+                    'placeholder' => '',
                 ),
                 array(
                     'key' => 'field_67bf6184dd99c',
@@ -1249,172 +1531,207 @@ get_header();
             $get_certified = get_field('get_certified');
             $after_exam = get_field('after_the_exam');
             $documents = get_field('documents');
+            // Get button URLs
+            $apply_button_url = get_field('apply_button_url') ?: '#';
+            $renew_button_url = get_field('renew_button_url') ?: '#';
             ?>
 
             <div class="container-of-boxes">
                 <!-- Sticky Menu Navigation -->
-                <div class="row sticky-top" id="sticky-menu">
-                    <div class="col-md-12">
-                        <section class="credential-sections-links">
-                            <div class="container">
-                                <nav>
-                                    <ul class="list-inline flex-container sticky-menu">
-                                        <li class="list-inline-item">
-                                            <a href="#overview">Overview</a>
-                                        </li>
-                                        <?php if ($intro) : ?>
-                                            <li class="list-inline-item">
-                                                <a href="#intro">INTRO</a>
-                                            </li>
-                                        <?php endif; ?>
-                                        <?php if ($prepare_apply) : ?>
-                                            <li class="list-inline-item">
-                                                <a href="#prepare-apply">PREPARE &amp; APPLY</a>
-                                            </li>
-                                        <?php endif; ?>
-                                        <?php if ($get_certified) : ?>
-                                            <li class="list-inline-item">
-                                                <a href="#get-certified">GET CERTIFIED</a>
-                                            </li>
-                                        <?php endif; ?>
-                                        <?php if ($after_exam) : ?>
-                                            <li class="list-inline-item">
-                                                <a href="#after-the-exam">AFTER THE EXAM</a>
-                                            </li>
-                                        <?php endif; ?>
-                                        <?php if ($documents) : ?>
-                                            <li class="list-inline-item">
-                                                <a href="#documents">DOCUMENTS</a>
-                                            </li>
-                                        <?php endif; ?>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-
-                <!-- Social Sharing Section -->
-                <div class="row mt-5">
+                <div class="sticky-top" id="sticky-menu">
                     <div class="container">
-                        <div class="blog-detail-metadata-share col-12">
-                            <div class="social-sharing float-right">
-                                <ul class="share-tools inline-list">
-                                    <li class="list-inline-item twitter">
-                                        <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode(get_permalink()); ?>" target="_blank">
-                                            <span class="icon-twitter"></span>
-                                            <span class="social-media-text">Tweet</span>
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item facebook">
-                                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_permalink()); ?>&amp;display=popup&amp;ref=plugin&amp;src=share_button" target="_blank">
-                                            <span class="icon-facebook"></span>
-                                            <span class="social-media-text">Share</span>
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item linkedin">
-                                        <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=<?php echo urlencode(get_permalink()); ?>&amp;title=<?php echo urlencode(get_the_title()); ?>" target="_blank">
-                                            <span class="icon-linkedin"></span>
-                                            <span class="social-media-text">Share</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <section class="credential-sections-links">
+                                    <nav>
+                                        <ul class="list-inline flex-container sticky-menu">
+                                            <li class="list-inline-item">
+                                                <a href="#overview">Overview</a>
+                                            </li>
+                                            <?php if ($intro) : ?>
+                                                <li class="list-inline-item">
+                                                    <a href="#intro">INTRO</a>
+                                                </li>
+                                            <?php endif; ?>
+                                            <?php if ($prepare_apply) : ?>
+                                                <li class="list-inline-item">
+                                                    <a href="#prepare-apply">PREPARE &amp; APPLY</a>
+                                                </li>
+                                            <?php endif; ?>
+                                            <?php if ($get_certified) : ?>
+                                                <li class="list-inline-item">
+                                                    <a href="#get-certified">GET CERTIFIED</a>
+                                                </li>
+                                            <?php endif; ?>
+                                            <?php if ($after_exam) : ?>
+                                                <li class="list-inline-item">
+                                                    <a href="#after-the-exam">AFTER THE EXAM</a>
+                                                </li>
+                                            <?php endif; ?>
+                                            <?php if ($documents) : ?>
+                                                <li class="list-inline-item">
+                                                    <a href="#documents">DOCUMENTS</a>
+                                                </li>
+                                            <?php endif; ?>
+                                        </ul>
+                                    </nav>
+                                </section>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Overview Section -->
-                <div class="row overview pt-0" id="overview">
+                <div id="overview" class="section-wrapper">
                     <div class="container pb-5">
-                        <div class="checkmark-heading-green pt-3">
-                            <h2><?php the_title(); ?></h2>
-                            <p><?php echo get_the_excerpt(); ?></p>
+                        <div class="row pt-0">
+                            <div class="col-12">
+                                <div class="checkmark-heading-green pt-3">
+                                    <h2><?php the_title(); ?> <i class="icon-checkmark"></i></h2>
+                                    <p><?php echo get_the_excerpt(); ?></p>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Intro Section -->
                 <?php if ($intro) : ?>
-                    <div class="row alternate-background-lightgrey" id="intro">
-                        <div class="container pb-5 pt-5 section-content">
-                            <section class="pt-5">
-                                <h3 class="text-to-uppercase">INTRO</h3>
-                                <span class="back-to-top">
-                            <a href="#sticky-menu">Back to Top</a>
-                        </span>
-                                <div class="certification-field-content">
-                                    <?php echo $intro; ?>
+                    <div id="intro" class="section-wrapper alternate-background-lightgrey">
+                        <div class="container pb-5 pt-5">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="section-content">
+                                        <section class="pt-5">
+                                            <h3 class="text-to-uppercase">INTRO</h3>
+                                            <span class="back-to-top">
+                                                <a href="#sticky-menu">Back to Top</a>
+                                             </span>
+
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <div class="certification-field-content">
+                                                        <?php echo $intro; ?>
+
+                                                        <!-- Action Buttons -->
+                                                        <div class="certification-action-buttons">
+                                                            <a href="<?php echo esc_url($apply_button_url); ?>" class="button primary">APPLY NOW</a>
+                                                            <a href="<?php echo esc_url($renew_button_url); ?>" class="button primary">RENEW</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <?php if (has_post_thumbnail()) : ?>
+                                                        <div class="certification-featured-image">
+                                                            <?php
+                                                            $id = get_the_ID();
+                                                            echo get_the_post_thumbnail($id, 'medium', array(
+                                                                'class' => 'certification-thumbnail',
+                                                                'loading' => 'lazy'
+                                                            ));
+                                                            ?>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
                                 </div>
-                            </section>
+                            </div>
                         </div>
                     </div>
                 <?php endif; ?>
 
                 <!-- Prepare & Apply Section -->
                 <?php if ($prepare_apply) : ?>
-                    <div class="row alternate-background-white" id="prepare-apply">
-                        <div class="container pb-5 pt-5 section-content">
-                            <section class="pt-5">
-                                <h3 class="text-to-uppercase">PREPARE &amp; APPLY</h3>
-                                <span class="back-to-top">
-                            <a href="#sticky-menu">Back to Top</a>
-                        </span>
-                                <div class="certification-field-content">
-                                    <?php echo $prepare_apply; ?>
+                    <div id="prepare-apply" class="section-wrapper alternate-background-white">
+                        <div class="container pb-5 pt-5">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="section-content">
+                                        <section class="pt-5">
+                                            <h3 class="text-to-uppercase">PREPARE &amp; APPLY</h3>
+                                            <span class="back-to-top">
+                                        <a href="#sticky-menu">Back to Top</a>
+                                    </span>
+                                            <div class="certification-field-content">
+                                                <?php echo $prepare_apply; ?>
+                                            </div>
+                                        </section>
+                                    </div>
                                 </div>
-                            </section>
+                            </div>
                         </div>
                     </div>
                 <?php endif; ?>
 
                 <!-- Get Certified Section -->
                 <?php if ($get_certified) : ?>
-                    <div class="row alternate-background-lightgrey" id="get-certified">
-                        <div class="container pb-5 pt-5 section-content">
-                            <section class="pt-5">
-                                <h3 class="text-to-uppercase">GET CERTIFIED</h3>
-                                <span class="back-to-top">
-                            <a href="#sticky-menu">Back to Top</a>
-                        </span>
-                                <div class="certification-field-content">
-                                    <?php echo $get_certified; ?>
+                    <div id="get-certified" class="section-wrapper alternate-background-lightgrey">
+                        <div class="container pb-5 pt-5">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="section-content">
+                                        <section class="pt-5">
+                                            <h3 class="text-to-uppercase">GET CERTIFIED</h3>
+                                            <span class="back-to-top">
+                                        <a href="#sticky-menu">Back to Top</a>
+                                    </span>
+                                            <div class="certification-field-content">
+                                                <?php echo $get_certified; ?>
+                                            </div>
+                                        </section>
+                                    </div>
                                 </div>
-                            </section>
+                            </div>
                         </div>
                     </div>
                 <?php endif; ?>
 
                 <!-- After The Exam Section -->
                 <?php if ($after_exam) : ?>
-                    <div class="row alternate-background-white" id="after-the-exam">
-                        <div class="container pb-5 pt-5 section-content">
-                            <section class="pt-5">
-                                <h3 class="text-to-uppercase">AFTER THE EXAM</h3>
-                                <span class="back-to-top">
-                            <a href="#sticky-menu">Back to Top</a>
-                        </span>
-                                <div class="certification-field-content">
-                                    <?php echo $after_exam; ?>
+                    <div id="after-the-exam" class="section-wrapper alternate-background-white">
+                        <div class="container pb-5 pt-5">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="section-content">
+                                        <section class="pt-5">
+                                            <h3 class="text-to-uppercase">AFTER THE EXAM</h3>
+                                            <span class="back-to-top">
+                                        <a href="#sticky-menu">Back to Top</a>
+                                    </span>
+                                            <div class="certification-field-content">
+                                                <?php echo $after_exam; ?>
+                                            </div>
+                                        </section>
+                                    </div>
                                 </div>
-                            </section>
+                            </div>
                         </div>
                     </div>
                 <?php endif; ?>
 
                 <!-- Documents Section -->
                 <?php if ($documents) : ?>
-                    <div class="row alternate-background-lightgrey" id="documents">
-                        <div class="container pb-5 pt-5 section-content">
-                            <section class="pt-5">
-                                <h3 class="text-to-uppercase">DOCUMENTS</h3>
-                                <span class="back-to-top">
-                            <a href="#sticky-menu">Back to Top</a>
-                        </span>
-                                <div class="certification-field-content">
-                                    <?php echo $documents; ?>
+                    <div id="documents" class="section-wrapper alternate-background-lightgrey">
+                        <div class="container pb-5 pt-5">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="section-content">
+                                        <section class="pt-5">
+                                            <h3 class="text-to-uppercase">DOCUMENTS</h3>
+                                            <span class="back-to-top">
+                                        <a href="#sticky-menu">Back to Top</a>
+                                    </span>
+                                            <div class="certification-field-content">
+                                                <?php echo $documents; ?>
+                                            </div>
+                                        </section>
+                                    </div>
                                 </div>
-                            </section>
+                            </div>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -1440,6 +1757,7 @@ Thumbs.db
 .vscode/
 *.sublime-project
 *.sublime-workspace
+*.zip
 
 # Build/dependency directories
 node_modules/
@@ -1465,7 +1783,7 @@ File: certifications-plugin.php
  * Plugin Name: Certifications Plugin
  * Plugin URI: https://yourwebsite.com/
  * Description: A custom plugin for managing and displaying certifications with ACF integration.
- * Version: 1.0.0
+ * Version: 1.0.7
  * Author: Orases
  * Author URI: https://orases.com/
  * Text Domain: certifications-plugin
@@ -1482,7 +1800,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'CERTIFICATIONS_PLUGIN_VERSION', '1.0.0' );
+define( 'CERTIFICATIONS_PLUGIN_VERSION', '1.0.7' );
 define( 'CERTIFICATIONS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CERTIFICATIONS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'CERTIFICATIONS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
