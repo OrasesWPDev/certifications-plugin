@@ -147,7 +147,7 @@ class Certifications_ACF {
                     'delay' => 0,
                 ),
                 array(
-                    'key' => 'field_apply_button_url',
+                    'key' => 'field_67bf617add99g',  // Using a pattern similar to your existing field keys
                     'label' => 'Apply Button URL',
                     'name' => 'apply_button_url',
                     'aria-label' => '',
@@ -166,7 +166,7 @@ class Certifications_ACF {
                     'placeholder' => '',
                 ),
                 array(
-                    'key' => 'field_renew_button_url',
+                    'key' => 'field_67bf618add99h',  // Using a pattern similar to your existing field keys
                     'label' => 'Renew Button URL',
                     'name' => 'renew_button_url',
                     'aria-label' => '',
