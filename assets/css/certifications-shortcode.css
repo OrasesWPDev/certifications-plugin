@@ -12,7 +12,7 @@
 }
 
 /* ----------------------------------------
-   2. CERTIFICATION CARD
+   2. CERTIFICATION ITEM - Individual Cards
    ---------------------------------------- */
 .certification-item {
     padding: 15px;
@@ -25,8 +25,8 @@
     border-radius: 5px;
     overflow: hidden;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    border: none;
+    box-shadow: none; /* Remove shadow */
+    border: none; /* Remove border */
 }
 
 .certification-card:hover {
@@ -88,7 +88,7 @@
 }
 
 /* ----------------------------------------
-   5. CERTIFICATION BUTTON
+   5. CERTIFICATION BUTTON - Call to Action
    ---------------------------------------- */
 .certification-button {
     text-align: center;
@@ -97,7 +97,20 @@
 
 .certification-button .button {
     font-size: 14px;
-    padding: 5px 15px;
+    font-weight: 600;
+    padding: 8px 15px;
+    background-color: #f98e2b; /* Orange button */
+    color: #fff;
+    border: 2px solid #f98e2b;
+    border-radius: 4px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.certification-button .button:hover {
+    background-color: rgba(255, 255, 255, 0.64); /* Semi-transparent white background on hover */
+    color: #f98e2b; /* Orange text on hover */
+    border: 1px solid #f98e2b; /* 1px orange border */
 }
 
 /* ----------------------------------------
