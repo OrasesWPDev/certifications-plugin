@@ -16,8 +16,16 @@ get_header();
 // Start the main content
 ?>
     <main id="main" class="certification-single">
-	    <?php echo do_shortcode('[block id="internal-page-header"]'); ?>
-        <?php while ( have_posts() ) : the_post(); ?>
+    <div class="section-wrapper credentials-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <?php echo do_shortcode('[block id="credentials-header-block"]'); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php while ( have_posts() ) : the_post(); ?>
 
             <?php
             // Get field values
@@ -78,15 +86,13 @@ get_header();
 
                 <!-- Overview Section -->
                 <div id="overview" class="section-wrapper">
-                    <div class="container pb-5">
+                    <div class="container pb-3">
                         <div class="row pt-0">
                             <div class="col-12">
-                                <div class="checkmark-heading-green pt-3">
-                                    <h2><?php the_title(); ?> <i class="icon-checkmark"></i></h2>
+                                <div class="pt-2">
                                     <p><?php echo get_the_excerpt(); ?></p>
                                 </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                 </div>

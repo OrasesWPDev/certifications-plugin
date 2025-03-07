@@ -1,165 +1,164 @@
-[
-  {
+{
     "key": "group_67bf615a25b23",
     "title": "Certifications Field Group",
     "fields": [
-      {
-        "key": "field_67bf615add99b",
-        "label": "Intro",
-        "name": "intro",
-        "aria-label": "",
-        "type": "wysiwyg",
-        "instructions": "",
-        "required": 0,
-        "conditional_logic": 0,
-        "wrapper": {
-          "width": "",
-          "class": "",
-          "id": ""
+        {
+            "key": "field_67bf615add99b",
+            "label": "Intro",
+            "name": "intro",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
         },
-        "relevanssi_exclude": 0,
-        "default_value": "",
-        "allow_in_bindings": 0,
-        "tabs": "all",
-        "toolbar": "full",
-        "media_upload": 1,
-        "delay": 0
-      },
-      {
-        "key": "field_67bf617add99g",
-        "label": "Apply Button URL",
-        "name": "apply_button_url",
-        "aria-label": "",
-        "type": "url",
-        "instructions": "Enter the URL for the Apply Now button",
-        "required": 0,
-        "conditional_logic": 0,
-        "wrapper": {
-          "width": "",
-          "class": "",
-          "id": ""
+        {
+            "key": "field_67bf617add99g",
+            "label": "Apply Button URL",
+            "name": "apply_button_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Enter the URL for the Apply Now button",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "placeholder": ""
         },
-        "relevanssi_exclude": 0,
-        "default_value": "",
-        "allow_in_bindings": 0,
-        "placeholder": ""
-      },
-      {
-        "key": "field_67bf618add99h",
-        "label": "Renew Button URL",
-        "name": "renew_button_url",
-        "aria-label": "",
-        "type": "url",
-        "instructions": "Enter the URL for the Renew button",
-        "required": 0,
-        "conditional_logic": 0,
-        "wrapper": {
-          "width": "",
-          "class": "",
-          "id": ""
+        {
+            "key": "field_67bf618add99h",
+            "label": "Renew Button URL",
+            "name": "renew_button_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Enter the URL for the Renew button",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "placeholder": ""
         },
-        "relevanssi_exclude": 0,
-        "default_value": "",
-        "allow_in_bindings": 0,
-        "placeholder": ""
-      },
-      {
-        "key": "field_67bf6184dd99c",
-        "label": "Prepare & Apply",
-        "name": "prepare_&_apply",
-        "aria-label": "",
-        "type": "wysiwyg",
-        "instructions": "",
-        "required": 0,
-        "conditional_logic": 0,
-        "wrapper": {
-          "width": "",
-          "class": "",
-          "id": ""
+        {
+            "key": "field_67bf6184dd99c",
+            "label": "Prepare & Apply",
+            "name": "prepare_&_apply",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
         },
-        "relevanssi_exclude": 0,
-        "default_value": "",
-        "allow_in_bindings": 0,
-        "tabs": "all",
-        "toolbar": "full",
-        "media_upload": 1,
-        "delay": 0
-      },
-      {
-        "key": "field_67bf6196dd99d",
-        "label": "Get Certified",
-        "name": "get_certified",
-        "aria-label": "",
-        "type": "wysiwyg",
-        "instructions": "",
-        "required": 0,
-        "conditional_logic": 0,
-        "wrapper": {
-          "width": "",
-          "class": "",
-          "id": ""
+        {
+            "key": "field_67bf6196dd99d",
+            "label": "Get Certified",
+            "name": "get_certified",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
         },
-        "relevanssi_exclude": 0,
-        "default_value": "",
-        "allow_in_bindings": 0,
-        "tabs": "all",
-        "toolbar": "full",
-        "media_upload": 1,
-        "delay": 0
-      },
-      {
-        "key": "field_67bf61a3dd99e",
-        "label": "After The Exam",
-        "name": "after_the_exam",
-        "aria-label": "",
-        "type": "wysiwyg",
-        "instructions": "",
-        "required": 0,
-        "conditional_logic": 0,
-        "wrapper": {
-          "width": "",
-          "class": "",
-          "id": ""
+        {
+            "key": "field_67bf61a3dd99e",
+            "label": "After The Exam",
+            "name": "after_the_exam",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
         },
-        "relevanssi_exclude": 0,
-        "default_value": "",
-        "allow_in_bindings": 0,
-        "tabs": "all",
-        "toolbar": "full",
-        "media_upload": 1,
-        "delay": 0
-      },
-      {
-        "key": "field_67bf61afdd99f",
-        "label": "Documents",
-        "name": "documents",
-        "aria-label": "",
-        "type": "wysiwyg",
-        "instructions": "",
-        "required": 0,
-        "conditional_logic": 0,
-        "wrapper": {
-          "width": "",
-          "class": "",
-          "id": ""
-        },
-        "relevanssi_exclude": 0,
-        "default_value": "",
-        "allow_in_bindings": 0,
-        "tabs": "all",
-        "toolbar": "full",
-        "media_upload": 1,
-        "delay": 0
-      }
+        {
+            "key": "field_67bf61afdd99f",
+            "label": "Documents",
+            "name": "documents",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        }
     ],
     "location": [
-      [
-        {
-          "param": "post_type",
-          "operator": "==",
-          "value": "certification"
-        }
-      ]
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "certification"
+            }
+        ]
     ],
     "menu_order": 0,
     "position": "normal",
@@ -169,6 +168,6 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "show_in_rest": 0
-  }
-]
+    "show_in_rest": 0,
+    "modified": 1741363339
+}

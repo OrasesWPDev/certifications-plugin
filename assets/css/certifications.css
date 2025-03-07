@@ -177,46 +177,28 @@
 /* ----------------------------------------
    4. OVERVIEW SECTION
    ---------------------------------------- */
-#overview .checkmark-heading-green {
-    padding-top: 20px;
+#overview {
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
-.checkmark-heading-green {
-    color: #2c6c3e; /* Adjusted green to match live site */
-    margin-bottom: 20px;
-    position: relative;
+#overview .container {
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
-.checkmark-heading-green h2 {
-    color: inherit;
-    font-size: 34px;
+#overview p {
+    font-size: 20px;
+    line-height: 1.5;
+    color: #444;
     font-weight: 600;
-    margin-bottom: 15px;
 }
 
-.checkmark-heading-green i.icon-checkmark {
-    margin-left: 10px;
+/* Remove spacing that was needed for the title */
+#overview + .section-wrapper {
+    margin-top: 20px;
 }
 
-.icon-checkmark:after {
-    content: "✓";
-    font-size: 24px;
-    font-weight: bold;
-    display: inline-block;
-    margin-left: 8px;
-    color: #2c6c3e;
-}
-
-/* Remove duplicate checkmarks if present */
-.icon-checkmark .icon-checkmark,
-i.icon-checkmark i.icon-checkmark {
-    display: none !important;
-}
-
-/* Fix specifically for the checkmark in title */
-.checkmark-heading-green h2 i.icon-checkmark:after {
-    content: none !important;
-}
 
 /* ----------------------------------------
    5. STICKY NAVIGATION MENU
@@ -491,4 +473,41 @@ i.icon-checkmark i.icon-checkmark {
 
 .certification-field-content a:hover {
     text-decoration: none;
+}
+
+/* ----------------------------------------
+   11. HEADER STYLING
+   ---------------------------------------- */
+/* Header background styling */
+.certification-single .section-wrapper.credentials-header {
+    background-color: rgb(0, 44, 92);
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%;
+    width: 100%;
+}
+
+/* Ensure the header section spans full width */
+.certification-single .credentials-header section.section {
+    background-color: rgb(0, 44, 92) !important;
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%;
+    width: 100%;
+}
+
+/* Breadcrumb styling */
+.certification-single .credentials-header span,
+.certification-single .credentials-header span a,
+.certification-single .credentials-header span.breadcrumb_last,
+.certification-single .credentials-header .yoast-divider {
+    color: white !important;
+}
+
+/* Remove margin from column inside header */
+.certification-single .credentials-header .col-12 {
+    margin: 0;
+    padding: 0;
 }
