@@ -3,7 +3,7 @@
  * Plugin Name: Certifications Plugin
  * Plugin URI: https://yourwebsite.com/
  * Description: A custom plugin for managing and displaying certifications with ACF integration.
- * Version: 1.0.10
+ * Version: 1.0.9
  * Author: Orases
  * Author URI: https://orases.com/
  * Text Domain: certifications-plugin
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'CERTIFICATIONS_PLUGIN_VERSION', '1.0.10' );
+define( 'CERTIFICATIONS_PLUGIN_VERSION', '1.0.9' );
 define( 'CERTIFICATIONS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CERTIFICATIONS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'CERTIFICATIONS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -116,7 +116,6 @@ function certifications_plugin_register_admin_assets( $hook ) {
 				array(),
 				CERTIFICATIONS_PLUGIN_VERSION
 			);
-
 			wp_enqueue_script(
 				'certifications-plugin-admin-script',
 				CERTIFICATIONS_PLUGIN_URL . 'assets/js/admin.js',
@@ -127,6 +126,61 @@ function certifications_plugin_register_admin_assets( $hook ) {
 		}
 	}
 }
+
+// Force registration of ACF field groups from JSON
+function certifications_force_acf_sync() {
+	if (!function_exists('acf_get_field_groups') || !function_exists('acf_add_local_field_group')) {
+		return;
+	}
+
+	// Path to the ACF JSON file
+	$json_file = CERTIFICATIONS_PLUGIN_PATH . 'acf-json/group_67bf615a25b23.json';
+
+	if (file_exists($json_file)) {
+		$json_content = file_get_contents($json_file);
+
+		// Check if json content is valid
+		if (!$json_content) {
+			error_log('Failed to read JSON file: ' . $json_file);
+			return;
+		}
+
+		$json_data = json_decode($json_content, true);
+
+		// Check if json_decode was successful
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			error_log('JSON decoding error: ' . json_last_error_msg());
+			return;
+		}
+
+		// Verify json_data is an array
+		if (!is_array($json_data)) {
+			error_log('JSON data is not an array');
+			return;
+		}
+
+		// Process each field group
+		foreach ($json_data as $field_group) {
+			// Verify field_group is an array
+			if (!is_array($field_group)) {
+				error_log('Field group is not an array');
+				continue;
+			}
+
+			// Verify field_group has a title
+			if (!isset($field_group['title'])) {
+				error_log('Field group has no title');
+				continue;
+			}
+
+			acf_add_local_field_group($field_group);
+			error_log('Registered field group: ' . $field_group['title']);
+		}
+	} else {
+		error_log('ACF JSON file not found: ' . $json_file);
+	}
+}
+add_action('acf/init', 'certifications_force_acf_sync', 20);
 
 // Activation hook
 register_activation_hook( __FILE__, 'certifications_plugin_activate' );
