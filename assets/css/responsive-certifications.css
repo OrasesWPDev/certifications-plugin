@@ -22,11 +22,6 @@
         display: block;
     }
 
-    /* Social Sharing */
-    .share-tools {
-        justify-content: center;
-    }
-
     /* Certification Cards */
     .certification-title {
         font-size: 14px;
@@ -40,12 +35,26 @@
         font-size: 12px;
         padding: 3px 10px;
     }
+
+    /* Image positioning in intro section */
+    #intro .col-md-9 {
+        order: 1;
+    }
+
+    #intro .col-md-3 {
+        order: 2;
+        padding-top: 30px;
+    }
 }
 
 /* Medium screens (tablets) */
 @media (min-width: 768px) and (max-width: 991px) {
     .certification-item {
         padding: 10px;
+    }
+
+    #intro .col-md-3 {
+        padding-top: 30px;
     }
 
     .certification-card-body {
@@ -69,5 +78,34 @@
 @media (min-width: 992px) {
     .certification-card:hover {
         transform: translateY(-5px);
+    }
+
+    /* Ensure image is properly positioned on desktop */
+    #intro .col-md-9 {
+        order: 1;
+    }
+
+    #intro .col-md-3 {
+        order: 2;
+        display: flex;
+        align-items: center;
+    }
+}
+/* INTRO section specific image container */
+#intro .col-md-3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .certification-single .col-md-9 {
+        flex: 0 0 75%;
+        max-width: 75%;
+    }
+
+    .certification-single .col-md-3 {
+        flex: 0 0 25%;
+        max-width: 25%;
     }
 }
