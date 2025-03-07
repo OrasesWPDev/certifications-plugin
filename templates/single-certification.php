@@ -20,7 +20,7 @@ get_header();
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <?php echo do_shortcode('[block id="credentials-header-block"]'); ?>
+                    <?php echo do_shortcode('[block id="certifications-header"]'); ?>
                 </div>
             </div>
         </div>
