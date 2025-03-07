@@ -85,11 +85,11 @@ class Certifications_CPT {
                 'post_tag',
             ),
             'has_archive'         => false,
-            'rewrite'             => array(
-                'slug'       => 'certification',
-                'with_front' => true,
-                'feeds'      => false,
-                'pages'      => true,
+            'rewrite' => array(
+	            'slug' => 'credentials/certification',
+	            'with_front' => false,
+	            'feeds' => false,
+	            'pages' => true,
             ),
             'query_var'           => true,
             'can_export'          => true,

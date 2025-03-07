@@ -16,6 +16,7 @@ get_header();
 // Start the main content
 ?>
     <main id="main" class="certification-single">
+	    <?php echo do_shortcode('[block id="internal-page-header"]'); ?>
         <?php while ( have_posts() ) : the_post(); ?>
 
             <?php
