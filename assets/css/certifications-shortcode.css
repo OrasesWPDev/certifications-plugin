@@ -57,7 +57,7 @@
 }
 
 /* ----------------------------------------
-   4. CERTIFICATION CONTENT
+   4. CERTIFICATION CONTENT - Text Elements
    ---------------------------------------- */
 .certification-content {
     flex-grow: 1;
@@ -75,10 +75,16 @@
 
 .certification-description {
     font-size: 12px;
+    line-height: 1.5;
     color: #7C7C7C;
     margin-bottom: 15px;
     text-align: center;
     flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-height: 110px; /* Backup for browsers that don't support line-clamp */
 }
 
 /* ----------------------------------------

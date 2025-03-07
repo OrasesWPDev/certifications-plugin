@@ -86,17 +86,24 @@ class Certifications_Shortcode {
 				$title = get_the_title();
 				$permalink = get_permalink();
 
-				// Get intro from ACF field if available
+				// Get card description from ACF field if available
 				$description = '';
 				if (function_exists('get_field')) {
-					$intro_field = get_field('intro');
-					if (!empty($intro_field)) {
-						$description = wp_strip_all_tags($intro_field);
-						$description = wp_trim_words($description, 25);
+					$card_description = get_field('card_description');
+					if (!empty($card_description)) {
+						$description = wp_kses_post($card_description);
+					}
+					else {
+						// Fall back to intro field if card description is empty
+						$intro_field = get_field('intro');
+						if (!empty($intro_field)) {
+							$description = wp_strip_all_tags($intro_field);
+							$description = wp_trim_words($description, 25);
+						}
 					}
 				}
 
-				// If no ACF intro, fall back to excerpt or content
+                // If no ACF fields available, fall back to excerpt or content
 				if (empty($description)) {
 					$description = has_excerpt() ? get_the_excerpt() : wp_trim_words(get_the_content(), 20);
 				}
