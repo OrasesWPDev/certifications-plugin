@@ -24,3 +24,4 @@ vendor/
 # Compiled assets
 *.min.css
 *.min.js
+repomix-output.txt
