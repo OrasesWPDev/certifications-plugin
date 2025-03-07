@@ -2,7 +2,9 @@
  * Certifications Plugin Responsive Styles
  */
 
-/* Small screens (mobile) */
+/* ----------------------------------------
+   1. SMALL SCREENS (MOBILE)
+   ---------------------------------------- */
 @media (max-width: 767px) {
     /* Sticky Menu */
     .sticky-menu li {
@@ -47,7 +49,9 @@
     }
 }
 
-/* Medium screens (tablets) */
+/* ----------------------------------------
+   2. MEDIUM SCREENS (TABLETS)
+   ---------------------------------------- */
 @media (min-width: 768px) and (max-width: 991px) {
     .certification-item {
         padding: 10px;
@@ -74,7 +78,9 @@
     }
 }
 
-/* Large screens adjustments */
+/* ----------------------------------------
+   3. LARGE SCREENS ADJUSTMENTS
+   ---------------------------------------- */
 @media (min-width: 992px) {
     .certification-card:hover {
         transform: translateY(-5px);
@@ -91,7 +97,10 @@
         align-items: center;
     }
 }
-/* INTRO section specific image container */
+
+/* ----------------------------------------
+   4. INTRO SECTION SPECIFIC IMAGE CONTAINER
+   ---------------------------------------- */
 #intro .col-md-3 {
     display: flex;
     align-items: center;
@@ -107,5 +116,39 @@
     .certification-single .col-md-3 {
         flex: 0 0 25%;
         max-width: 25%;
+    }
+}
+
+/* ----------------------------------------
+   5. CERTIFICATIONS SHORTCODE RESPONSIVE STYLES
+   ---------------------------------------- */
+@media (max-width: 767px) {
+    /* Shortcode Card Styles - Mobile */
+    .certification-title {
+        font-size: 13px;
+    }
+
+    .certification-description {
+        font-size: 11px;
+    }
+
+    .certification-button .button {
+        font-size: 12px;
+        padding: 4px 12px;
+    }
+
+    .certification-thumbnail {
+        max-width: 120px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    /* Shortcode Card Styles - Tablet */
+    .certification-card-body {
+        padding: 15px;
+    }
+
+    .certification-title {
+        font-size: 13px;
     }
 }
