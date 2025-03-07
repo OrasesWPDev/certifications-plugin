@@ -26,7 +26,7 @@ define( 'CERTIFICATIONS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'CERTIFICATIONS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 // Check if ACF is active
-function certifications_plugin_has_acf() {
+function certif_plugin_has_acf() {
 	return class_exists( 'ACF' );
 }
 
@@ -39,11 +39,11 @@ function certifications_plugin_init() {
 	require_once CERTIFICATIONS_PLUGIN_PATH . 'includes/class-certifications-cpt.php';
 
 	// Only load ACF integration if ACF is active
-	if ( certifications_plugin_has_acf() ) {
+	if ( certif_plugin_has_acf() ) {
 		require_once CERTIFICATIONS_PLUGIN_PATH . 'includes/class-certifications-acf.php';
 	} else {
 		// Admin notice if ACF is not active
-		add_action( 'admin_notices', 'certifications_plugin_acf_missing_notice' );
+		add_action( 'admin_notices', 'certif_plugin_acf_missing_notice' );
 	}
 
 	// Load shortcode functionality
@@ -51,7 +51,7 @@ function certifications_plugin_init() {
 
 	// Initialize classes
 	new Certifications_CPT();
-	if ( certifications_plugin_has_acf() ) {
+	if ( certif_plugin_has_acf() ) {
 		new Certifications_ACF();
 	}
 	new Certifications_Shortcode();
@@ -63,7 +63,7 @@ function certifications_plugin_init() {
 add_action( 'plugins_loaded', 'certifications_plugin_init' );
 
 // Admin notice for missing ACF
-function certifications_plugin_acf_missing_notice() {
+function certif_plugin_acf_missing_notice() {
 	?>
     <div class="notice notice-error">
         <p><?php _e( 'Certifications Plugin requires Advanced Custom Fields PRO to be installed and activated.', 'certifications-plugin' ); ?></p>
@@ -183,7 +183,7 @@ function certifications_breadcrumbs_shortcode() {
 }
 
 // Force registration of ACF field groups from JSON
-function certifications_force_acf_sync() {
+function certif_force_acf_sync() {
 	if (!function_exists('acf_get_field_groups') || !function_exists('acf_add_local_field_group')) {
 		return;
 	}
@@ -234,11 +234,11 @@ function certifications_force_acf_sync() {
 		error_log('ACF JSON file not found: ' . $json_file);
 	}
 }
-add_action('acf/init', 'certifications_force_acf_sync', 20);
+add_action('acf/init', 'certif_force_acf_sync', 20);
 
 // Activation hook
-register_activation_hook( __FILE__, 'certifications_plugin_activate' );
-function certifications_plugin_activate() {
+register_activation_hook( __FILE__, 'certif_plugin_activate' );
+function certif_plugin_activate() {
 	// Flush rewrite rules on activation
 	require_once CERTIFICATIONS_PLUGIN_PATH . 'includes/class-certifications-cpt.php';
 	$cpt = new Certifications_CPT();
@@ -252,8 +252,8 @@ function certifications_plugin_activate() {
 }
 
 // Deactivation hook
-register_deactivation_hook( __FILE__, 'certifications_plugin_deactivate' );
-function certifications_plugin_deactivate() {
+register_deactivation_hook( __FILE__, 'certif_plugin_deactivate' );
+function certif_plugin_deactivate() {
 	// Flush rewrite rules on deactivation
 	flush_rewrite_rules();
 
