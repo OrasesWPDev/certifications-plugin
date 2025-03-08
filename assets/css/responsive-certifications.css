@@ -47,6 +47,45 @@
         order: 2;
         padding-top: 30px;
     }
+
+    /* List Layout - Mobile */
+    .certifications-list .certification-card-body {
+        flex-direction: column;
+    }
+
+    .certifications-list .certification-image {
+        flex: 0 0 100%;
+        margin-right: 0;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .certifications-list .certification-content {
+        flex: 1;
+        padding: 10px 0;
+    }
+
+    .certifications-list .certification-title,
+    .certifications-list .certification-description,
+    .certifications-list .certification-button {
+        text-align: center;
+    }
+
+    /* Pagination - Mobile */
+    .certifications-pagination {
+        margin: 20px 0;
+    }
+
+    .certifications-pagination .page-numbers {
+        padding: 6px 10px;
+        font-size: 12px;
+        margin: 0 2px;
+    }
+
+    .certifications-pagination .page-numbers.prev,
+    .certifications-pagination .page-numbers.next {
+        padding: 6px 8px;
+    }
 }
 
 /* ----------------------------------------
@@ -76,6 +115,22 @@
     .sticky-menu li {
         margin: 0 10px;
     }
+
+    /* List Layout - Tablet */
+    .certifications-list .certification-image {
+        flex: 0 0 140px;
+        margin-right: 15px;
+    }
+
+    .certifications-list .certification-content {
+        padding: 10px 0;
+    }
+
+    /* Pagination - Tablet */
+    .certifications-pagination .page-numbers {
+        padding: 7px 12px;
+        font-size: 13px;
+    }
 }
 
 /* ----------------------------------------
@@ -95,6 +150,16 @@
         order: 2;
         display: flex;
         align-items: center;
+    }
+
+    /* List Layout - Desktop */
+    .certifications-list .certification-card {
+        transition: all 0.3s ease;
+    }
+
+    .certifications-list .certification-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
 }
 
@@ -140,6 +205,29 @@
     .certification-thumbnail {
         max-width: 120px;
     }
+
+    /* Single Certification Shortcode - Mobile */
+    .certification-single.certification-shortcode {
+        padding: 15px;
+    }
+
+    .certification-single.certification-shortcode .certification-title {
+        font-size: 20px;
+    }
+
+    .certification-single.certification-shortcode .certification-action-buttons {
+        flex-direction: column;
+    }
+
+    .certification-single.certification-shortcode .certification-action-buttons .button {
+        margin-right: 0;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .certification-single.certification-shortcode h3.text-to-uppercase {
+        font-size: 16px;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -150,5 +238,37 @@
 
     .certification-title {
         font-size: 13px;
+    }
+
+    /* Single Certification Shortcode - Tablet */
+    .certification-single.certification-shortcode {
+        padding: 20px;
+    }
+
+    .certification-single.certification-shortcode .certification-title {
+        font-size: 22px;
+    }
+}
+
+/* ----------------------------------------
+   6. PAGINATION RESPONSIVE STYLES
+   ---------------------------------------- */
+@media (max-width: 480px) {
+    /* Extremely small screens */
+    .certifications-pagination .page-numbers {
+        padding: 5px 8px;
+        font-size: 11px;
+        margin: 0 1px;
+    }
+
+    /* Hide some pagination numbers on very small screens */
+    .certifications-pagination .page-numbers:not(.prev):not(.next):not(.current) {
+        display: none;
+    }
+
+    .certifications-pagination .page-numbers.current,
+    .certifications-pagination .page-numbers.prev,
+    .certifications-pagination .page-numbers.next {
+        display: inline-block;
     }
 }
