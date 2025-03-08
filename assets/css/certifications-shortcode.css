@@ -5,6 +5,12 @@
 /* ----------------------------------------
    1. GRID LAYOUT
    ---------------------------------------- */
+.certifications-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
 .certifications-grid {
     display: flex;
     flex-wrap: wrap;
@@ -12,7 +18,59 @@
 }
 
 /* ----------------------------------------
-   2. CERTIFICATION ITEM - Individual Cards
+   2. LIST LAYOUT
+   ---------------------------------------- */
+.certifications-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.certifications-list .certification-list-item {
+    width: 100%;
+    margin-bottom: 25px;
+    padding: 0 15px;
+}
+
+.certifications-list .certification-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.certifications-list .certification-card-body {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.certifications-list .certification-image {
+    flex: 0 0 180px;
+    margin-right: 20px;
+    margin-bottom: 0;
+}
+
+.certifications-list .certification-content {
+    flex: 1;
+    padding: 15px 0;
+}
+
+.certifications-list .certification-title {
+    text-align: left;
+    margin-top: 0;
+}
+
+.certifications-list .certification-description {
+    text-align: left;
+}
+
+.certifications-list .certification-button {
+    text-align: left;
+}
+
+/* ----------------------------------------
+   3. CERTIFICATION ITEM - Individual Cards
    ---------------------------------------- */
 .certification-item {
     padding: 15px;
@@ -43,7 +101,7 @@
 }
 
 /* ----------------------------------------
-   3. CERTIFICATION IMAGE
+   4. CERTIFICATION IMAGE
    ---------------------------------------- */
 .certification-image {
     text-align: center;
@@ -57,7 +115,7 @@
 }
 
 /* ----------------------------------------
-   4. CERTIFICATION CONTENT - Text Elements
+   5. CERTIFICATION CONTENT - Text Elements
    ---------------------------------------- */
 .certification-content {
     flex-grow: 1;
@@ -88,7 +146,7 @@
 }
 
 /* ----------------------------------------
-   5. CERTIFICATION BUTTON - Call to Action
+   6. CERTIFICATION BUTTON - Call to Action
    ---------------------------------------- */
 .certification-button {
     text-align: center;
@@ -114,7 +172,7 @@
 }
 
 /* ----------------------------------------
-   6. NO RESULTS MESSAGE
+   7. NO RESULTS MESSAGE
    ---------------------------------------- */
 .no-certifications {
     padding: 20px;
@@ -122,4 +180,131 @@
     width: 100%;
     font-style: italic;
     color: #666;
+}
+
+/* ----------------------------------------
+   8. PAGINATION STYLES
+   ---------------------------------------- */
+.certifications-pagination {
+    width: 100%;
+    text-align: center;
+    margin: 30px 0;
+    clear: both;
+}
+
+.certifications-pagination .page-numbers {
+    display: inline-block;
+    padding: 8px 14px;
+    margin: 0 3px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
+    background-color: #fff;
+    font-size: 14px;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+
+.certifications-pagination .page-numbers.current {
+    background-color: #f98e2b;
+    color: #fff;
+    border-color: #f98e2b;
+}
+
+.certifications-pagination .page-numbers:hover:not(.current) {
+    background-color: #f5f5f5;
+    border-color: #ccc;
+}
+
+.certifications-pagination .prev,
+.certifications-pagination .next {
+    font-weight: bold;
+}
+
+/* ----------------------------------------
+   9. SINGLE CERTIFICATION SHORTCODE STYLES
+   ---------------------------------------- */
+.certification-single.certification-shortcode {
+    margin: 30px 0;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.certification-single.certification-shortcode .certification-title {
+    font-size: 24px;
+    text-align: left;
+    margin-bottom: 20px;
+    color: #2c6c3e; /* Match green color from the main styles */
+}
+
+.certification-single.certification-shortcode .certification-featured-image {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.certification-single.certification-shortcode .certification-thumbnail {
+    max-width: 250px;
+    border-radius: 5px;
+}
+
+.certification-single.certification-shortcode .certification-action-buttons {
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.certification-single.certification-shortcode .certification-action-buttons .button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.certification-single.certification-shortcode .certification-section {
+    margin: 30px 0;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.certification-single.certification-shortcode .certification-section:first-child {
+    border-top: none;
+}
+
+.certification-single.certification-shortcode h3.text-to-uppercase {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c6c3e;
+    margin-bottom: 15px;
+}
+
+.certification-single.certification-shortcode .certification-field-content {
+    line-height: 1.6;
+}
+
+.certification-single.certification-shortcode .certification-field-content p {
+    margin-bottom: 15px;
+}
+
+.certification-single.certification-shortcode .certification-field-content ul,
+.certification-single.certification-shortcode .certification-field-content ol {
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.certification-single.certification-shortcode .certification-field-content li {
+    margin-bottom: 5px;
+}
+
+/* ----------------------------------------
+   10. ERROR MESSAGES
+   ---------------------------------------- */
+.certification-error {
+    padding: 15px;
+    background-color: #ffebee;
+    color: #c62828;
+    border-left: 4px solid #c62828;
+    margin: 20px 0;
+    font-weight: 500;
+    border-radius: 3px;
 }
