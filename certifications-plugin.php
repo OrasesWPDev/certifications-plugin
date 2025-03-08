@@ -102,6 +102,12 @@ function certifications_help_page_content() {
                 </thead>
                 <tbody>
                 <tr>
+                    <td><code>display_type</code></td>
+                    <td>Display as grid or list</td>
+                    <td>grid</td>
+                    <td><code>[certifications display_type="list"]</code></td>
+                </tr>
+                <tr>
                     <td><code>count</code></td>
                     <td>Number of certifications to display. Use -1 for all.</td>
                     <td>-1</td>
@@ -112,6 +118,12 @@ function certifications_help_page_content() {
                     <td>Number of columns in the grid display.</td>
                     <td>4</td>
                     <td><code>[certifications columns="3"]</code></td>
+                </tr>
+                <tr>
+                    <td><code>pagination</code></td>
+                    <td>Whether to show pagination controls</td>
+                    <td>false</td>
+                    <td><code>[certifications pagination="true"]</code></td>
                 </tr>
                 <tr>
                     <td><code>category</code></td>
@@ -125,6 +137,18 @@ function certifications_help_page_content() {
                     <td>ASC</td>
                     <td><code>[certifications order="DESC"]</code></td>
                 </tr>
+                <tr>
+                    <td><code>show_image</code></td>
+                    <td>Whether to display the featured image</td>
+                    <td>true</td>
+                    <td><code>[certifications show_image="false"]</code></td>
+                </tr>
+                <tr>
+                    <td><code>button_text</code></td>
+                    <td>Custom text for the button</td>
+                    <td>Learn More</td>
+                    <td><code>[certifications button_text="View Details"]</code></td>
+                </tr>
                 </tbody>
             </table>
             <h3>Example</h3>
@@ -132,6 +156,13 @@ function certifications_help_page_content() {
             <div style="background: #f5f5f5; padding: 15px; border-left: 4px solid #2271b1; font-family: monospace; margin: 20px 0;">
                 [certifications count="3" columns="2" category="featured"]
             </div>
+
+            <h3>Single Certification Display</h3>
+            <p>You can also display a single certification using the following shortcode:</p>
+            <div style="background: #f5f5f5; padding: 15px; border-left: 4px solid #2271b1; font-family: monospace; margin: 20px 0;">
+                [certification id="123"]
+            </div>
+            <p>Where "123" is the ID of the certification you want to display.</p>
         </div>
     </div>
 	<?php
@@ -146,14 +177,56 @@ function certif_plugin_acf_missing_notice() {
 	<?php
 }
 
+/**
+ * Clear plugin cache
+ * Used for clearing transients created by shortcodes
+ */
+function certifications_plugin_clear_cache() {
+	global $wpdb;
+
+	// Get all transients related to certifications
+	$sql = "SELECT `option_name` 
+            FROM {$wpdb->options} 
+            WHERE `option_name` LIKE '%_transient_certifications_%' 
+            OR `option_name` LIKE '%_transient_timeout_certifications_%'
+            OR `option_name` LIKE '%_transient_certification_single_%'
+            OR `option_name` LIKE '%_transient_timeout_certification_single_%'";
+
+	$transients = $wpdb->get_results($sql);
+
+	// Delete all found transients
+	if (!empty($transients)) {
+		foreach ($transients as $transient) {
+			$key = str_replace(array('_transient_', '_transient_timeout_'), '', $transient->option_name);
+			delete_transient($key);
+		}
+
+		if (WP_DEBUG) {
+			error_log('Certifications Plugin: Cache cleared');
+		}
+	}
+}
+
 // Register front-end assets
 function certifications_plugin_register_assets() {
+	// File paths for version calculation
+	$css_main_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/css/certifications.css';
+	$css_responsive_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/css/responsive-certifications.css';
+	$css_shortcode_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/css/certifications-shortcode.css';
+	$js_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/js/certifications.js';
+
+	// Calculate versions based on file modification time
+	$css_main_version = file_exists($css_main_file) ? filemtime($css_main_file) : CERTIFICATIONS_PLUGIN_VERSION;
+	$css_responsive_version = file_exists($css_responsive_file) ? filemtime($css_responsive_file) : CERTIFICATIONS_PLUGIN_VERSION;
+	$css_shortcode_version = file_exists($css_shortcode_file) ? filemtime($css_shortcode_file) : CERTIFICATIONS_PLUGIN_VERSION;
+	$js_version = file_exists($js_file) ? filemtime($js_file) : CERTIFICATIONS_PLUGIN_VERSION;
+
 	// Main CSS
 	wp_register_style(
 		'certifications-plugin-style',
 		CERTIFICATIONS_PLUGIN_URL . 'assets/css/certifications.css',
 		array(),
-		CERTIFICATIONS_PLUGIN_VERSION
+		$css_main_version
 	);
 
 	// Responsive CSS
@@ -161,7 +234,7 @@ function certifications_plugin_register_assets() {
 		'certifications-plugin-responsive-style',
 		CERTIFICATIONS_PLUGIN_URL . 'assets/css/responsive-certifications.css',
 		array('certifications-plugin-style'), // This makes it load after the main CSS
-		CERTIFICATIONS_PLUGIN_VERSION
+		$css_responsive_version
 	);
 
 	// Shortcode CSS
@@ -169,7 +242,7 @@ function certifications_plugin_register_assets() {
 		'certifications-shortcode-style',
 		CERTIFICATIONS_PLUGIN_URL . 'assets/css/certifications-shortcode.css',
 		array('certifications-plugin-style'),
-		CERTIFICATIONS_PLUGIN_VERSION
+		$css_shortcode_version
 	);
 
 	// JavaScript
@@ -177,7 +250,7 @@ function certifications_plugin_register_assets() {
 		'certifications-plugin-script',
 		CERTIFICATIONS_PLUGIN_URL . 'assets/js/certifications.js',
 		array( 'jquery' ),
-		CERTIFICATIONS_PLUGIN_VERSION,
+		$js_version,
 		true
 	);
 
@@ -196,12 +269,24 @@ function certifications_plugin_register_admin_assets($hook) {
 	if ('post.php' === $hook || 'post-new.php' === $hook) {
 		global $post;
 		if ($post && 'certification' === $post->post_type) {
+			// File paths for version calculation
+			$css_main_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/css/certifications.css';
+			$css_responsive_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/css/responsive-certifications.css';
+			$css_shortcode_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/css/certifications-shortcode.css';
+			$js_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/js/certifications.js';
+
+			// Calculate versions based on file modification time
+			$css_main_version = file_exists($css_main_file) ? filemtime($css_main_file) : CERTIFICATIONS_PLUGIN_VERSION;
+			$css_responsive_version = file_exists($css_responsive_file) ? filemtime($css_responsive_file) : CERTIFICATIONS_PLUGIN_VERSION;
+			$css_shortcode_version = file_exists($css_shortcode_file) ? filemtime($css_shortcode_file) : CERTIFICATIONS_PLUGIN_VERSION;
+			$js_version = file_exists($js_file) ? filemtime($js_file) : CERTIFICATIONS_PLUGIN_VERSION;
+
 			// Main CSS
 			wp_enqueue_style(
 				'certifications-plugin-style',
 				CERTIFICATIONS_PLUGIN_URL . 'assets/css/certifications.css',
 				array(),
-				CERTIFICATIONS_PLUGIN_VERSION
+				$css_main_version
 			);
 
 			// Shortcode CSS
@@ -209,7 +294,7 @@ function certifications_plugin_register_admin_assets($hook) {
 				'certifications-shortcode-style',
 				CERTIFICATIONS_PLUGIN_URL . 'assets/css/certifications-shortcode.css',
 				array('certifications-plugin-style'),
-				CERTIFICATIONS_PLUGIN_VERSION
+				$css_shortcode_version
 			);
 
 			// Responsive CSS
@@ -217,7 +302,7 @@ function certifications_plugin_register_admin_assets($hook) {
 				'certifications-responsive-style',
 				CERTIFICATIONS_PLUGIN_URL . 'assets/css/responsive-certifications.css',
 				array('certifications-plugin-style'),
-				CERTIFICATIONS_PLUGIN_VERSION
+				$css_responsive_version
 			);
 
 			// Main JS
@@ -225,7 +310,7 @@ function certifications_plugin_register_admin_assets($hook) {
 				'certifications-plugin-script',
 				CERTIFICATIONS_PLUGIN_URL . 'assets/js/certifications.js',
 				array('jquery'),
-				CERTIFICATIONS_PLUGIN_VERSION,
+				$js_version,
 				true
 			);
 		}
@@ -291,7 +376,6 @@ function certif_force_acf_sync() {
 				error_log('Field group is not an array');
 				continue;
 			}
-
 			// Verify field_group has a title
 			if (!isset($field_group['title'])) {
 				error_log('Field group has no title');
@@ -316,6 +400,9 @@ function certif_plugin_activate() {
 	$cpt->register_post_type();
 	flush_rewrite_rules();
 
+	// Clear any existing cache
+	certifications_plugin_clear_cache();
+
 	// Debug log on activation
 	if ( WP_DEBUG ) {
 		error_log( 'Certifications Plugin activated' );
@@ -327,6 +414,9 @@ register_deactivation_hook( __FILE__, 'certif_plugin_deactivate' );
 function certif_plugin_deactivate() {
 	// Flush rewrite rules on deactivation
 	flush_rewrite_rules();
+
+	// Clear any existing cache
+	certifications_plugin_clear_cache();
 
 	// Debug log on deactivation
 	if ( WP_DEBUG ) {
