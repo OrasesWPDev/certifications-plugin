@@ -15,6 +15,7 @@
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 2rem;
+    width: 100%;
 }
 
 /* ----------------------------------------
@@ -75,6 +76,21 @@
 .certifications-item {
     padding: 15px;
     margin-bottom: 30px;
+    box-sizing: border-box;
+}
+
+/* Column system */
+.certifications-col {
+    position: relative;
+    min-height: 1px;
+}
+
+.certifications-small-12 {
+    width: 100%;
+}
+
+.certifications-large-3 {
+    width: 25%;
 }
 
 .certifications-card {
@@ -85,19 +101,6 @@
     transition: all 0.3s ease;
     box-shadow: none; /* Remove shadow */
     border: none; /* Remove border */
-}
-
-.certifications-card:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transform: translateY(-5px);
-}
-
-.certifications-card-body {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    background-color: #F4F4F4;
 }
 
 /* ----------------------------------------
