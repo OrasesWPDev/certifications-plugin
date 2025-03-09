@@ -7,15 +7,15 @@
    ---------------------------------------- */
 @media (max-width: 767px) {
     /* Sticky Menu */
-    .sticky-menu li {
+    .certifications-sticky-menu li {
         margin: 0 8px;
     }
 
-    .sticky-menu a {
+    .certifications-sticky-menu a {
         font-size: 12px;
     }
 
-    .back-to-top {
+    .certifications-back-to-top {
         position: relative;
         top: 0;
         right: 0;
@@ -25,49 +25,49 @@
     }
 
     /* Certification Cards */
-    .certification-title {
+    .certifications-title {
         font-size: 14px;
     }
 
-    .certification-description {
+    .certifications-description {
         font-size: 12px;
     }
 
-    .certification-button .button {
+    .certifications-button .certifications-btn {
         font-size: 12px;
         padding: 3px 10px;
     }
 
     /* Image positioning in intro section */
-    #intro .col-md-9 {
+    #certifications-intro .certifications-col-md-9 {
         order: 1;
     }
 
-    #intro .col-md-3 {
+    #certifications-intro .certifications-col-md-3 {
         order: 2;
         padding-top: 30px;
     }
 
     /* List Layout - Mobile */
-    .certifications-list .certification-card-body {
+    .certifications-list .certifications-card-body {
         flex-direction: column;
     }
 
-    .certifications-list .certification-image {
+    .certifications-list .certifications-image {
         flex: 0 0 100%;
         margin-right: 0;
         margin-bottom: 15px;
         text-align: center;
     }
 
-    .certifications-list .certification-content {
+    .certifications-list .certifications-content {
         flex: 1;
         padding: 10px 0;
     }
 
-    .certifications-list .certification-title,
-    .certifications-list .certification-description,
-    .certifications-list .certification-button {
+    .certifications-list .certifications-title,
+    .certifications-list .certifications-description,
+    .certifications-list .certifications-button {
         text-align: center;
     }
 
@@ -76,14 +76,14 @@
         margin: 20px 0;
     }
 
-    .certifications-pagination .page-numbers {
+    .certifications-pagination .certifications-page-numbers {
         padding: 6px 10px;
         font-size: 12px;
         margin: 0 2px;
     }
 
-    .certifications-pagination .page-numbers.prev,
-    .certifications-pagination .page-numbers.next {
+    .certifications-pagination .certifications-page-numbers.certifications-prev,
+    .certifications-pagination .certifications-page-numbers.certifications-next {
         padding: 6px 8px;
     }
 }
@@ -92,42 +92,42 @@
    2. MEDIUM SCREENS (TABLETS)
    ---------------------------------------- */
 @media (min-width: 768px) and (max-width: 991px) {
-    .certification-item {
+    .certifications-item {
         padding: 10px;
     }
 
-    #intro .col-md-3 {
+    #certifications-intro .certifications-col-md-3 {
         padding-top: 30px;
     }
 
-    .certification-card-body {
+    .certifications-card-body {
         padding: 15px;
     }
 
-    .certification-title {
+    .certifications-title {
         font-size: 15px;
     }
 
-    .certification-description {
+    .certifications-description {
         font-size: 13px;
     }
 
-    .sticky-menu li {
+    .certifications-sticky-menu li {
         margin: 0 10px;
     }
 
     /* List Layout - Tablet */
-    .certifications-list .certification-image {
+    .certifications-list .certifications-image {
         flex: 0 0 140px;
         margin-right: 15px;
     }
 
-    .certifications-list .certification-content {
+    .certifications-list .certifications-content {
         padding: 10px 0;
     }
 
     /* Pagination - Tablet */
-    .certifications-pagination .page-numbers {
+    .certifications-pagination .certifications-page-numbers {
         padding: 7px 12px;
         font-size: 13px;
     }
@@ -137,27 +137,27 @@
    3. LARGE SCREENS ADJUSTMENTS
    ---------------------------------------- */
 @media (min-width: 992px) {
-    .certification-card:hover {
+    .certifications-card:hover {
         transform: translateY(-5px);
     }
 
     /* Ensure image is properly positioned on desktop */
-    #intro .col-md-9 {
+    #certifications-intro .certifications-col-md-9 {
         order: 1;
     }
 
-    #intro .col-md-3 {
+    #certifications-intro .certifications-col-md-3 {
         order: 2;
         display: flex;
         align-items: center;
     }
 
     /* List Layout - Desktop */
-    .certifications-list .certification-card {
+    .certifications-list .certifications-card {
         transition: all 0.3s ease;
     }
 
-    .certifications-list .certification-card:hover {
+    .certifications-list .certifications-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
@@ -166,19 +166,19 @@
 /* ----------------------------------------
    4. INTRO SECTION SPECIFIC IMAGE CONTAINER
    ---------------------------------------- */
-#intro .col-md-3 {
+#certifications-intro .certifications-col-md-3 {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 @media (min-width: 768px) {
-    .certification-single .col-md-9 {
+    .certifications-single .certifications-col-md-9 {
         flex: 0 0 75%;
         max-width: 75%;
     }
 
-    .certification-single .col-md-3 {
+    .certifications-single .certifications-col-md-3 {
         flex: 0 0 25%;
         max-width: 25%;
     }
@@ -189,63 +189,63 @@
    ---------------------------------------- */
 @media (max-width: 767px) {
     /* Shortcode Card Styles - Mobile */
-    .certification-title {
+    .certifications-title {
         font-size: 13px;
     }
 
-    .certification-description {
+    .certifications-description {
         font-size: 11px;
     }
 
-    .certification-button .button {
+    .certifications-button .certifications-btn {
         font-size: 12px;
         padding: 4px 12px;
     }
 
-    .certification-thumbnail {
+    .certifications-thumbnail {
         max-width: 120px;
     }
 
     /* Single Certification Shortcode - Mobile */
-    .certification-single.certification-shortcode {
+    .certifications-single.certifications-shortcode {
         padding: 15px;
     }
 
-    .certification-single.certification-shortcode .certification-title {
+    .certifications-single.certifications-shortcode .certifications-title {
         font-size: 20px;
     }
 
-    .certification-single.certification-shortcode .certification-action-buttons {
+    .certifications-single.certifications-shortcode .certifications-action-buttons {
         flex-direction: column;
     }
 
-    .certification-single.certification-shortcode .certification-action-buttons .button {
+    .certifications-single.certifications-shortcode .certifications-action-buttons .certifications-btn {
         margin-right: 0;
         margin-bottom: 10px;
         text-align: center;
     }
 
-    .certification-single.certification-shortcode h3.text-to-uppercase {
+    .certifications-single.certifications-shortcode h3.certifications-text-to-uppercase {
         font-size: 16px;
     }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
     /* Shortcode Card Styles - Tablet */
-    .certification-card-body {
+    .certifications-card-body {
         padding: 15px;
     }
 
-    .certification-title {
+    .certifications-title {
         font-size: 13px;
     }
 
     /* Single Certification Shortcode - Tablet */
-    .certification-single.certification-shortcode {
+    .certifications-single.certifications-shortcode {
         padding: 20px;
     }
 
-    .certification-single.certification-shortcode .certification-title {
+    .certifications-single.certifications-shortcode .certifications-title {
         font-size: 22px;
     }
 }
@@ -255,20 +255,20 @@
    ---------------------------------------- */
 @media (max-width: 480px) {
     /* Extremely small screens */
-    .certifications-pagination .page-numbers {
+    .certifications-pagination .certifications-page-numbers {
         padding: 5px 8px;
         font-size: 11px;
         margin: 0 1px;
     }
 
     /* Hide some pagination numbers on very small screens */
-    .certifications-pagination .page-numbers:not(.prev):not(.next):not(.current) {
+    .certifications-pagination .certifications-page-numbers:not(.certifications-prev):not(.certifications-next):not(.certifications-current) {
         display: none;
     }
 
-    .certifications-pagination .page-numbers.current,
-    .certifications-pagination .page-numbers.prev,
-    .certifications-pagination .page-numbers.next {
+    .certifications-pagination .certifications-page-numbers.certifications-current,
+    .certifications-pagination .certifications-page-numbers.certifications-prev,
+    .certifications-pagination .certifications-page-numbers.certifications-next {
         display: inline-block;
     }
 }

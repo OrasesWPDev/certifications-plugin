@@ -27,57 +27,57 @@
     margin-bottom: 2rem;
 }
 
-.certifications-list .certification-list-item {
+.certifications-list .certifications-list-item {
     width: 100%;
     margin-bottom: 25px;
     padding: 0 15px;
 }
 
-.certifications-list .certification-card {
+.certifications-list .certifications-card {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.certifications-list .certification-card-body {
+.certifications-list .certifications-card-body {
     display: flex;
     flex-direction: row;
     width: 100%;
 }
 
-.certifications-list .certification-image {
+.certifications-list .certifications-image {
     flex: 0 0 180px;
     margin-right: 20px;
     margin-bottom: 0;
 }
 
-.certifications-list .certification-content {
+.certifications-list .certifications-content {
     flex: 1;
     padding: 15px 0;
 }
 
-.certifications-list .certification-title {
+.certifications-list .certifications-title {
     text-align: left;
     margin-top: 0;
 }
 
-.certifications-list .certification-description {
+.certifications-list .certifications-description {
     text-align: left;
 }
 
-.certifications-list .certification-button {
+.certifications-list .certifications-button {
     text-align: left;
 }
 
 /* ----------------------------------------
    3. CERTIFICATION ITEM - Individual Cards
    ---------------------------------------- */
-.certification-item {
+.certifications-item {
     padding: 15px;
     margin-bottom: 30px;
 }
 
-.certification-card {
+.certifications-card {
     height: 100%;
     background-color: #F4F4F4;
     border-radius: 5px;
@@ -87,12 +87,12 @@
     border: none; /* Remove border */
 }
 
-.certification-card:hover {
+.certifications-card:hover {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     transform: translateY(-5px);
 }
 
-.certification-card-body {
+.certifications-card-body {
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -103,12 +103,12 @@
 /* ----------------------------------------
    4. CERTIFICATION IMAGE
    ---------------------------------------- */
-.certification-image {
+.certifications-image {
     text-align: center;
     margin-bottom: 15px;
 }
 
-.certification-thumbnail {
+.certifications-thumbnail {
     max-width: 140px;
     height: auto;
     border-radius: 5px;
@@ -117,13 +117,13 @@
 /* ----------------------------------------
    5. CERTIFICATION CONTENT - Text Elements
    ---------------------------------------- */
-.certification-content {
+.certifications-content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
 
-.certification-title {
+.certifications-title {
     font-size: 14px;
     font-weight: bold;
     margin-bottom: 10px;
@@ -131,7 +131,7 @@
     color: #333;
 }
 
-.certification-description {
+.certifications-description {
     font-size: 12px;
     line-height: 1.5;
     color: #7C7C7C;
@@ -148,12 +148,12 @@
 /* ----------------------------------------
    6. CERTIFICATION BUTTON - Call to Action
    ---------------------------------------- */
-.certification-button {
+.certifications-button {
     text-align: center;
     margin-top: auto;
 }
 
-.certification-button .button {
+.certifications-button .certifications-btn {
     font-size: 14px;
     font-weight: 600;
     padding: 8px 15px;
@@ -165,7 +165,7 @@
     transition: all 0.3s ease;
 }
 
-.certification-button .button:hover {
+.certifications-button .certifications-btn:hover {
     background-color: rgba(255, 255, 255, 0.64); /* Semi-transparent white background on hover */
     color: #f98e2b; /* Orange text on hover */
     border: 1px solid #f98e2b; /* 1px orange border */
@@ -174,7 +174,7 @@
 /* ----------------------------------------
    7. NO RESULTS MESSAGE
    ---------------------------------------- */
-.no-certifications {
+.certifications-no-results {
     padding: 20px;
     text-align: center;
     width: 100%;
@@ -192,7 +192,7 @@
     clear: both;
 }
 
-.certifications-pagination .page-numbers {
+.certifications-pagination .certifications-page-numbers {
     display: inline-block;
     padding: 8px 14px;
     margin: 0 3px;
@@ -206,26 +206,26 @@
     transition: all 0.3s ease;
 }
 
-.certifications-pagination .page-numbers.current {
+.certifications-pagination .certifications-page-numbers.certifications-current {
     background-color: #f98e2b;
     color: #fff;
     border-color: #f98e2b;
 }
 
-.certifications-pagination .page-numbers:hover:not(.current) {
+.certifications-pagination .certifications-page-numbers:hover:not(.certifications-current) {
     background-color: #f5f5f5;
     border-color: #ccc;
 }
 
-.certifications-pagination .prev,
-.certifications-pagination .next {
+.certifications-pagination .certifications-prev,
+.certifications-pagination .certifications-next {
     font-weight: bold;
 }
 
 /* ----------------------------------------
    9. SINGLE CERTIFICATION SHORTCODE STYLES
    ---------------------------------------- */
-.certification-single.certification-shortcode {
+.certifications-single.certifications-shortcode {
     margin: 30px 0;
     background-color: #fff;
     padding: 25px;
@@ -233,73 +233,73 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.certification-single.certification-shortcode .certification-title {
+.certifications-single.certifications-shortcode .certifications-title {
     font-size: 24px;
     text-align: left;
     margin-bottom: 20px;
     color: #2c6c3e; /* Match green color from the main styles */
 }
 
-.certification-single.certification-shortcode .certification-featured-image {
+.certifications-single.certifications-shortcode .certifications-featured-image {
     text-align: center;
     margin: 20px 0;
 }
 
-.certification-single.certification-shortcode .certification-thumbnail {
+.certifications-single.certifications-shortcode .certifications-thumbnail {
     max-width: 250px;
     border-radius: 5px;
 }
 
-.certification-single.certification-shortcode .certification-action-buttons {
+.certifications-single.certifications-shortcode .certifications-action-buttons {
     margin: 20px 0;
     display: flex;
     flex-wrap: wrap;
 }
 
-.certification-single.certification-shortcode .certification-action-buttons .button {
+.certifications-single.certifications-shortcode .certifications-action-buttons .certifications-btn {
     margin-right: 10px;
     margin-bottom: 10px;
 }
 
-.certification-single.certification-shortcode .certification-section {
+.certifications-single.certifications-shortcode .certifications-section {
     margin: 30px 0;
     padding-top: 20px;
     border-top: 1px solid #eee;
 }
 
-.certification-single.certification-shortcode .certification-section:first-child {
+.certifications-single.certifications-shortcode .certifications-section:first-child {
     border-top: none;
 }
 
-.certification-single.certification-shortcode h3.text-to-uppercase {
+.certifications-single.certifications-shortcode h3.certifications-text-to-uppercase {
     font-size: 18px;
     font-weight: 700;
     color: #2c6c3e;
     margin-bottom: 15px;
 }
 
-.certification-single.certification-shortcode .certification-field-content {
+.certifications-single.certifications-shortcode .certifications-field-content {
     line-height: 1.6;
 }
 
-.certification-single.certification-shortcode .certification-field-content p {
+.certifications-single.certifications-shortcode .certifications-field-content p {
     margin-bottom: 15px;
 }
 
-.certification-single.certification-shortcode .certification-field-content ul,
-.certification-single.certification-shortcode .certification-field-content ol {
+.certifications-single.certifications-shortcode .certifications-field-content ul,
+.certifications-single.certifications-shortcode .certifications-field-content ol {
     margin-left: 20px;
     margin-bottom: 15px;
 }
 
-.certification-single.certification-shortcode .certification-field-content li {
+.certifications-single.certifications-shortcode .certifications-field-content li {
     margin-bottom: 5px;
 }
 
 /* ----------------------------------------
    10. ERROR MESSAGES
    ---------------------------------------- */
-.certification-error {
+.certifications-error {
     padding: 15px;
     background-color: #ffebee;
     color: #c62828;

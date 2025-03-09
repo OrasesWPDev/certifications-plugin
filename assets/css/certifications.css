@@ -12,12 +12,12 @@
     margin-bottom: 2rem;
 }
 
-.certification-item {
+.certifications-item {
     padding: 15px;
     margin-bottom: 30px;
 }
 
-.certification-card {
+.certifications-card {
     height: 100%;
     background-color: #F4F4F4;
     border-radius: 5px;
@@ -26,43 +26,43 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.certification-card:hover {
+.certifications-card:hover {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     transform: translateY(-5px);
 }
 
-.certification-card-body {
+.certifications-card-body {
     padding: 20px;
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
-.certification-image {
+.certifications-image {
     text-align: center;
     margin-bottom: 15px;
 }
 
-.certification-thumbnail {
+.certifications-thumbnail {
     max-width: 140px;
     height: auto;
     border-radius: 5px;
 }
 
-.certification-content {
+.certifications-content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
 
-.certification-title {
+.certifications-title {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 10px;
     text-align: center;
 }
 
-.certification-description {
+.certifications-description {
     font-size: 14px;
     color: #7C7C7C;
     margin-bottom: 15px;
@@ -70,12 +70,12 @@
     flex-grow: 1;
 }
 
-.certification-button {
+.certifications-button {
     text-align: center;
     margin-top: auto;
 }
 
-.certification-button .button {
+.certifications-button .certifications-btn {
     font-size: 14px;
     padding: 5px 15px;
 }
@@ -90,116 +90,120 @@
     margin-bottom: 2rem;
 }
 
-.certifications-list .certification-list-item {
+.certifications-list .certifications-list-item {
     width: 100%;
     margin-bottom: 25px;
     padding: 0 15px;
 }
 
-.certifications-list .certification-card {
+.certifications-list .certifications-card {
     display: flex;
     flex-direction: row;
 }
 
-.certifications-list .certification-card-body {
+.certifications-list .certifications-card-body {
     display: flex;
     flex-direction: row;
     width: 100%;
     align-items: center;
 }
 
-.certifications-list .certification-image {
+.certifications-list .certifications-image {
     flex: 0 0 180px;
     margin-right: 20px;
     margin-bottom: 0;
     text-align: left;
 }
 
-.certifications-list .certification-content {
+.certifications-list .certifications-content {
     flex: 1;
     padding: 15px 0;
 }
 
-.certifications-list .certification-title {
+.certifications-list .certifications-title {
     text-align: left;
     margin-top: 0;
 }
 
-.certifications-list .certification-description {
+.certifications-list .certifications-description {
     text-align: left;
 }
 
-.certifications-list .certification-button {
+.certifications-list .certifications-button {
     text-align: left;
 }
 
 /* ----------------------------------------
    2. SECTION STRUCTURE HANDLING
    ---------------------------------------- */
-.section-wrapper {
+.certifications-section-wrapper {
     width: 100%;
     position: relative;
     margin-left: 0;
     margin-right: 0;
 }
 
-.section-wrapper.alternate-background-lightgrey {
+.certifications-section-wrapper.certifications-alternate-background-lightgrey {
     background-color: #f8f8f8; /* Lighter grey to match live site */
 }
 
-.section-wrapper.alternate-background-white {
+.certifications-section-wrapper.certifications-alternate-background-white {
     background-color: #FFFFFF;
 }
 
-.section-content {
+.certifications-section-content {
     position: relative;
     padding: 40px 0; /* Increased from 30px to 40px */
 }
 
 /* Add more vertical spacing between sections */
-#intro, #prepare-apply, #get-certified, #after-the-exam, #documents {
+#certifications-intro,
+#certifications-prepare-apply,
+#certifications-get-certified,
+#certifications-after-the-exam,
+#certifications-documents {
     padding-top: 30px;
     padding-bottom: 30px;
 }
 
 /* Add padding to containers within sections */
-.section-wrapper .container {
+.certifications-section-wrapper .certifications-container {
     padding-top: 20px;
     padding-bottom: 40px;
 }
 
 /* Add margin to sections */
-#overview + .section-wrapper,
-#intro + .section-wrapper,
-#prepare-apply + .section-wrapper,
-#get-certified + .section-wrapper,
-#after-the-exam + .section-wrapper {
+#certifications-overview + .certifications-section-wrapper,
+#certifications-intro + .certifications-section-wrapper,
+#certifications-prepare-apply + .certifications-section-wrapper,
+#certifications-get-certified + .certifications-section-wrapper,
+#certifications-after-the-exam + .certifications-section-wrapper {
     margin-top: 30px;
 }
 
 /* ----------------------------------------
    3. SINGLE CERTIFICATION PAGE
    ---------------------------------------- */
-.certification-single .container-of-boxes {
+.certifications-single .certifications-container-of-boxes {
     margin-bottom: 40px;
 }
 
-.certification-single {
+.certifications-single {
     color: #444;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
-.certification-single p,
-.certification-single li,
-.certification-single div {
+.certifications-single p,
+.certifications-single li,
+.certifications-single div {
     color: #444; /* Ensure consistent text color throughout */
 }
 
-.certification-single h2 {
+.certifications-single h2 {
     margin-bottom: 20px;
 }
 
-.certification-single .container {
+.certifications-single .certifications-container {
     max-width: 1140px;
     padding-left: 15px;
     padding-right: 15px;
@@ -207,21 +211,26 @@
 }
 
 /* Section spacing improvements */
-#overview, #intro, #prepare-apply, #get-certified, #after-the-exam, #documents {
+#certifications-overview,
+#certifications-intro,
+#certifications-prepare-apply,
+#certifications-get-certified,
+#certifications-after-the-exam,
+#certifications-documents {
     padding: 20px 0;
 }
 
 /* Row and column alignment */
-.certification-single .row {
+.certifications-single .certifications-row {
     display: flex;
     flex-wrap: wrap;
     margin-right: -15px;
     margin-left: -15px;
 }
 
-.certification-single .col-12,
-.certification-single .col-md-9,
-.certification-single .col-md-3 {
+.certifications-single .certifications-col-12,
+.certifications-single .certifications-col-md-9,
+.certifications-single .certifications-col-md-3 {
     position: relative;
     width: 100%;
     padding-right: 15px;
@@ -231,17 +240,17 @@
 /* ----------------------------------------
    4. OVERVIEW SECTION
    ---------------------------------------- */
-#overview {
+#certifications-overview {
     padding-top: 30px;
     padding-bottom: 30px;
 }
 
-#overview .container {
+#certifications-overview .certifications-container {
     padding-top: 15px;
     padding-bottom: 15px;
 }
 
-#overview p {
+#certifications-overview p {
     font-size: 20px;
     line-height: 1.5;
     color: #444;
@@ -249,7 +258,7 @@
 }
 
 /* Remove spacing that was needed for the title */
-#overview + .section-wrapper {
+#certifications-overview + .certifications-section-wrapper {
     margin-top: 20px;
 }
 
@@ -257,7 +266,7 @@
 /* ----------------------------------------
    5. STICKY NAVIGATION MENU
    ---------------------------------------- */
-.sticky-top {
+.certifications-sticky-top {
     position: fixed;
     top: 200px; /* Fixed position below Flatsome header */
     left: 0;
@@ -272,16 +281,16 @@
 }
 
 /* Add some space to the container to avoid content jumps */
-.container-of-boxes {
+.certifications-container-of-boxes {
     padding-top: 60px; /* Adjust based on your sticky nav height */
 }
 
-.credential-sections-links {
+.certifications-credential-sections-links {
     padding: 15px 0 10px; /* Increased top padding from 10px to 15px */
     width: 100%;
 }
 
-.sticky-menu {
+.certifications-sticky-menu {
     display: flex;
     list-style: none;
     margin: 0;
@@ -290,11 +299,11 @@
     justify-content: center;
 }
 
-.sticky-menu li {
+.certifications-sticky-menu li {
     margin: 0 15px;
 }
 
-.sticky-menu a {
+.certifications-sticky-menu a {
     color: #333;
     font-weight: 500;
     text-transform: uppercase;
@@ -303,18 +312,18 @@
     transition: color 0.3s ease;
 }
 
-.sticky-menu a:hover,
-.sticky-menu a.active {
+.certifications-sticky-menu a:hover,
+.certifications-sticky-menu a.certifications-active {
     color: #f98e2b; /* Orange color from live site */
     font-weight: 600;
 }
 
 /* Highlight effect for active menu item */
-.sticky-menu a.active {
+.certifications-sticky-menu a.certifications-active {
     position: relative;
 }
 
-.sticky-menu a.active:after {
+.certifications-sticky-menu a.certifications-active:after {
     content: '';
     position: absolute;
     bottom: -5px;
@@ -327,13 +336,13 @@
 /* ----------------------------------------
    6. BACK TO TOP LINKS
    ---------------------------------------- */
-.back-to-top {
+.certifications-back-to-top {
     position: absolute;
     top: 30px;
     right: 0;
 }
 
-.back-to-top a {
+.certifications-back-to-top a {
     font-size: 14px;
     color: #666;
     text-decoration: none;
@@ -341,12 +350,12 @@
     align-items: center;
 }
 
-.back-to-top a:hover {
+.certifications-back-to-top a:hover {
     color: #f98e2b; /* Changed from #007bff to match site orange */
     text-decoration: none; /* Removed underline */
 }
 
-.back-to-top a:before {
+.certifications-back-to-top a:before {
     content: "↑";
     margin-right: 5px;
     font-size: 12px;
@@ -355,7 +364,7 @@
 /* ----------------------------------------
    7. SECTION TITLES
    ---------------------------------------- */
-.text-to-uppercase {
+.certifications-text-to-uppercase {
     text-transform: uppercase;
     font-weight: 700; /* Increased from 600 to 700 for bolder headings */
     margin-bottom: 25px; /* Increased from 20px */
@@ -367,17 +376,17 @@
 }
 
 /* Fix specific section title alignment */
-#intro .text-to-uppercase,
-#prepare-apply .text-to-uppercase,
-#get-certified .text-to-uppercase,
-#after-the-exam .text-to-uppercase,
-#documents .text-to-uppercase {
+#certifications-intro .certifications-text-to-uppercase,
+#certifications-prepare-apply .certifications-text-to-uppercase,
+#certifications-get-certified .certifications-text-to-uppercase,
+#certifications-after-the-exam .certifications-text-to-uppercase,
+#certifications-documents .certifications-text-to-uppercase {
     padding-left: 0;
     margin-left: 0;
 }
 
 /* Add more distinct styling to section headings */
-.certification-single h3 {
+.certifications-single h3 {
     margin-top: 30px;
     margin-bottom: 20px;
     font-weight: 700;
@@ -385,17 +394,17 @@
 }
 
 /* Add more space after section titles */
-.text-to-uppercase + p,
-.text-to-uppercase + div,
-.text-to-uppercase + ul,
-.text-to-uppercase + ol {
+.certifications-text-to-uppercase + p,
+.certifications-text-to-uppercase + div,
+.certifications-text-to-uppercase + ul,
+.certifications-text-to-uppercase + ol {
     margin-top: 15px;
 }
 
 /* ----------------------------------------
    8. CERTIFICATION FEATURED IMAGE
    ---------------------------------------- */
-.certification-featured-image {
+.certifications-featured-image {
     text-align: center;
     margin-top: 0;
     height: 100%;
@@ -405,7 +414,7 @@
     background-color: transparent !important;
 }
 
-.certification-featured-image img {
+.certifications-featured-image img {
     max-width: 100%;
     height: auto;
     border-radius: 5px;
@@ -416,12 +425,12 @@
 /* ----------------------------------------
    9. ACTION BUTTONS
    ---------------------------------------- */
-.certification-action-buttons {
+.certifications-action-buttons {
     margin: 20px 0;
 }
 
-.certification-action-buttons .button,
-.certification-action-buttons a.button {
+.certifications-action-buttons .certifications-btn,
+.certifications-action-buttons a.certifications-btn {
     margin-right: 10px;
     font-weight: 600;
     text-transform: uppercase;
@@ -434,8 +443,8 @@
     text-decoration: none !important;
 }
 
-.certification-action-buttons .button:hover,
-.certification-action-buttons a.button:hover {
+.certifications-action-buttons .certifications-btn:hover,
+.certifications-action-buttons a.certifications-btn:hover {
     background-color: transparent;
     color: #f98e2b;
     text-decoration: none !important;
@@ -444,13 +453,13 @@
 /* ----------------------------------------
    10. CONTENT FORMATTING
    ---------------------------------------- */
-.certification-field-content {
+.certifications-field-content {
     line-height: 1.6;
     color: #444;
     font-size: 16px;
 }
 
-.certification-field-content h4 {
+.certifications-field-content h4 {
     margin-top: 1.8rem;
     margin-bottom: 1rem;
     font-weight: 600;
@@ -458,74 +467,74 @@
     font-size: 18px;
 }
 
-.certification-field-content p {
+.certifications-field-content p {
     margin-bottom: 1.2em;
 }
 
-.certification-field-content strong,
-.certification-field-content b {
+.certifications-field-content strong,
+.certifications-field-content b {
     font-weight: 600;
     color: #333;
 }
 
-.certification-field-content ul,
-.certification-field-content ol {
+.certifications-field-content ul,
+.certifications-field-content ol {
     margin-left: 2rem;
     margin-bottom: 1.8rem;
     padding-left: 0;
 }
 
-.certification-field-content ul {
+.certifications-field-content ul {
     list-style-type: disc;
 }
 
-.certification-field-content ol {
+.certifications-field-content ol {
     list-style-type: decimal;
 }
 
-.certification-field-content li {
+.certifications-field-content li {
     margin-bottom: 0.8em;
     padding-left: 0.3em;
     line-height: 1.6;
 }
 
 /* Add space between list items */
-.certification-field-content li + li {
+.certifications-field-content li + li {
     margin-top: 8px;
 }
 
 /* Improve nested lists */
-.certification-field-content ul ul,
-.certification-field-content ol ol,
-.certification-field-content ul ol,
-.certification-field-content ol ul {
+.certifications-field-content ul ul,
+.certifications-field-content ol ol,
+.certifications-field-content ul ol,
+.certifications-field-content ol ul {
     margin-top: 8px;
     margin-bottom: 8px;
 }
 
-.certification-field-content table {
+.certifications-field-content table {
     width: auto;
     margin-bottom: 1rem;
     border-collapse: collapse;
 }
 
-.certification-field-content table th,
-.certification-field-content table td {
+.certifications-field-content table th,
+.certifications-field-content table td {
     padding: 8px 12px;
     border: 1px solid #e0e0e0;
 }
 
-.certification-field-content table th {
+.certifications-field-content table th {
     background-color: #f5f5f5;
     font-weight: 600;
 }
 
-.certification-field-content a {
+.certifications-field-content a {
     color: #f98e2b;
     text-decoration: underline;
 }
 
-.certification-field-content a:hover {
+.certifications-field-content a:hover {
     text-decoration: none;
 }
 
@@ -533,7 +542,7 @@
    11. HEADER STYLING
    ---------------------------------------- */
 /* Header background styling */
-.certification-single .section-wrapper.credentials-header {
+.certifications-single .certifications-section-wrapper.certifications-credentials-header {
     background-color: rgb(0, 44, 92);
     padding-left: 0;
     padding-right: 0;
@@ -544,7 +553,7 @@
 }
 
 /* Ensure the header section spans full width */
-.certification-single .credentials-header section.section {
+.certifications-single .certifications-credentials-header section.certifications-section {
     background-color: rgb(0, 44, 92) !important;
     margin-left: 0;
     margin-right: 0;
@@ -553,15 +562,15 @@
 }
 
 /* Breadcrumb styling */
-.certification-single .credentials-header span,
-.certification-single .credentials-header span a,
-.certification-single .credentials-header span.breadcrumb_last,
-.certification-single .credentials-header .yoast-divider {
+.certifications-single .certifications-credentials-header span,
+.certifications-single .certifications-credentials-header span a,
+.certifications-single .certifications-credentials-header span.breadcrumb_last,
+.certifications-single .certifications-credentials-header .certifications-yoast-divider {
     color: white !important;
 }
 
 /* Remove margin from column inside header */
-.certification-single .credentials-header .col-12 {
+.certifications-single .certifications-credentials-header .certifications-col-12 {
     margin: 0;
     padding: 0;
 }
@@ -569,9 +578,9 @@
 /* ----------------------------------------
    12. FOOTER STYLING
    ---------------------------------------- */
-footer a.back-to-top,
-footer a#top-link,
-a[href="#top"].back-to-top {
+footer a.certifications-back-to-top,
+footer a#certifications-top-link,
+a[href="#top"].certifications-back-to-top {
     display: none !important;
 }
 
@@ -587,7 +596,7 @@ a[href="#top"].back-to-top {
     border-top: 1px solid #eee;
 }
 
-.certifications-pagination .page-numbers {
+.certifications-pagination .certifications-page-numbers {
     display: inline-block;
     padding: 8px 14px;
     margin: 0 3px;
@@ -601,26 +610,26 @@ a[href="#top"].back-to-top {
     transition: all 0.3s ease;
 }
 
-.certifications-pagination .page-numbers.current {
+.certifications-pagination .certifications-page-numbers.certifications-current {
     background-color: #f98e2b;
     color: #fff;
     border-color: #f98e2b;
 }
 
-.certifications-pagination .page-numbers:hover:not(.current) {
+.certifications-pagination .certifications-page-numbers:hover:not(.certifications-current) {
     background-color: #f5f5f5;
     border-color: #ccc;
 }
 
-.certifications-pagination .prev,
-.certifications-pagination .next {
+.certifications-pagination .certifications-prev,
+.certifications-pagination .certifications-next {
     font-weight: bold;
 }
 
 /* ----------------------------------------
    14. ERROR MESSAGES
    ---------------------------------------- */
-.certification-error {
+.certifications-error {
     padding: 15px;
     background-color: #ffebee;
     color: #c62828;

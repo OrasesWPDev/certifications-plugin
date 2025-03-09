@@ -6,7 +6,7 @@
 
     $(document).ready(function() {
         // Smooth scroll for sticky menu links only
-        $('.sticky-menu a').on('click', function(e) {
+        $('.certifications-sticky-menu a').on('click', function(e) {
             if (this.hash !== '') {
                 e.preventDefault();
                 const hash = this.hash;
@@ -18,7 +18,7 @@
         });
 
         // Handle "Back to Top" links separately - scroll to page top
-        $('.back-to-top a').on('click', function(e) {
+        $('.certifications-back-to-top a').on('click', function(e) {
             e.preventDefault();
 
             // Scroll to the top of the page
@@ -32,14 +32,14 @@
             const scrollPosition = $(window).scrollTop();
 
             // Check each section
-            $('.row[id]').each(function() {
+            $('.certifications-row[id]').each(function() {
                 const currentSection = $(this);
                 const sectionTop = currentSection.offset().top - 300; // Increased offset
                 const sectionBottom = sectionTop + currentSection.outerHeight();
 
                 if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                    $('.sticky-menu a').removeClass('active');
-                    $('.sticky-menu a[href="#' + currentSection.attr('id') + '"]').addClass('active');
+                    $('.certifications-sticky-menu a').removeClass('certifications-active');
+                    $('.certifications-sticky-menu a[href="#' + currentSection.attr('id') + '"]').addClass('certifications-active');
                 }
             });
         });
