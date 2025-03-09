@@ -130,7 +130,7 @@ class Certifications_Shortcode {
 			// Add container class based on display type
 			$container_class = 'certifications-container';
 			if ($atts['display_type'] === 'grid') {
-				$container_class .= ' certifications-grid row justify-content-start mt-15 mb-5';
+				$container_class .= ' certifications-grid certifications-row justify-content-start certifications-mt-15 certifications-mb-5';
 			} else {
 				$container_class .= ' certifications-list';
 			}
@@ -185,54 +185,54 @@ class Certifications_Shortcode {
 				// Get image if needed
 				if ($atts['show_image']) {
 					if (has_post_thumbnail()) {
-						$image = get_the_post_thumbnail($id, $atts['image_size'], array('class' => 'certification-thumbnail'));
+						$image = get_the_post_thumbnail($id, $atts['image_size'], array('class' => 'certifications-thumbnail'));
 					} elseif (function_exists('get_field')) {
 						// Try to get field image from ACF if featured image is not set
 						$acf_image = get_field('certification_logo', $id);
 						if ($acf_image && is_array($acf_image)) {
 							$image_src = $acf_image['sizes'][$atts['image_size']] ?? $acf_image['url'];
-							$image = '<img src="' . esc_url($image_src) . '" alt="' . esc_attr($title) . '" class="certification-thumbnail" />';
+							$image = '<img src="' . esc_url($image_src) . '" alt="' . esc_attr($title) . '" class="certifications-thumbnail" />';
 						}
 					}
 				}
 
 				// Calculate column classes based on display type and columns
-				$column_class = 'certification-item';
+				$column_class = 'certifications-item';
 				if ($atts['display_type'] === 'grid') {
-					$column_class .= ' col small-12 large-' . (12 / intval($atts['columns']));
+					$column_class .= ' certifications-col certifications-small-12 certifications-large-' . (12 / intval($atts['columns']));
 				} else {
-					$column_class .= ' certification-list-item';
+					$column_class .= ' certifications-list-item';
 				}
 
 				// Output certification item
 				?>
                 <div class="<?php echo esc_attr($column_class); ?>">
-                    <div class="certification-card">
-                        <div class="certification-card-body">
+                    <div class="certifications-card">
+                        <div class="certifications-card-body">
 							<?php if ($image && $atts['show_image']) : ?>
-                                <div class="certification-image">
+                                <div class="certifications-image">
                                     <a href="<?php echo esc_url($permalink); ?>" target="<?php echo esc_attr($atts['link_target']); ?>">
 										<?php echo $image; ?>
                                     </a>
                                 </div>
 							<?php endif; ?>
 
-                            <div class="certification-content">
+                            <div class="certifications-content">
 								<?php if ($atts['show_title']) : ?>
-                                    <h3 class="certification-title">
+                                    <h3 class="certifications-title">
                                         <a href="<?php echo esc_url($permalink); ?>" target="<?php echo esc_attr($atts['link_target']); ?>">
 											<?php echo esc_html($title); ?>
                                         </a>
                                     </h3>
 								<?php endif; ?>
 
-                                <div class="certification-description">
+                                <div class="certifications-description">
 									<?php echo wp_kses_post($description); ?>
                                 </div>
 
 								<?php if ($atts['show_button']) : ?>
-                                    <div class="certification-button">
-                                        <a href="<?php echo esc_url($permalink); ?>" class="button secondary" target="<?php echo esc_attr($atts['link_target']); ?>">
+                                    <div class="certifications-button">
+                                        <a href="<?php echo esc_url($permalink); ?>" class="certifications-btn certifications-secondary" target="<?php echo esc_attr($atts['link_target']); ?>">
 											<?php echo esc_html($atts['button_text']); ?>
                                         </a>
                                     </div>
@@ -258,6 +258,12 @@ class Certifications_Shortcode {
 					'total' => $certifications->max_num_pages,
 					'prev_text' => '&laquo;',
 					'next_text' => '&raquo;',
+					'before_page_number' => '',
+					'after_page_number' => '',
+					'class' => 'certifications-page-numbers',
+					'prev_class' => 'certifications-prev',
+					'next_class' => 'certifications-next',
+					'current_class' => 'certifications-current',
 				));
 				echo '</div>';
 			}
@@ -267,7 +273,7 @@ class Certifications_Shortcode {
 
 		} else {
 			// No certifications found
-			echo '<p class="no-certifications">No certifications found.</p>';
+			echo '<p class="certifications-no-results">No certifications found.</p>';
 		}
 
 		// Get buffer contents
@@ -331,7 +337,7 @@ class Certifications_Shortcode {
 
 		// Check if we have a valid ID
 		if ( $atts['id'] <= 0 ) {
-			echo '<p class="certification-error">' . __( 'Error: No Certification ID specified.', 'certifications-plugin' ) . '</p>';
+			echo '<p class="certifications-error">' . __( 'Error: No Certification ID specified.', 'certifications-plugin' ) . '</p>';
 			return ob_get_clean();
 		}
 
@@ -340,7 +346,7 @@ class Certifications_Shortcode {
 
 		// Check if the certification exists and is of the correct post type
 		if ( !$certification || 'certification' !== $certification->post_type ) {
-			echo '<p class="certification-error">' . __( 'Error: Certification not found.', 'certifications-plugin' ) . '</p>';
+			echo '<p class="certifications-error">' . __( 'Error: Certification not found.', 'certifications-plugin' ) . '</p>';
 			return ob_get_clean();
 		}
 
@@ -348,7 +354,7 @@ class Certifications_Shortcode {
 		setup_postdata( $GLOBALS['post'] = $certification );
 
 		// Container class
-		$container_class = 'certification-single certification-shortcode';
+		$container_class = 'certifications-single certifications-shortcode';
 		if ( !empty( $atts['class'] ) ) {
 			$container_class .= ' ' . esc_attr( $atts['class'] );
 		}
@@ -391,23 +397,23 @@ class Certifications_Shortcode {
 		// Start output
 		?>
         <div class="<?php echo esc_attr( $container_class ); ?>">
-            <h2 class="certification-title"><?php the_title(); ?></h2>
+            <h2 class="certifications-title"><?php the_title(); ?></h2>
 
 			<?php if ( $atts['show_image'] && has_post_thumbnail( $certification->ID ) ) : ?>
-                <div class="certification-featured-image">
+                <div class="certifications-featured-image">
 					<?php echo get_the_post_thumbnail( $certification->ID, 'medium', array(
-						'class' => 'certification-thumbnail',
+						'class' => 'certifications-thumbnail',
 						'loading' => 'lazy'
 					) ); ?>
                 </div>
 			<?php endif; ?>
 
 			<?php if ( $atts['show_buttons'] ) : ?>
-                <div class="certification-action-buttons">
-                    <a href="<?php echo esc_url( $apply_button_url ); ?>" class="button primary">
+                <div class="certifications-action-buttons">
+                    <a href="<?php echo esc_url( $apply_button_url ); ?>" class="certifications-btn certifications-primary">
 						<?php _e( 'APPLY NOW', 'certifications-plugin' ); ?>
                     </a>
-                    <a href="<?php echo esc_url( $renew_button_url ); ?>" class="button primary">
+                    <a href="<?php echo esc_url( $renew_button_url ); ?>" class="certifications-btn certifications-primary">
 						<?php _e( 'RENEW', 'certifications-plugin' ); ?>
                     </a>
                 </div>
@@ -416,9 +422,9 @@ class Certifications_Shortcode {
 			<?php if ( $atts['show_sections'] ) : ?>
                 <!-- Intro Section -->
 				<?php if ( $display_sections['intro'] && $intro ) : ?>
-                    <div class="certification-section certification-intro">
-                        <h3 class="text-to-uppercase"><?php _e( 'INTRO', 'certifications-plugin' ); ?></h3>
-                        <div class="certification-field-content">
+                    <div class="certifications-section certifications-intro">
+                        <h3 class="certifications-text-to-uppercase"><?php _e( 'INTRO', 'certifications-plugin' ); ?></h3>
+                        <div class="certifications-field-content">
 							<?php echo $intro; ?>
                         </div>
                     </div>
@@ -426,9 +432,9 @@ class Certifications_Shortcode {
 
                 <!-- Prepare & Apply Section -->
 				<?php if ( $display_sections['prepare'] && $prepare_apply ) : ?>
-                    <div class="certification-section certification-prepare">
-                        <h3 class="text-to-uppercase"><?php _e( 'PREPARE & APPLY', 'certifications-plugin' ); ?></h3>
-                        <div class="certification-field-content">
+                    <div class="certifications-section certifications-prepare">
+                        <h3 class="certifications-text-to-uppercase"><?php _e( 'PREPARE & APPLY', 'certifications-plugin' ); ?></h3>
+                        <div class="certifications-field-content">
 							<?php echo $prepare_apply; ?>
                         </div>
                     </div>
@@ -436,9 +442,9 @@ class Certifications_Shortcode {
 
                 <!-- Get Certified Section -->
 				<?php if ( $display_sections['certified'] && $get_certified ) : ?>
-                    <div class="certification-section certification-get-certified">
-                        <h3 class="text-to-uppercase"><?php _e( 'GET CERTIFIED', 'certifications-plugin' ); ?></h3>
-                        <div class="certification-field-content">
+                    <div class="certifications-section certifications-get-certified">
+                        <h3 class="certifications-text-to-uppercase"><?php _e( 'GET CERTIFIED', 'certifications-plugin' ); ?></h3>
+                        <div class="certifications-field-content">
 							<?php echo $get_certified; ?>
                         </div>
                     </div>
@@ -446,9 +452,9 @@ class Certifications_Shortcode {
 
                 <!-- After The Exam Section -->
 				<?php if ( $display_sections['exam'] && $after_exam ) : ?>
-                    <div class="certification-section certification-after-exam">
-                        <h3 class="text-to-uppercase"><?php _e( 'AFTER THE EXAM', 'certifications-plugin' ); ?></h3>
-                        <div class="certification-field-content">
+                    <div class="certifications-section certifications-after-exam">
+                        <h3 class="certifications-text-to-uppercase"><?php _e( 'AFTER THE EXAM', 'certifications-plugin' ); ?></h3>
+                        <div class="certifications-field-content">
 							<?php echo $after_exam; ?>
                         </div>
                     </div>
@@ -456,9 +462,9 @@ class Certifications_Shortcode {
 
                 <!-- Documents Section -->
 				<?php if ( $display_sections['documents'] && $documents ) : ?>
-                    <div class="certification-section certification-documents">
-                        <h3 class="text-to-uppercase"><?php _e( 'DOCUMENTS', 'certifications-plugin' ); ?></h3>
-                        <div class="certification-field-content">
+                    <div class="certifications-section certifications-documents">
+                        <h3 class="certifications-text-to-uppercase"><?php _e( 'DOCUMENTS', 'certifications-plugin' ); ?></h3>
+                        <div class="certifications-field-content">
 							<?php echo $documents; ?>
                         </div>
                     </div>
