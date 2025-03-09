@@ -21,283 +21,498 @@ class Certifications_Help {
 	public function __construct() {
 		// Add the help page to the admin menu
 		add_action( 'admin_menu', array( $this, 'add_help_page' ) );
+
+		// Add admin-specific styles
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 	}
 
 	/**
 	 * Add help/documentation page
 	 */
 	public function add_help_page() {
-		$help_page = add_submenu_page(
+		add_submenu_page(
 			'edit.php?post_type=certification',  // Parent menu slug
 			__( 'Certifications Help', 'certifications-plugin' ), // Page title
 			__( 'How to Use', 'certifications-plugin' ),          // Menu title
 			'edit_posts',                                         // Capability
 			'certifications-help',                                // Menu slug
-			array( $this, 'render_help_page' )                    // Callback function
+			array( $this, 'help_page_content' )                   // Callback function
 		);
-
-		// Add action to include CSS only on help page
-		add_action( 'admin_head-' . $help_page, array( $this, 'help_page_css' ) );
 	}
 
 	/**
-	 * Output CSS for help page directly in the head
+	 * Enqueue styles for admin help page
+	 *
+	 * @param string $hook Current admin page
 	 */
-	public function help_page_css() {
-		?>
-		<style type="text/css">
-            /* Certifications Help Documentation Styles */
-            .certifications-admin-help {
-                max-width: 1200px; /* Increased from 950px to provide more room */
-                margin: 25px 0;
-            }
+	public function enqueue_admin_styles($hook) {
+		// Only load on our help page
+		if ('certification_page_certifications-help' !== $hook) {
+			return;
+		}
 
-            .certifications-admin-help {
-                max-width: 950px;
-                margin: 25px 0;
-            }
+		// Add inline styles for help page
+		wp_add_inline_style('wp-admin', $this->get_admin_styles());
+	}
 
-            .certifications-admin-card {
+	/**
+	 * Get admin styles for help page
+	 *
+	 * @return string CSS styles
+	 */
+	private function get_admin_styles() {
+		return '
+            .certifications-help-wrap {
+                max-width: 1300px; /* Increased from 1200px */
+                margin: 20px 20px 0 0;
+            }
+            .certifications-help-header {
                 background: #fff;
-                border: 1px solid #ccd0d4;
-                border-radius: 4px;
-                padding: 20px 25px;
-                margin-top: 20px;
-                box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+                padding: 20px;
+                border-radius: 3px;
+                margin-bottom: 20px;
+                border-left: 4px solid #2c6c3e;
+                box-shadow: 0 1px 1px rgba(0,0,0,.04);
             }
-
-            .certifications-admin-card h2 {
-                font-size: 22px;
-                font-weight: 600;
-                margin-top: 0;
-                padding-top: 0;
-                color: #23282d;
+            .certifications-help-section {
+                background: #fff;
+                padding: 20px;
+                border-radius: 3px;
+                margin-bottom: 20px;
+                box-shadow: 0 1px 1px rgba(0,0,0,.04);
+                overflow-x: auto; /* Added for table overflow */
             }
-
-            .certifications-admin-card h3 {
-                font-size: 18px;
-                font-weight: 600;
-                margin-top: 30px;
-                color: #23282d;
+            .certifications-help-section h2 {
                 border-bottom: 1px solid #eee;
                 padding-bottom: 10px;
+                margin-top: 0;
             }
-
-            .certifications-admin-card h4 {
-                font-size: 16px;
-                font-weight: 600;
-                margin-top: 25px;
-                color: #23282d;
+            .certifications-help-section h3 {
+                margin-top: 1.5em;
+                margin-bottom: 0.5em;
             }
-
-            .certifications-admin-card p {
-                font-size: 14px;
-                line-height: 1.6;
-                margin: 15px 0;
-            }
-
-            .certifications-admin-code-block {
-                background: #f5f5f5;
-                padding: 15px;
-                border-left: 4px solid #2271b1;
-                font-family: monospace;
-                margin: 20px 0;
-                overflow-x: auto;
-            }
-
-            .certifications-admin-code-block code {
-                background: transparent;
-                padding: 0;
-                font-size: 14px;
-                white-space: pre;
-            }
-
-            .certifications-admin-table {
+            .certifications-help-section table {
                 border-collapse: collapse;
-                margin: 20px 0;
                 width: 100%;
+                margin: 1em 0;
+                table-layout: fixed;
             }
-
-            .certifications-admin-table th {
-                background-color: #f1f1f1;
-                font-weight: 600;
+            .certifications-help-section table th,
+            .certifications-help-section table td {
                 text-align: left;
-                padding: 10px;
-                border: 1px solid #ccd0d4;
-            }
-
-            .certifications-admin-table td {
-                padding: 10px;
-                border: 1px solid #ccd0d4;
+                padding: 8px;
+                border: 1px solid #ddd;
                 vertical-align: top;
+                word-wrap: break-word;
+                word-break: break-word; /* Added to break long words */
+                hyphens: auto; /* Added for better text wrapping */
             }
-
-            .certifications-admin-table tr:nth-child(even) {
+            /* Adjust column widths */
+            .certifications-help-section table th:nth-child(1), 
+            .certifications-help-section table td:nth-child(1) {
+                width: 15%; /* Parameter column */
+            }
+            .certifications-help-section table th:nth-child(2), 
+            .certifications-help-section table td:nth-child(2) {
+                width: 25%; /* Description column */
+            }
+            .certifications-help-section table th:nth-child(3), 
+            .certifications-help-section table td:nth-child(3) {
+                width: 10%; /* Default column */
+            }
+            .certifications-help-section table th:nth-child(4), 
+            .certifications-help-section table td:nth-child(4) {
+                width: 20%; /* Options column */
+            }
+            .certifications-help-section table th:nth-child(5), 
+            .certifications-help-section table td:nth-child(5) {
+                width: 30%; /* Examples column */
+            }
+            .certifications-help-section table th {
+                background-color: #f8f8f8;
+                font-weight: 600;
+            }
+            .certifications-help-section table tr:nth-child(even) {
                 background-color: #f9f9f9;
             }
-
-            .certifications-admin-table code {
-                background: rgba(0,0,0,0.05);
-                padding: 3px 5px;
+            .certifications-help-section code {
+                background: #f8f8f8;
+                padding: 2px 6px;
                 border-radius: 3px;
                 font-size: 13px;
+                color: #0073aa;
+                display: inline-block;
+                max-width: 100%; /* Ensure code blocks does not overflow */
+                overflow-wrap: break-word; /* Allow long code to wrap */
+                white-space: normal; /* Allow long code to wrap */
             }
-
-            /* Responsive styles */
-            @media screen and (max-width: 782px) {
-                .certifications-admin-card {
-                    padding: 15px;
-                }
-
-                .certifications-admin-table {
-                    display: block;
-                    overflow-x: auto;
-                }
-
-                .certifications-admin-code-block {
-                    padding: 10px;
-                }
+            .certifications-shortcode-example {
+                background: #f8f8f8;
+                padding: 15px;
+                border-left: 4px solid #0073aa;
+                font-family: monospace;
+                margin: 10px 0;
+                overflow-x: auto; /* Allow scrolling for very long examples */
+                white-space: pre-wrap; /* Better wrapping for code examples */
+                word-break: break-word; /* Break words if necessary */
             }
-		</style>
-		<?php
+        ';
 	}
 
 	/**
-	 * Render the help page content
+	 * Content for help page
 	 */
-	public function render_help_page() {
+	public function help_page_content() {
 		?>
-		<div class="wrap certifications-admin-help">
-			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+        <div class="wrap certifications-help-wrap">
+            <div class="certifications-help-header">
+                <h1><?php esc_html_e('Certifications - Documentation', 'certifications-plugin'); ?></h1>
+                <p><?php esc_html_e('This page provides documentation on how to use Certifications shortcodes and features.', 'certifications-plugin'); ?></p>
+            </div>
 
-			<div class="certifications-admin-card">
-				<h2><?php _e( 'How to Use Certifications Shortcode', 'certifications-plugin' ); ?></h2>
-				<p><?php _e( 'You can display certifications on any page or post using the shortcode below:', 'certifications-plugin' ); ?></p>
+            <!-- Overview Section -->
+            <div class="certifications-help-section">
+                <h2><?php esc_html_e('Overview', 'certifications-plugin'); ?></h2>
+                <p><?php esc_html_e('Certifications Plugin allows you to create and display certification offerings on your site. The plugin provides two main shortcodes:', 'certifications-plugin'); ?></p>
+                <ul>
+                    <li><code>[certifications]</code> - <?php esc_html_e('Display multiple certifications in a grid or list layout', 'certifications-plugin'); ?></li>
+                    <li><code>[certification]</code> - <?php esc_html_e('Display a single certification\'s details', 'certifications-plugin'); ?></li>
+                </ul>
+            </div>
 
-				<div class="certifications-admin-code-block">
-					<code>[certifications]</code>
-				</div>
+            <!-- Multiple Certifications Shortcode Section -->
+            <div class="certifications-help-section">
+                <h2><?php esc_html_e('Shortcode: [certifications]', 'certifications-plugin'); ?></h2>
+                <p><?php esc_html_e('This shortcode displays a grid or list of Certifications with various customization options.', 'certifications-plugin'); ?></p>
 
-				<h3><?php _e( 'Available Options', 'certifications-plugin' ); ?></h3>
-				<table class="certifications-admin-table widefat">
-					<thead>
-					<tr>
-						<th><?php _e( 'Parameter', 'certifications-plugin' ); ?></th>
-						<th><?php _e( 'Description', 'certifications-plugin' ); ?></th>
-						<th><?php _e( 'Default', 'certifications-plugin' ); ?></th>
-						<th><?php _e( 'Example', 'certifications-plugin' ); ?></th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr>
-						<td><code>display_type</code></td>
-						<td><?php _e( 'Display as grid or list', 'certifications-plugin' ); ?></td>
-						<td>grid</td>
-						<td><code>[certifications display_type="list"]</code></td>
-					</tr>
-					<tr>
-						<td><code>count</code></td>
-						<td><?php _e( 'Number of certifications to display. Use -1 for all.', 'certifications-plugin' ); ?></td>
-						<td>-1</td>
-						<td><code>[certifications count="4"]</code></td>
-					</tr>
-					<tr>
-						<td><code>columns</code></td>
-						<td><?php _e( 'Number of columns in the grid display.', 'certifications-plugin' ); ?></td>
-						<td>4</td>
-						<td><code>[certifications columns="3"]</code></td>
-					</tr>
-					<tr>
-						<td><code>pagination</code></td>
-						<td><?php _e( 'Whether to show pagination controls', 'certifications-plugin' ); ?></td>
-						<td>false</td>
-						<td><code>[certifications pagination="true"]</code></td>
-					</tr>
-					<tr>
-						<td><code>category</code></td>
-						<td><?php _e( 'Filter by category slug. Separate multiple with commas.', 'certifications-plugin' ); ?></td>
-						<td></td>
-						<td><code>[certifications category="featured,popular"]</code></td>
-					</tr>
-					<tr>
-						<td><code>order</code></td>
-						<td><?php _e( 'Order of certifications (ASC or DESC).', 'certifications-plugin' ); ?></td>
-						<td>ASC</td>
-						<td><code>[certifications order="DESC"]</code></td>
-					</tr>
-					<tr>
-						<td><code>show_image</code></td>
-						<td><?php _e( 'Whether to display the featured image', 'certifications-plugin' ); ?></td>
-						<td>true</td>
-						<td><code>[certifications show_image="false"]</code></td>
-					</tr>
-					<tr>
-						<td><code>button_text</code></td>
-						<td><?php _e( 'Custom text for the button', 'certifications-plugin' ); ?></td>
-						<td>Learn More</td>
-						<td><code>[certifications button_text="View Details"]</code></td>
-					</tr>
-					</tbody>
-				</table>
+                <h3><?php esc_html_e('Basic Usage', 'certifications-plugin'); ?></h3>
+                <div class="certifications-shortcode-example">
+                    [certifications]
+                </div>
 
-				<h3><?php _e( 'Example', 'certifications-plugin' ); ?></h3>
-				<p><?php _e( 'To display 3 certifications from the "featured" category in 2 columns:', 'certifications-plugin' ); ?></p>
-				<div class="certifications-admin-code-block">
-					<code>[certifications count="3" columns="2" category="featured"]</code>
-				</div>
+                <h3><?php esc_html_e('Display Options', 'certifications-plugin'); ?></h3>
+                <table>
+                    <tr>
+                        <th><?php esc_html_e('Parameter', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Description', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Default', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Options', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Examples', 'certifications-plugin'); ?></th>
+                    </tr>
+                    <tr>
+                        <td><code>display_type</code></td>
+                        <td><?php esc_html_e('Layout type for certifications', 'certifications-plugin'); ?></td>
+                        <td><code>grid</code></td>
+                        <td><code>grid</code>, <code>list</code></td>
+                        <td><code>display_type="list"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>columns</code></td>
+                        <td><?php esc_html_e('Number of columns in grid view', 'certifications-plugin'); ?></td>
+                        <td><code>4</code></td>
+                        <td><?php esc_html_e('any number (1-6 recommended)', 'certifications-plugin'); ?></td>
+                        <td><code>columns="3"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>count</code></td>
+                        <td><?php esc_html_e('Number of certifications to display', 'certifications-plugin'); ?></td>
+                        <td><code>-1</code></td>
+                        <td><?php esc_html_e('any number, -1 for all', 'certifications-plugin'); ?></td>
+                        <td><code>count="6"</code><br><code>count="-1"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>pagination</code></td>
+                        <td><?php esc_html_e('Whether to show pagination', 'certifications-plugin'); ?></td>
+                        <td><code>false</code></td>
+                        <td><code>true</code>, <code>false</code></td>
+                        <td><code>pagination="true"</code></td>
+                    </tr>
+                </table>
 
-				<h3><?php _e( 'Single Certification Display', 'certifications-plugin' ); ?></h3>
-				<p><?php _e( 'You can also display a single certification using the following shortcode:', 'certifications-plugin' ); ?></p>
-				<div class="certifications-admin-code-block">
-					<code>[certification id="123"]</code>
-				</div>
-				<p><?php _e( 'Where "123" is the ID of the certification you want to display.', 'certifications-plugin' ); ?></p>
+                <h3><?php esc_html_e('Ordering Parameters', 'certifications-plugin'); ?></h3>
+                <table>
+                    <tr>
+                        <th><?php esc_html_e('Parameter', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Description', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Default', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Options', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Examples', 'certifications-plugin'); ?></th>
+                    </tr>
+                    <tr>
+                        <td><code>order</code></td>
+                        <td><?php esc_html_e('Sort order', 'certifications-plugin'); ?></td>
+                        <td><code>ASC</code></td>
+                        <td><code>ASC</code>, <code>DESC</code></td>
+                        <td><code>order="DESC"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>orderby</code></td>
+                        <td><?php esc_html_e('Field to order by', 'certifications-plugin'); ?></td>
+                        <td><code>menu_order</code></td>
+                        <td><code>date</code>, <code>title</code>, <code>menu_order</code>, <code>rand</code>, <code>meta_value</code></td>
+                        <td><code>orderby="date"</code><br><code>orderby="rand"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>meta_key</code></td>
+                        <td><?php esc_html_e('Custom field to order by (when orderby is meta_value)', 'certifications-plugin'); ?></td>
+                        <td><code>''</code></td>
+                        <td><?php esc_html_e('any ACF field name', 'certifications-plugin'); ?></td>
+                        <td><code>orderby="meta_value" meta_key="_certification_display_order"</code></td>
+                    </tr>
+                </table>
 
-				<h4><?php _e( 'Single Certification Parameters', 'certifications-plugin' ); ?></h4>
-				<table class="certifications-admin-table widefat">
-					<thead>
-					<tr>
-						<th><?php _e( 'Parameter', 'certifications-plugin' ); ?></th>
-						<th><?php _e( 'Description', 'certifications-plugin' ); ?></th>
-						<th><?php _e( 'Default', 'certifications-plugin' ); ?></th>
-						<th><?php _e( 'Example', 'certifications-plugin' ); ?></th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr>
-						<td><code>id</code></td>
-						<td><?php _e( 'The certification ID (required)', 'certifications-plugin' ); ?></td>
-						<td>0</td>
-						<td><code>[certification id="123"]</code></td>
-					</tr>
-					<tr>
-						<td><code>show_image</code></td>
-						<td><?php _e( 'Whether to show the featured image', 'certifications-plugin' ); ?></td>
-						<td>true</td>
-						<td><code>[certification id="123" show_image="false"]</code></td>
-					</tr>
-					<tr>
-						<td><code>show_buttons</code></td>
-						<td><?php _e( 'Whether to show action buttons', 'certifications-plugin' ); ?></td>
-						<td>true</td>
-						<td><code>[certification id="123" show_buttons="false"]</code></td>
-					</tr>
-					<tr>
-						<td><code>show_sections</code></td>
-						<td><?php _e( 'Whether to show content sections', 'certifications-plugin' ); ?></td>
-						<td>true</td>
-						<td><code>[certification id="123" show_sections="false"]</code></td>
-					</tr>
-					<tr>
-						<td><code>sections</code></td>
-						<td><?php _e( 'Which sections to display (comma-separated)', 'certifications-plugin' ); ?></td>
-						<td>all</td>
-						<td><code>[certification id="123" sections="intro,prepare"]</code></td>
-					</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
+                <h3><?php esc_html_e('Filtering Parameters', 'certifications-plugin'); ?></h3>
+                <table>
+                    <tr>
+                        <th><?php esc_html_e('Parameter', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Description', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Default', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Options', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Examples', 'certifications-plugin'); ?></th>
+                    </tr>
+                    <tr>
+                        <td><code>category</code></td>
+                        <td><?php esc_html_e('Filter by category', 'certifications-plugin'); ?></td>
+                        <td><code>''</code></td>
+                        <td><?php esc_html_e('category slug or ID', 'certifications-plugin'); ?></td>
+                        <td><code>category="featured"</code><br><code>category="5"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>tag</code></td>
+                        <td><?php esc_html_e('Filter by tag', 'certifications-plugin'); ?></td>
+                        <td><code>''</code></td>
+                        <td><?php esc_html_e('tag slug or ID', 'certifications-plugin'); ?></td>
+                        <td><code>tag="popular"</code><br><code>tag="8"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>include</code></td>
+                        <td><?php esc_html_e('Include only specific certifications', 'certifications-plugin'); ?></td>
+                        <td><code>''</code></td>
+                        <td><?php esc_html_e('IDs separated by commas', 'certifications-plugin'); ?></td>
+                        <td><code>include="42,51,90"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>exclude</code></td>
+                        <td><?php esc_html_e('Exclude specific certifications', 'certifications-plugin'); ?></td>
+                        <td><code>''</code></td>
+                        <td><?php esc_html_e('IDs separated by commas', 'certifications-plugin'); ?></td>
+                        <td><code>exclude="42,51,90"</code></td>
+                    </tr>
+                </table>
+
+                <h3><?php esc_html_e('Content Parameters', 'certifications-plugin'); ?></h3>
+                <table>
+                    <tr>
+                        <th><?php esc_html_e('Parameter', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Description', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Default', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Options', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Examples', 'certifications-plugin'); ?></th>
+                    </tr>
+                    <tr>
+                        <td><code>show_image</code></td>
+                        <td><?php esc_html_e('Whether to show the certification image', 'certifications-plugin'); ?></td>
+                        <td><code>true</code></td>
+                        <td><code>true</code>, <code>false</code></td>
+                        <td><code>show_image="false"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>image_size</code></td>
+                        <td><?php esc_html_e('Size of the image', 'certifications-plugin'); ?></td>
+                        <td><code>medium</code></td>
+                        <td><code>thumbnail</code>, <code>medium</code>, <code>large</code>, <code>full</code></td>
+                        <td><code>image_size="thumbnail"</code><br><code>image_size="large"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>show_title</code></td>
+                        <td><?php esc_html_e('Whether to show the certification title', 'certifications-plugin'); ?></td>
+                        <td><code>true</code></td>
+                        <td><code>true</code>, <code>false</code></td>
+                        <td><code>show_title="false"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>excerpt_length</code></td>
+                        <td><?php esc_html_e('Length of excerpt in words', 'certifications-plugin'); ?></td>
+                        <td><code>25</code></td>
+                        <td><?php esc_html_e('any number', 'certifications-plugin'); ?></td>
+                        <td><code>excerpt_length="15"</code><br><code>excerpt_length="50"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>link_target</code></td>
+                        <td><?php esc_html_e('Where to open links', 'certifications-plugin'); ?></td>
+                        <td><code>_self</code></td>
+                        <td><code>_self</code>, <code>_blank</code></td>
+                        <td><code>link_target="_blank"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>show_button</code></td>
+                        <td><?php esc_html_e('Display "Learn More" button', 'certifications-plugin'); ?></td>
+                        <td><code>true</code></td>
+                        <td><code>true</code>, <code>false</code></td>
+                        <td><code>show_button="false"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>button_text</code></td>
+                        <td><?php esc_html_e('Custom text for button', 'certifications-plugin'); ?></td>
+                        <td><code>Learn More</code></td>
+                        <td><?php esc_html_e('any text', 'certifications-plugin'); ?></td>
+                        <td><code>button_text="View Details"</code><br><code>button_text="See Certification"</code></td>
+                    </tr>
+                </table>
+
+                <h3><?php esc_html_e('Advanced Parameters', 'certifications-plugin'); ?></h3>
+                <table>
+                    <tr>
+                        <th><?php esc_html_e('Parameter', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Description', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Default', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Options', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Examples', 'certifications-plugin'); ?></th>
+                    </tr>
+                    <tr>
+                        <td><code>offset</code></td>
+                        <td><?php esc_html_e('Number of posts to skip', 'certifications-plugin'); ?></td>
+                        <td><code>0</code></td>
+                        <td><?php esc_html_e('any number', 'certifications-plugin'); ?></td>
+                        <td><code>offset="3"</code><br><code>offset="10"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>cache</code></td>
+                        <td><?php esc_html_e('Whether to cache results', 'certifications-plugin'); ?></td>
+                        <td><code>true</code></td>
+                        <td><code>true</code>, <code>false</code></td>
+                        <td><code>cache="false"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>class</code></td>
+                        <td><?php esc_html_e('Additional CSS classes', 'certifications-plugin'); ?></td>
+                        <td><code>''</code></td>
+                        <td><?php esc_html_e('any class names', 'certifications-plugin'); ?></td>
+                        <td><code>class="featured-certifications"</code><br><code>class="blue-theme highlighted"</code></td>
+                    </tr>
+                </table>
+
+                <h3><?php esc_html_e('Example Shortcodes', 'certifications-plugin'); ?></h3>
+                <p><?php esc_html_e('Basic grid with 3 columns:', 'certifications-plugin'); ?></p>
+                <div class="certifications-shortcode-example">
+                    [certifications columns="3" count="6"]
+                </div>
+
+                <p><?php esc_html_e('List display with pagination:', 'certifications-plugin'); ?></p>
+                <div class="certifications-shortcode-example">
+                    [certifications display_type="list" pagination="true" count="10"]
+                </div>
+
+                <p><?php esc_html_e('Certifications from a specific category, randomly ordered:', 'certifications-plugin'); ?></p>
+                <div class="certifications-shortcode-example">
+                    [certifications category="featured-certifications" orderby="rand"]
+                </div>
+            </div>
+
+            <!-- Single Certification Shortcode Section -->
+            <div class="certifications-help-section">
+                <h2><?php esc_html_e('Shortcode: [certification]', 'certifications-plugin'); ?></h2>
+                <p><?php esc_html_e('This shortcode displays a single Certification with customizable elements.', 'certifications-plugin'); ?></p>
+
+                <h3><?php esc_html_e('Basic Usage', 'certifications-plugin'); ?></h3>
+                <p><?php esc_html_e('You must specify the ID of the certification to display:', 'certifications-plugin'); ?></p>
+                <div class="certifications-shortcode-example">
+                    [certification id="42"]
+                </div>
+
+                <h3><?php esc_html_e('Available Parameters', 'certifications-plugin'); ?></h3>
+                <table>
+                    <tr>
+                        <th><?php esc_html_e('Parameter', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Description', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Default', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Options', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Examples', 'certifications-plugin'); ?></th>
+                    </tr>
+                    <tr>
+                        <td><code>id</code></td>
+                        <td><?php esc_html_e('Certification ID (required)', 'certifications-plugin'); ?></td>
+                        <td><code>0</code></td>
+                        <td><?php esc_html_e('any valid post ID', 'certifications-plugin'); ?></td>
+                        <td><code>id="42"</code><br><code>id="156"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>show_image</code></td>
+                        <td><?php esc_html_e('Whether to show the certification image', 'certifications-plugin'); ?></td>
+                        <td><code>true</code></td>
+                        <td><code>true</code>, <code>false</code></td>
+                        <td><code>show_image="false"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>show_buttons</code></td>
+                        <td><?php esc_html_e('Display action buttons', 'certifications-plugin'); ?></td>
+                        <td><code>true</code></td>
+                        <td><code>true</code>, <code>false</code></td>
+                        <td><code>show_buttons="false"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>show_sections</code></td>
+                        <td><?php esc_html_e('Display the content sections', 'certifications-plugin'); ?></td>
+                        <td><code>true</code></td>
+                        <td><code>true</code>, <code>false</code></td>
+                        <td><code>show_sections="false"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>sections</code></td>
+                        <td><?php esc_html_e('Which sections to display (comma-separated)', 'certifications-plugin'); ?></td>
+                        <td><code>all</code></td>
+                        <td><code>all</code>, <code>intro</code>, <code>prepare</code>, <code>get_certified</code>, <code>after_exam</code>, <code>documents</code></td>
+                        <td><code>sections="intro,prepare"</code><br><code>sections="get_certified,documents"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>class</code></td>
+                        <td><?php esc_html_e('Additional CSS classes', 'certifications-plugin'); ?></td>
+                        <td><code>''</code></td>
+                        <td><?php esc_html_e('any class names', 'certifications-plugin'); ?></td>
+                        <td><code>class="featured-certification"</code><br><code>class="compact-layout special"</code></td>
+                    </tr>
+                </table>
+
+                <h3><?php esc_html_e('Example Shortcodes', 'certifications-plugin'); ?></h3>
+                <p><?php esc_html_e('Display a certification with ID 42, hiding the buttons:', 'certifications-plugin'); ?></p>
+                <div class="certifications-shortcode-example">
+                    [certification id="42" show_buttons="false"]
+                </div>
+
+                <p><?php esc_html_e('Display a simplified certification profile:', 'certifications-plugin'); ?></p>
+                <div class="certifications-shortcode-example">
+                    [certification id="42" sections="intro,prepare"]
+                </div>
+
+                <p><?php esc_html_e('Add a custom class to the certification for styling:', 'certifications-plugin'); ?></p>
+                <div class="certifications-shortcode-example">
+                    [certification id="42" class="featured-certification special-layout"]
+                </div>
+            </div>
+
+            <!-- Finding IDs Section -->
+            <div class="certifications-help-section">
+                <h2><?php esc_html_e('Finding Certification IDs', 'certifications-plugin'); ?></h2>
+                <p><?php esc_html_e('To find the ID of a Certification:', 'certifications-plugin'); ?></p>
+                <ol>
+                    <li><?php esc_html_e('Go to Certifications in the admin menu', 'certifications-plugin'); ?></li>
+                    <li><?php esc_html_e('Hover over a certification\'s title', 'certifications-plugin'); ?></li>
+                    <li><?php esc_html_e('Look at the URL that appears in your browser\'s status bar', 'certifications-plugin'); ?></li>
+                    <li><?php esc_html_e('The ID is the number after "post=", e.g., post=42', 'certifications-plugin'); ?></li>
+                </ol>
+                <p><?php esc_html_e('Alternatively, open a certification for editing and the ID will be visible in the URL.', 'certifications-plugin'); ?></p>
+            </div>
+
+            <!-- Need Help Section -->
+            <div class="certifications-help-section">
+                <h2><?php esc_html_e('Need More Help?', 'certifications-plugin'); ?></h2>
+                <p><?php esc_html_e('If you need further assistance:', 'certifications-plugin'); ?></p>
+                <ul>
+                    <li><?php esc_html_e('Contact your website administrator', 'certifications-plugin'); ?></li>
+                    <li><?php esc_html_e('Refer to the WordPress documentation for general shortcode usage', 'certifications-plugin'); ?></li>
+                </ul>
+            </div>
+        </div>
 		<?php
 	}
 }
