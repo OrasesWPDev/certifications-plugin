@@ -25,7 +25,9 @@
     }
 
     /* Column system for mobile */
-    .certifications-large-3 {
+    .certifications-large-3,
+    .certifications-large-4,
+    .certifications-large-6 {
         width: 100%;
     }
 
@@ -53,38 +55,100 @@
         padding-top: 30px;
     }
 
-    /* ----------------------------------------
-       2. MEDIUM SCREENS (TABLETS)
-       ---------------------------------------- */
-    @media (min-width: 768px) and (max-width: 991px) {
-        /* Column system for tablets */
-        .certifications-large-3 {
-            width: 50%;
-        }
+    /* List Layout - Mobile */
+    .certifications-list .certifications-card-body {
+        flex-direction: column;
+    }
 
-        .certifications-item {
-            padding: 10px;
-        }
+    .certifications-list .certifications-image {
+        flex: 0 0 100%;
+        margin-right: 0;
+        margin-bottom: 15px;
+        text-align: center;
+    }
 
-        #certifications-intro .certifications-col-md-3 {
-            padding-top: 30px;
-        }
+    .certifications-list .certifications-content {
+        flex: 1;
+        padding: 10px 0;
+    }
 
-        .certifications-card-body {
-            padding: 15px;
-        }
+    .certifications-list .certifications-title,
+    .certifications-list .certifications-description,
+    .certifications-list .certifications-button {
+        text-align: center;
+    }
 
-        .certifications-title {
-            font-size: 15px;
-        }
+    /* Pagination - Mobile */
+    .certifications-pagination {
+        margin: 20px 0;
+    }
 
-        .certifications-description {
-            font-size: 13px;
-        }
+    .certifications-pagination .certifications-page-numbers {
+        padding: 6px 10px;
+        font-size: 12px;
+        margin: 0 2px;
+    }
 
-        .certifications-sticky-menu li {
-            margin: 0 10px;
-        }
+    .certifications-pagination .certifications-page-numbers.certifications-prev,
+    .certifications-pagination .certifications-page-numbers.certifications-next {
+        padding: 6px 8px;
+    }
+}
+
+/* ----------------------------------------
+   2. MEDIUM SCREENS (TABLETS)
+   ---------------------------------------- */
+@media (min-width: 768px) and (max-width: 991px) {
+    /* Column system for tablets */
+    .certifications-large-3,
+    .certifications-large-4 {
+        width: 50%;
+    }
+
+    .certifications-large-6 {
+        width: 100%;
+    }
+
+    .certifications-item {
+        padding: 10px;
+    }
+
+    #certifications-intro .certifications-col-md-3 {
+        padding-top: 30px;
+    }
+
+    .certifications-card-body {
+        padding: 15px;
+    }
+
+    .certifications-title {
+        font-size: 15px;
+    }
+
+    .certifications-description {
+        font-size: 13px;
+    }
+
+    .certifications-sticky-menu li {
+        margin: 0 10px;
+    }
+
+    /* List Layout - Tablet */
+    .certifications-list .certifications-image {
+        flex: 0 0 140px;
+        margin-right: 15px;
+    }
+
+    .certifications-list .certifications-content {
+        padding: 10px 0;
+    }
+
+    /* Pagination - Tablet */
+    .certifications-pagination .certifications-page-numbers {
+        padding: 7px 12px;
+        font-size: 13px;
+    }
+}
 
 /* ----------------------------------------
    3. LARGE SCREENS ADJUSTMENTS

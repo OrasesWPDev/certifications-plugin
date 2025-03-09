@@ -8,14 +8,15 @@
 .certifications-container {
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
     margin-bottom: 2rem;
 }
 
 .certifications-grid {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 2rem;
     width: 100%;
+    margin-bottom: 2rem;
 }
 
 /* ----------------------------------------
@@ -83,14 +84,35 @@
 .certifications-col {
     position: relative;
     min-height: 1px;
+    float: left;
+    box-sizing: border-box;
 }
 
 .certifications-small-12 {
     width: 100%;
 }
 
+/* 2-column layout */
+.certifications-large-6 {
+    width: 50%;
+}
+
+/* 3-column layout */
+.certifications-large-4 {
+    width: 33.333333%;
+}
+
+/* 4-column layout */
 .certifications-large-3 {
     width: 25%;
+}
+
+/* Clear the float after grid */
+.certifications-grid::after,
+.certifications-container::after {
+    content: "";
+    display: table;
+    clear: both;
 }
 
 .certifications-card {
@@ -101,6 +123,19 @@
     transition: all 0.3s ease;
     box-shadow: none; /* Remove shadow */
     border: none; /* Remove border */
+}
+
+.certifications-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+}
+
+.certifications-card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #F4F4F4;
 }
 
 /* ----------------------------------------
