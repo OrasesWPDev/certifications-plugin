@@ -49,12 +49,16 @@ function certifications_plugin_init() {
 	// Load shortcode functionality
 	require_once CERTIFICATIONS_PLUGIN_PATH . 'includes/class-certifications-shortcode.php';
 
+	// Load help documentation
+	require_once CERTIFICATIONS_PLUGIN_PATH . 'includes/class-certifications-help.php';
+
 	// Initialize classes
 	new Certifications_CPT();
 	if ( certif_plugin_has_acf() ) {
 		new Certifications_ACF();
 	}
 	new Certifications_Shortcode();
+	new Certifications_Help();
 
 	// Register assets
 	add_action( 'wp_enqueue_scripts', 'certifications_plugin_register_assets' );
@@ -63,112 +67,8 @@ function certifications_plugin_init() {
 add_action( 'plugins_loaded', 'certifications_plugin_init' );
 
 /**
- * Add Help/Documentation page for the plugin
+ * Admin notice for missing ACF
  */
-function certifications_add_help_page() {
-	add_submenu_page(
-		'edit.php?post_type=certification',  // Parent menu slug
-		'Certifications Help',               // Page title
-		'How to Use',                        // Menu title
-		'edit_posts',                        // Capability
-		'certifications-help',               // Menu slug
-		'certifications_help_page_content'   // Callback function
-	);
-}
-add_action('admin_menu', 'certifications_add_help_page');
-
-/**
- * Display the help page content
- */
-function certifications_help_page_content() {
-	?>
-    <div class="wrap">
-        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
-        <div class="card" style="max-width: 800px; padding: 20px; margin-top: 20px;">
-            <h2>How to Use Certifications Shortcode</h2>
-            <p>You can display certifications on any page or post using the shortcode below:</p>
-            <div style="background: #f5f5f5; padding: 15px; border-left: 4px solid #2271b1; font-family: monospace; margin: 20px 0;">
-                [certifications]
-            </div>
-            <h3>Available Options</h3>
-            <table class="widefat" style="margin-top: 15px;">
-                <thead>
-                <tr>
-                    <th>Parameter</th>
-                    <th>Description</th>
-                    <th>Default</th>
-                    <th>Example</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td><code>display_type</code></td>
-                    <td>Display as grid or list</td>
-                    <td>grid</td>
-                    <td><code>[certifications display_type="list"]</code></td>
-                </tr>
-                <tr>
-                    <td><code>count</code></td>
-                    <td>Number of certifications to display. Use -1 for all.</td>
-                    <td>-1</td>
-                    <td><code>[certifications count="4"]</code></td>
-                </tr>
-                <tr>
-                    <td><code>columns</code></td>
-                    <td>Number of columns in the grid display.</td>
-                    <td>4</td>
-                    <td><code>[certifications columns="3"]</code></td>
-                </tr>
-                <tr>
-                    <td><code>pagination</code></td>
-                    <td>Whether to show pagination controls</td>
-                    <td>false</td>
-                    <td><code>[certifications pagination="true"]</code></td>
-                </tr>
-                <tr>
-                    <td><code>category</code></td>
-                    <td>Filter by category slug. Separate multiple with commas.</td>
-                    <td>empty</td>
-                    <td><code>[certifications category="featured,popular"]</code></td>
-                </tr>
-                <tr>
-                    <td><code>order</code></td>
-                    <td>Order of certifications (ASC or DESC).</td>
-                    <td>ASC</td>
-                    <td><code>[certifications order="DESC"]</code></td>
-                </tr>
-                <tr>
-                    <td><code>show_image</code></td>
-                    <td>Whether to display the featured image</td>
-                    <td>true</td>
-                    <td><code>[certifications show_image="false"]</code></td>
-                </tr>
-                <tr>
-                    <td><code>button_text</code></td>
-                    <td>Custom text for the button</td>
-                    <td>Learn More</td>
-                    <td><code>[certifications button_text="View Details"]</code></td>
-                </tr>
-                </tbody>
-            </table>
-            <h3>Example</h3>
-            <p>To display 3 certifications from the "featured" category in 2 columns:</p>
-            <div style="background: #f5f5f5; padding: 15px; border-left: 4px solid #2271b1; font-family: monospace; margin: 20px 0;">
-                [certifications count="3" columns="2" category="featured"]
-            </div>
-
-            <h3>Single Certification Display</h3>
-            <p>You can also display a single certification using the following shortcode:</p>
-            <div style="background: #f5f5f5; padding: 15px; border-left: 4px solid #2271b1; font-family: monospace; margin: 20px 0;">
-                [certification id="123"]
-            </div>
-            <p>Where "123" is the ID of the certification you want to display.</p>
-        </div>
-    </div>
-	<?php
-}
-
-// Admin notice for missing ACF
 function certif_plugin_acf_missing_notice() {
 	?>
     <div class="notice notice-error">

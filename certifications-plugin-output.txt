@@ -1,0 +1,3949 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+================================================================
+File Summary
+================================================================
+
+Purpose:
+--------
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+
+File Format:
+------------
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Multiple file entries, each consisting of:
+  a. A separator line (================)
+  b. The file path (File: path/to/file)
+  c. Another separator line
+  d. The full contents of the file
+  e. A blank line
+
+Usage Guidelines:
+-----------------
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+
+Notes:
+------
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+
+Additional Info:
+----------------
+
+================================================================
+Directory Structure
+================================================================
+.github/
+  workflows/
+    deploy.yml
+acf-json/
+  group_67bf615a25b23.json
+  README.md
+assets/
+  css/
+    certifications-shortcode.css
+    certifications.css
+    responsive-certifications.css
+  js/
+    certifications.js
+includes/
+  class-certifications-acf.php
+  class-certifications-cpt.php
+  class-certifications-shortcode.php
+templates/
+  archive-certification.php
+  single-certification.php
+.gitignore
+certifications-plugin.php
+readme.txt
+
+================================================================
+Files
+================================================================
+
+================
+File: .github/workflows/deploy.yml
+================
+name: Increment Version
+
+on:
+  push:
+    branches:
+      - main
+
+# Add permissions to allow the workflow to push changes
+permissions:
+  contents: write
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Get version from branch
+        id: get_version
+        run: |
+          CURRENT_VERSION=$(grep "Version:" certifications-plugin.php | awk -F': ' '{print $2}' | tr -d ' ')
+          echo "Current version: $CURRENT_VERSION"
+          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_ENV
+          
+          # Split version into major.minor.patch
+          IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+          MAJOR=${VERSION_PARTS[0]}
+          MINOR=${VERSION_PARTS[1]}
+          PATCH=${VERSION_PARTS[2]}
+          
+          # Increment patch version
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "New version will be: $NEW_VERSION"
+
+      - name: Update version in files
+        run: |
+          # Update version in main plugin file
+          sed -i "s/Version: ${{ env.CURRENT_VERSION }}/Version: ${{ env.NEW_VERSION }}/" certifications-plugin.php
+          
+          # Update version constant in main plugin file
+          sed -i "s/define( 'CERTIFICATIONS_PLUGIN_VERSION', '${{ env.CURRENT_VERSION }}' );/define( 'CERTIFICATIONS_PLUGIN_VERSION', '${{ env.NEW_VERSION }}' );/" certifications-plugin.php
+          
+          # Commit the version change
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add certifications-plugin.php
+          git commit -m "Bump version to ${{ env.NEW_VERSION }}"
+          git push
+
+================
+File: acf-json/group_67bf615a25b23.json
+================
+{
+    "key": "group_67bf615a25b23",
+    "title": "Certifications Field Group",
+    "fields": [
+        {
+            "key": "field_card_description_67bf6150",
+            "label": "Card Description",
+            "name": "card_description",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Enter a short description that will appear on the certification card (25-30 words maximum)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "maxlength": "",
+            "rows": 4,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_67bf615add99b",
+            "label": "Intro",
+            "name": "intro",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_67bf617add99g",
+            "label": "Apply Button URL",
+            "name": "apply_button_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Enter the URL for the Apply Now button",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_67bf618add99h",
+            "label": "Renew Button URL",
+            "name": "renew_button_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Enter the URL for the Renew button",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_67bf6184dd99c",
+            "label": "Prepare & Apply",
+            "name": "prepare_&_apply",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_67bf6196dd99d",
+            "label": "Get Certified",
+            "name": "get_certified",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_67bf61a3dd99e",
+            "label": "After The Exam",
+            "name": "after_the_exam",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_67bf61afdd99f",
+            "label": "Documents",
+            "name": "documents",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "relevanssi_exclude": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "certification"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1741363339
+}
+
+================
+File: acf-json/README.md
+================
+# ACF JSON Synchronization
+
+This directory is used by Advanced Custom Fields (ACF) for field group synchronization.
+
+## How it works
+
+1. When field groups are created or modified through the WordPress admin, ACF will save the JSON definitions in this directory.
+2. When the plugin is installed on a new site, ACF will read the JSON files from this directory and import the field groups.
+3. This ensures that your field definitions stay consistent across different environments.
+
+Do not delete this directory, as it's required for the proper functioning of field synchronization.
+
+================
+File: assets/css/certifications-shortcode.css
+================
+/**
+ * Certifications Shortcode Styles
+ */
+
+/* ----------------------------------------
+   1. GRID LAYOUT
+   ---------------------------------------- */
+.certifications-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.certifications-grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+/* ----------------------------------------
+   2. LIST LAYOUT
+   ---------------------------------------- */
+.certifications-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.certifications-list .certifications-list-item {
+    width: 100%;
+    margin-bottom: 25px;
+    padding: 0 15px;
+}
+
+.certifications-list .certifications-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.certifications-list .certifications-card-body {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.certifications-list .certifications-image {
+    flex: 0 0 180px;
+    margin-right: 20px;
+    margin-bottom: 0;
+}
+
+.certifications-list .certifications-content {
+    flex: 1;
+    padding: 15px 0;
+}
+
+.certifications-list .certifications-title {
+    text-align: left;
+    margin-top: 0;
+}
+
+.certifications-list .certifications-description {
+    text-align: left;
+}
+
+.certifications-list .certifications-button {
+    text-align: left;
+}
+
+/* ----------------------------------------
+   3. CERTIFICATION ITEM - Individual Cards
+   ---------------------------------------- */
+.certifications-item {
+    padding: 15px;
+    margin-bottom: 30px;
+}
+
+.certifications-card {
+    height: 100%;
+    background-color: #F4F4F4;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: none; /* Remove shadow */
+    border: none; /* Remove border */
+}
+
+.certifications-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+}
+
+.certifications-card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #F4F4F4;
+}
+
+/* ----------------------------------------
+   4. CERTIFICATION IMAGE
+   ---------------------------------------- */
+.certifications-image {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.certifications-thumbnail {
+    max-width: 140px;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* ----------------------------------------
+   5. CERTIFICATION CONTENT - Text Elements
+   ---------------------------------------- */
+.certifications-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.certifications-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #333;
+}
+
+.certifications-description {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #7C7C7C;
+    margin-bottom: 15px;
+    text-align: center;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-height: 110px; /* Backup for browsers that don't support line-clamp */
+}
+
+/* ----------------------------------------
+   6. CERTIFICATION BUTTON - Call to Action
+   ---------------------------------------- */
+.certifications-button {
+    text-align: center;
+    margin-top: auto;
+}
+
+.certifications-button .certifications-btn {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 15px;
+    background-color: #f98e2b; /* Orange button */
+    color: #fff;
+    border: 2px solid #f98e2b;
+    border-radius: 4px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.certifications-button .certifications-btn:hover {
+    background-color: rgba(255, 255, 255, 0.64); /* Semi-transparent white background on hover */
+    color: #f98e2b; /* Orange text on hover */
+    border: 1px solid #f98e2b; /* 1px orange border */
+}
+
+/* ----------------------------------------
+   7. NO RESULTS MESSAGE
+   ---------------------------------------- */
+.certifications-no-results {
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    font-style: italic;
+    color: #666;
+}
+
+/* ----------------------------------------
+   8. PAGINATION STYLES
+   ---------------------------------------- */
+.certifications-pagination {
+    width: 100%;
+    text-align: center;
+    margin: 30px 0;
+    clear: both;
+}
+
+.certifications-pagination .certifications-page-numbers {
+    display: inline-block;
+    padding: 8px 14px;
+    margin: 0 3px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
+    background-color: #fff;
+    font-size: 14px;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+
+.certifications-pagination .certifications-page-numbers.certifications-current {
+    background-color: #f98e2b;
+    color: #fff;
+    border-color: #f98e2b;
+}
+
+.certifications-pagination .certifications-page-numbers:hover:not(.certifications-current) {
+    background-color: #f5f5f5;
+    border-color: #ccc;
+}
+
+.certifications-pagination .certifications-prev,
+.certifications-pagination .certifications-next {
+    font-weight: bold;
+}
+
+/* ----------------------------------------
+   9. SINGLE CERTIFICATION SHORTCODE STYLES
+   ---------------------------------------- */
+.certifications-single.certifications-shortcode {
+    margin: 30px 0;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.certifications-single.certifications-shortcode .certifications-title {
+    font-size: 24px;
+    text-align: left;
+    margin-bottom: 20px;
+    color: #2c6c3e; /* Match green color from the main styles */
+}
+
+.certifications-single.certifications-shortcode .certifications-featured-image {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.certifications-single.certifications-shortcode .certifications-thumbnail {
+    max-width: 250px;
+    border-radius: 5px;
+}
+
+.certifications-single.certifications-shortcode .certifications-action-buttons {
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.certifications-single.certifications-shortcode .certifications-action-buttons .certifications-btn {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.certifications-single.certifications-shortcode .certifications-section {
+    margin: 30px 0;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.certifications-single.certifications-shortcode .certifications-section:first-child {
+    border-top: none;
+}
+
+.certifications-single.certifications-shortcode h3.certifications-text-to-uppercase {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c6c3e;
+    margin-bottom: 15px;
+}
+
+.certifications-single.certifications-shortcode .certifications-field-content {
+    line-height: 1.6;
+}
+
+.certifications-single.certifications-shortcode .certifications-field-content p {
+    margin-bottom: 15px;
+}
+
+.certifications-single.certifications-shortcode .certifications-field-content ul,
+.certifications-single.certifications-shortcode .certifications-field-content ol {
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.certifications-single.certifications-shortcode .certifications-field-content li {
+    margin-bottom: 5px;
+}
+
+/* ----------------------------------------
+   10. ERROR MESSAGES
+   ---------------------------------------- */
+.certifications-error {
+    padding: 15px;
+    background-color: #ffebee;
+    color: #c62828;
+    border-left: 4px solid #c62828;
+    margin: 20px 0;
+    font-weight: 500;
+    border-radius: 3px;
+}
+
+================
+File: assets/css/certifications.css
+================
+/**
+ * Certifications Plugin Styles
+ */
+
+/* ----------------------------------------
+   1. GRID LAYOUT - Archive & Shortcode
+   ---------------------------------------- */
+.certifications-container,
+.certifications-grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.certifications-item {
+    padding: 15px;
+    margin-bottom: 30px;
+}
+
+.certifications-card {
+    height: 100%;
+    background-color: #F4F4F4;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.certifications-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+}
+
+.certifications-card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.certifications-image {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.certifications-thumbnail {
+    max-width: 140px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.certifications-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.certifications-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.certifications-description {
+    font-size: 14px;
+    color: #7C7C7C;
+    margin-bottom: 15px;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.certifications-button {
+    text-align: center;
+    margin-top: auto;
+}
+
+.certifications-button .certifications-btn {
+    font-size: 14px;
+    padding: 5px 15px;
+}
+
+/* ----------------------------------------
+   1.1 LIST LAYOUT
+   ---------------------------------------- */
+.certifications-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.certifications-list .certifications-list-item {
+    width: 100%;
+    margin-bottom: 25px;
+    padding: 0 15px;
+}
+
+.certifications-list .certifications-card {
+    display: flex;
+    flex-direction: row;
+}
+
+.certifications-list .certifications-card-body {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+}
+
+.certifications-list .certifications-image {
+    flex: 0 0 180px;
+    margin-right: 20px;
+    margin-bottom: 0;
+    text-align: left;
+}
+
+.certifications-list .certifications-content {
+    flex: 1;
+    padding: 15px 0;
+}
+
+.certifications-list .certifications-title {
+    text-align: left;
+    margin-top: 0;
+}
+
+.certifications-list .certifications-description {
+    text-align: left;
+}
+
+.certifications-list .certifications-button {
+    text-align: left;
+}
+
+/* ----------------------------------------
+   2. SECTION STRUCTURE HANDLING
+   ---------------------------------------- */
+.certifications-section-wrapper {
+    width: 100%;
+    position: relative;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.certifications-section-wrapper.certifications-alternate-background-lightgrey {
+    background-color: #f8f8f8; /* Lighter grey to match live site */
+}
+
+.certifications-section-wrapper.certifications-alternate-background-white {
+    background-color: #FFFFFF;
+}
+
+.certifications-section-content {
+    position: relative;
+    padding: 40px 0; /* Increased from 30px to 40px */
+}
+
+/* Add more vertical spacing between sections */
+#certifications-intro,
+#certifications-prepare-apply,
+#certifications-get-certified,
+#certifications-after-the-exam,
+#certifications-documents {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+/* Add padding to containers within sections */
+.certifications-section-wrapper .certifications-container {
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+/* Add margin to sections */
+#certifications-overview + .certifications-section-wrapper,
+#certifications-intro + .certifications-section-wrapper,
+#certifications-prepare-apply + .certifications-section-wrapper,
+#certifications-get-certified + .certifications-section-wrapper,
+#certifications-after-the-exam + .certifications-section-wrapper {
+    margin-top: 30px;
+}
+
+/* ----------------------------------------
+   3. SINGLE CERTIFICATION PAGE
+   ---------------------------------------- */
+.certifications-single .certifications-container-of-boxes {
+    margin-bottom: 40px;
+}
+
+.certifications-single {
+    color: #444;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.certifications-single p,
+.certifications-single li,
+.certifications-single div {
+    color: #444; /* Ensure consistent text color throughout */
+}
+
+.certifications-single h2 {
+    margin-bottom: 20px;
+}
+
+.certifications-single .certifications-container {
+    max-width: 1140px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 0 auto;
+}
+
+/* Section spacing improvements */
+#certifications-overview,
+#certifications-intro,
+#certifications-prepare-apply,
+#certifications-get-certified,
+#certifications-after-the-exam,
+#certifications-documents {
+    padding: 20px 0;
+}
+
+/* Row and column alignment */
+.certifications-single .certifications-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.certifications-single .certifications-col-12,
+.certifications-single .certifications-col-md-9,
+.certifications-single .certifications-col-md-3 {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+/* ----------------------------------------
+   4. OVERVIEW SECTION
+   ---------------------------------------- */
+#certifications-overview {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+#certifications-overview .certifications-container {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#certifications-overview p {
+    font-size: 20px;
+    line-height: 1.5;
+    color: #444;
+    font-weight: 600;
+}
+
+/* Remove spacing that was needed for the title */
+#certifications-overview + .certifications-section-wrapper {
+    margin-top: 20px;
+}
+
+
+/* ----------------------------------------
+   5. STICKY NAVIGATION MENU
+   ---------------------------------------- */
+.certifications-sticky-top {
+    position: fixed;
+    top: 200px; /* Fixed position below Flatsome header */
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 89; /* Below Flatsome's z-index */
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: top 0.3s ease;
+    padding-top: 10px; /* Added padding to the top */
+}
+
+/* Add some space to the container to avoid content jumps */
+.certifications-container-of-boxes {
+    padding-top: 60px; /* Adjust based on your sticky nav height */
+}
+
+.certifications-credential-sections-links {
+    padding: 15px 0 10px; /* Increased top padding from 10px to 15px */
+    width: 100%;
+}
+
+.certifications-sticky-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.certifications-sticky-menu li {
+    margin: 0 15px;
+}
+
+.certifications-sticky-menu a {
+    color: #333;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 14px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.certifications-sticky-menu a:hover,
+.certifications-sticky-menu a.certifications-active {
+    color: #f98e2b; /* Orange color from live site */
+    font-weight: 600;
+}
+
+/* Highlight effect for active menu item */
+.certifications-sticky-menu a.certifications-active {
+    position: relative;
+}
+
+.certifications-sticky-menu a.certifications-active:after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #f98e2b;
+}
+
+/* ----------------------------------------
+   6. BACK TO TOP LINKS
+   ---------------------------------------- */
+.certifications-back-to-top {
+    position: absolute;
+    top: 30px;
+    right: 0;
+}
+
+.certifications-back-to-top a {
+    font-size: 14px;
+    color: #666;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.certifications-back-to-top a:hover {
+    color: #f98e2b; /* Changed from #007bff to match site orange */
+    text-decoration: none; /* Removed underline */
+}
+
+.certifications-back-to-top a:before {
+    content: "↑";
+    margin-right: 5px;
+    font-size: 12px;
+}
+
+/* ----------------------------------------
+   7. SECTION TITLES
+   ---------------------------------------- */
+.certifications-text-to-uppercase {
+    text-transform: uppercase;
+    font-weight: 700; /* Increased from 600 to 700 for bolder headings */
+    margin-bottom: 25px; /* Increased from 20px */
+    color: #2c6c3e;
+    font-size: 24px;
+    padding-left: 0; /* Remove any indentation */
+    line-height: 1.2;
+    letter-spacing: 0.5px; /* Add slight letter spacing for emphasis */
+}
+
+/* Fix specific section title alignment */
+#certifications-intro .certifications-text-to-uppercase,
+#certifications-prepare-apply .certifications-text-to-uppercase,
+#certifications-get-certified .certifications-text-to-uppercase,
+#certifications-after-the-exam .certifications-text-to-uppercase,
+#certifications-documents .certifications-text-to-uppercase {
+    padding-left: 0;
+    margin-left: 0;
+}
+
+/* Add more distinct styling to section headings */
+.certifications-single h3 {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: #2c6c3e;
+}
+
+/* Add more space after section titles */
+.certifications-text-to-uppercase + p,
+.certifications-text-to-uppercase + div,
+.certifications-text-to-uppercase + ul,
+.certifications-text-to-uppercase + ol {
+    margin-top: 15px;
+}
+
+/* ----------------------------------------
+   8. CERTIFICATION FEATURED IMAGE
+   ---------------------------------------- */
+.certifications-featured-image {
+    text-align: center;
+    margin-top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent !important;
+}
+
+.certifications-featured-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: none;
+    background-color: transparent !important;
+}
+
+/* ----------------------------------------
+   9. ACTION BUTTONS
+   ---------------------------------------- */
+.certifications-action-buttons {
+    margin: 20px 0;
+}
+
+.certifications-action-buttons .certifications-btn,
+.certifications-action-buttons a.certifications-btn {
+    margin-right: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    background-color: #f98e2b;
+    border: 2px solid #f98e2b;
+    color: #fff;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    text-decoration: none !important;
+}
+
+.certifications-action-buttons .certifications-btn:hover,
+.certifications-action-buttons a.certifications-btn:hover {
+    background-color: transparent;
+    color: #f98e2b;
+    text-decoration: none !important;
+}
+
+/* ----------------------------------------
+   10. CONTENT FORMATTING
+   ---------------------------------------- */
+.certifications-field-content {
+    line-height: 1.6;
+    color: #444;
+    font-size: 16px;
+}
+
+.certifications-field-content h4 {
+    margin-top: 1.8rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #2c6c3e; /* Match green color from the live site */
+    font-size: 18px;
+}
+
+.certifications-field-content p {
+    margin-bottom: 1.2em;
+}
+
+.certifications-field-content strong,
+.certifications-field-content b {
+    font-weight: 600;
+    color: #333;
+}
+
+.certifications-field-content ul,
+.certifications-field-content ol {
+    margin-left: 2rem;
+    margin-bottom: 1.8rem;
+    padding-left: 0;
+}
+
+.certifications-field-content ul {
+    list-style-type: disc;
+}
+
+.certifications-field-content ol {
+    list-style-type: decimal;
+}
+
+.certifications-field-content li {
+    margin-bottom: 0.8em;
+    padding-left: 0.3em;
+    line-height: 1.6;
+}
+
+/* Add space between list items */
+.certifications-field-content li + li {
+    margin-top: 8px;
+}
+
+/* Improve nested lists */
+.certifications-field-content ul ul,
+.certifications-field-content ol ol,
+.certifications-field-content ul ol,
+.certifications-field-content ol ul {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.certifications-field-content table {
+    width: auto;
+    margin-bottom: 1rem;
+    border-collapse: collapse;
+}
+
+.certifications-field-content table th,
+.certifications-field-content table td {
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+}
+
+.certifications-field-content table th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+}
+
+.certifications-field-content a {
+    color: #f98e2b;
+    text-decoration: underline;
+}
+
+.certifications-field-content a:hover {
+    text-decoration: none;
+}
+
+/* ----------------------------------------
+   11. HEADER STYLING
+   ---------------------------------------- */
+/* Header background styling */
+.certifications-single .certifications-section-wrapper.certifications-credentials-header {
+    background-color: rgb(0, 44, 92);
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%;
+    width: 100%;
+}
+
+/* Ensure the header section spans full width */
+.certifications-single .certifications-credentials-header section.certifications-section {
+    background-color: rgb(0, 44, 92) !important;
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%;
+    width: 100%;
+}
+
+/* Breadcrumb styling */
+.certifications-single .certifications-credentials-header span,
+.certifications-single .certifications-credentials-header span a,
+.certifications-single .certifications-credentials-header span.breadcrumb_last,
+.certifications-single .certifications-credentials-header .certifications-yoast-divider {
+    color: white !important;
+}
+
+/* Remove margin from column inside header */
+.certifications-single .certifications-credentials-header .certifications-col-12 {
+    margin: 0;
+    padding: 0;
+}
+
+/* ----------------------------------------
+   12. FOOTER STYLING
+   ---------------------------------------- */
+footer a.certifications-back-to-top,
+footer a#certifications-top-link,
+a[href="#top"].certifications-back-to-top {
+    display: none !important;
+}
+
+/* ----------------------------------------
+   13. PAGINATION STYLING
+   ---------------------------------------- */
+.certifications-pagination {
+    width: 100%;
+    clear: both;
+    text-align: center;
+    margin: 30px 0;
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+}
+
+.certifications-pagination .certifications-page-numbers {
+    display: inline-block;
+    padding: 8px 14px;
+    margin: 0 3px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
+    background-color: #fff;
+    font-size: 14px;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+
+.certifications-pagination .certifications-page-numbers.certifications-current {
+    background-color: #f98e2b;
+    color: #fff;
+    border-color: #f98e2b;
+}
+
+.certifications-pagination .certifications-page-numbers:hover:not(.certifications-current) {
+    background-color: #f5f5f5;
+    border-color: #ccc;
+}
+
+.certifications-pagination .certifications-prev,
+.certifications-pagination .certifications-next {
+    font-weight: bold;
+}
+
+/* ----------------------------------------
+   14. ERROR MESSAGES
+   ---------------------------------------- */
+.certifications-error {
+    padding: 15px;
+    background-color: #ffebee;
+    color: #c62828;
+    border-left: 4px solid #c62828;
+    margin: 20px 0;
+    font-weight: 500;
+    border-radius: 3px;
+}
+
+================
+File: assets/css/responsive-certifications.css
+================
+/**
+ * Certifications Plugin Responsive Styles
+ */
+
+/* ----------------------------------------
+   1. SMALL SCREENS (MOBILE)
+   ---------------------------------------- */
+@media (max-width: 767px) {
+    /* Sticky Menu */
+    .certifications-sticky-menu li {
+        margin: 0 8px;
+    }
+
+    .certifications-sticky-menu a {
+        font-size: 12px;
+    }
+
+    .certifications-back-to-top {
+        position: relative;
+        top: 0;
+        right: 0;
+        text-align: center;
+        margin-top: 10px;
+        display: block;
+    }
+
+    /* Certification Cards */
+    .certifications-title {
+        font-size: 14px;
+    }
+
+    .certifications-description {
+        font-size: 12px;
+    }
+
+    .certifications-button .certifications-btn {
+        font-size: 12px;
+        padding: 3px 10px;
+    }
+
+    /* Image positioning in intro section */
+    #certifications-intro .certifications-col-md-9 {
+        order: 1;
+    }
+
+    #certifications-intro .certifications-col-md-3 {
+        order: 2;
+        padding-top: 30px;
+    }
+
+    /* List Layout - Mobile */
+    .certifications-list .certifications-card-body {
+        flex-direction: column;
+    }
+
+    .certifications-list .certifications-image {
+        flex: 0 0 100%;
+        margin-right: 0;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .certifications-list .certifications-content {
+        flex: 1;
+        padding: 10px 0;
+    }
+
+    .certifications-list .certifications-title,
+    .certifications-list .certifications-description,
+    .certifications-list .certifications-button {
+        text-align: center;
+    }
+
+    /* Pagination - Mobile */
+    .certifications-pagination {
+        margin: 20px 0;
+    }
+
+    .certifications-pagination .certifications-page-numbers {
+        padding: 6px 10px;
+        font-size: 12px;
+        margin: 0 2px;
+    }
+
+    .certifications-pagination .certifications-page-numbers.certifications-prev,
+    .certifications-pagination .certifications-page-numbers.certifications-next {
+        padding: 6px 8px;
+    }
+}
+
+/* ----------------------------------------
+   2. MEDIUM SCREENS (TABLETS)
+   ---------------------------------------- */
+@media (min-width: 768px) and (max-width: 991px) {
+    .certifications-item {
+        padding: 10px;
+    }
+
+    #certifications-intro .certifications-col-md-3 {
+        padding-top: 30px;
+    }
+
+    .certifications-card-body {
+        padding: 15px;
+    }
+
+    .certifications-title {
+        font-size: 15px;
+    }
+
+    .certifications-description {
+        font-size: 13px;
+    }
+
+    .certifications-sticky-menu li {
+        margin: 0 10px;
+    }
+
+    /* List Layout - Tablet */
+    .certifications-list .certifications-image {
+        flex: 0 0 140px;
+        margin-right: 15px;
+    }
+
+    .certifications-list .certifications-content {
+        padding: 10px 0;
+    }
+
+    /* Pagination - Tablet */
+    .certifications-pagination .certifications-page-numbers {
+        padding: 7px 12px;
+        font-size: 13px;
+    }
+}
+
+/* ----------------------------------------
+   3. LARGE SCREENS ADJUSTMENTS
+   ---------------------------------------- */
+@media (min-width: 992px) {
+    .certifications-card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Ensure image is properly positioned on desktop */
+    #certifications-intro .certifications-col-md-9 {
+        order: 1;
+    }
+
+    #certifications-intro .certifications-col-md-3 {
+        order: 2;
+        display: flex;
+        align-items: center;
+    }
+
+    /* List Layout - Desktop */
+    .certifications-list .certifications-card {
+        transition: all 0.3s ease;
+    }
+
+    .certifications-list .certifications-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+}
+
+/* ----------------------------------------
+   4. INTRO SECTION SPECIFIC IMAGE CONTAINER
+   ---------------------------------------- */
+#certifications-intro .certifications-col-md-3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .certifications-single .certifications-col-md-9 {
+        flex: 0 0 75%;
+        max-width: 75%;
+    }
+
+    .certifications-single .certifications-col-md-3 {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+}
+
+/* ----------------------------------------
+   5. CERTIFICATIONS SHORTCODE RESPONSIVE STYLES
+   ---------------------------------------- */
+@media (max-width: 767px) {
+    /* Shortcode Card Styles - Mobile */
+    .certifications-title {
+        font-size: 13px;
+    }
+
+    .certifications-description {
+        font-size: 11px;
+    }
+
+    .certifications-button .certifications-btn {
+        font-size: 12px;
+        padding: 4px 12px;
+    }
+
+    .certifications-thumbnail {
+        max-width: 120px;
+    }
+
+    /* Single Certification Shortcode - Mobile */
+    .certifications-single.certifications-shortcode {
+        padding: 15px;
+    }
+
+    .certifications-single.certifications-shortcode .certifications-title {
+        font-size: 20px;
+    }
+
+    .certifications-single.certifications-shortcode .certifications-action-buttons {
+        flex-direction: column;
+    }
+
+    .certifications-single.certifications-shortcode .certifications-action-buttons .certifications-btn {
+        margin-right: 0;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .certifications-single.certifications-shortcode h3.certifications-text-to-uppercase {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    /* Shortcode Card Styles - Tablet */
+    .certifications-card-body {
+        padding: 15px;
+    }
+
+    .certifications-title {
+        font-size: 13px;
+    }
+
+    /* Single Certification Shortcode - Tablet */
+    .certifications-single.certifications-shortcode {
+        padding: 20px;
+    }
+
+    .certifications-single.certifications-shortcode .certifications-title {
+        font-size: 22px;
+    }
+}
+
+/* ----------------------------------------
+   6. PAGINATION RESPONSIVE STYLES
+   ---------------------------------------- */
+@media (max-width: 480px) {
+    /* Extremely small screens */
+    .certifications-pagination .certifications-page-numbers {
+        padding: 5px 8px;
+        font-size: 11px;
+        margin: 0 1px;
+    }
+
+    /* Hide some pagination numbers on very small screens */
+    .certifications-pagination .certifications-page-numbers:not(.certifications-prev):not(.certifications-next):not(.certifications-current) {
+        display: none;
+    }
+
+    .certifications-pagination .certifications-page-numbers.certifications-current,
+    .certifications-pagination .certifications-page-numbers.certifications-prev,
+    .certifications-pagination .certifications-page-numbers.certifications-next {
+        display: inline-block;
+    }
+}
+
+================
+File: assets/js/certifications.js
+================
+/**
+ * Certifications Plugin Scripts
+ */
+(function($) {
+    'use strict';
+
+    $(document).ready(function() {
+        // Smooth scroll for sticky menu links only
+        $('.certifications-sticky-menu a').on('click', function(e) {
+            if (this.hash !== '') {
+                e.preventDefault();
+                const hash = this.hash;
+
+                $('html, body').animate({
+                    scrollTop: $(hash).offset().top - 250 // Adjust this offset value as needed
+                }, 800);
+            }
+        });
+
+        // Handle "Back to Top" links separately - scroll to page top
+        $('.certifications-back-to-top a').on('click', function(e) {
+            e.preventDefault();
+
+            // Scroll to the top of the page
+            $('html, body').animate({
+                scrollTop: 0
+            }, 800);
+        });
+
+        // Highlight sticky menu items on scroll
+        $(window).on('scroll', function() {
+            const scrollPosition = $(window).scrollTop();
+
+            // Check each section
+            $('.certifications-row[id]').each(function() {
+                const currentSection = $(this);
+                const sectionTop = currentSection.offset().top - 300; // Increased offset
+                const sectionBottom = sectionTop + currentSection.outerHeight();
+
+                if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                    $('.certifications-sticky-menu a').removeClass('certifications-active');
+                    $('.certifications-sticky-menu a[href="#' + currentSection.attr('id') + '"]').addClass('certifications-active');
+                }
+            });
+        });
+    });
+})(jQuery);
+
+================
+File: includes/class-certifications-acf.php
+================
+<?php
+/**
+ * ACF Field Group Registration
+ *
+ * @package Certifications_Plugin
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Class to handle registration and synchronization of ACF field groups.
+ */
+class Certifications_ACF {
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		// Register local JSON save point
+		add_filter('acf/settings/save_json', array($this, 'acf_json_save_point'));
+
+		// Register local JSON load point
+		add_filter('acf/settings/load_json', array($this, 'acf_json_load_point'));
+
+		// Hook into ACF initialization - important for correct loading order
+		add_action('acf/init', array($this, 'initialize_acf_sync'), 5);
+
+		// Add a notice if there are field groups that need syncing
+		add_action('admin_notices', array($this, 'sync_admin_notice'));
+
+		// Add an action to handle syncing
+		add_action('admin_post_certifications_sync_acf', array($this, 'handle_sync_action'));
+
+		// Add logging for debugging
+		if (WP_DEBUG) {
+			error_log('Certifications_ACF initialized');
+		}
+	}
+
+	/**
+	 * Define ACF JSON save point
+	 *
+	 * @param string $path The path to save ACF JSON files.
+	 * @return string The modified path.
+	 */
+	public function acf_json_save_point( $path ) {
+		// Create acf-json directory in plugin if it doesn't exist
+		$plugin_acf_path = CERTIFICATIONS_PLUGIN_PATH . 'acf-json';
+
+		if ( ! file_exists( $plugin_acf_path ) ) {
+			mkdir( $plugin_acf_path, 0755, true );
+
+			if ( WP_DEBUG ) {
+				error_log( 'Created ACF JSON directory at: ' . $plugin_acf_path );
+			}
+		}
+
+		// Set save point to plugin directory
+		return $plugin_acf_path;
+	}
+
+	/**
+	 * Register ACF JSON load point
+	 *
+	 * @param array $paths Array of paths ACF will load JSON files from.
+	 * @return array Modified array of paths.
+	 */
+	public function acf_json_load_point( $paths ) {
+		// Ensure paths is an array
+		if (!is_array($paths)) {
+			$paths = array();
+		}
+
+		// Add our path to the load paths
+		$paths[] = CERTIFICATIONS_PLUGIN_PATH . 'acf-json';
+
+		if ( WP_DEBUG ) {
+			error_log( 'Added ACF JSON load path: ' . CERTIFICATIONS_PLUGIN_PATH . 'acf-json' );
+		}
+
+		return $paths;
+	}
+
+	/**
+	 * Initialize ACF sync
+	 *
+	 * @param mixed $context The context parameter passed by WordPress.
+	 */
+	public function initialize_acf_sync($context = null) {
+		// Check if we're in the admin and have ACF functions
+		if (!is_admin() || !function_exists('acf_get_field_group')) {
+			return;
+		}
+
+		// Get all JSON field groups
+		$json_groups = $this->get_acf_json_files();
+
+		if (empty($json_groups) || !is_array($json_groups)) {
+			if (WP_DEBUG) {
+				error_log('No valid JSON field groups found for import');
+			}
+			return;
+		}
+
+		foreach ($json_groups as $json_group) {
+			if (!is_array($json_group) || !isset($json_group['key'])) {
+				if (WP_DEBUG) {
+					error_log('Invalid field group format: ' . print_r($json_group, true));
+				}
+				continue;
+			}
+
+			// Try to get existing field group
+			$existing = acf_get_field_group($json_group['key']);
+
+			// If this field group doesn't exist in the database yet, create it
+			if (!$existing) {
+				// Import the field group
+				acf_import_field_group($json_group);
+				if (WP_DEBUG) {
+					error_log('Imported field group: ' . (isset($json_group['title']) ? $json_group['title'] : 'Unknown'));
+				}
+			}
+		}
+	}
+
+	/**
+	 * Get all field groups from JSON files
+	 *
+	 * @return array Array of field groups from JSON files
+	 */
+	private function get_acf_json_files() {
+		$json_groups = array();
+		$path = CERTIFICATIONS_PLUGIN_PATH . 'acf-json';
+
+		if (!is_dir($path)) {
+			if (WP_DEBUG) {
+				error_log('ACF JSON directory does not exist: ' . $path);
+			}
+			return $json_groups;
+		}
+
+		$files = scandir($path);
+		if (!$files || !is_array($files)) {
+			if (WP_DEBUG) {
+				error_log('Could not scan ACF JSON directory: ' . $path);
+			}
+			return $json_groups;
+		}
+
+		foreach ($files as $file) {
+			// Skip non-JSON files and hidden files
+			if (pathinfo($file, PATHINFO_EXTENSION) !== 'json' || substr($file, 0, 1) === '.') {
+				continue;
+			}
+
+			$json_file = $path . '/' . $file;
+			if (!file_exists($json_file) || !is_readable($json_file)) {
+				if (WP_DEBUG) {
+					error_log('Cannot read JSON file: ' . $json_file);
+				}
+				continue;
+			}
+
+			$json_content = file_get_contents($json_file);
+			if ($json_content === false) {
+				if (WP_DEBUG) {
+					error_log('Failed to read JSON file content: ' . $json_file);
+				}
+				continue;
+			}
+
+			$json_data = json_decode($json_content, true);
+
+			if (json_last_error() !== JSON_ERROR_NONE) {
+				if (WP_DEBUG) {
+					error_log('JSON decode error for file ' . $file . ': ' . json_last_error_msg());
+				}
+				continue;
+			}
+
+			if (!is_array($json_data)) {
+				if (WP_DEBUG) {
+					error_log('JSON data is not an array: ' . $file);
+				}
+				continue;
+			}
+
+			foreach ($json_data as $field_group) {
+				if (is_array($field_group) && isset($field_group['key'])) {
+					$json_groups[] = $field_group;
+				} else {
+					if (WP_DEBUG) {
+						error_log('Invalid field group structure in ' . $file);
+					}
+				}
+			}
+		}
+
+		return $json_groups;
+	}
+
+	/**
+	 * Display admin notice if there are field groups that need syncing
+	 *
+	 * @param string $context The context parameter passed by WordPress.
+	 */
+	public function sync_admin_notice($context = '') {
+		// Only show on ACF admin pages
+		$screen = get_current_screen();
+		if (!$screen || !is_object($screen) || !isset($screen->id) || strpos($screen->id, 'acf-field-group') === false) {
+			return;
+		}
+
+		$sync_required = $this->get_field_groups_requiring_sync();
+
+		if (!empty($sync_required) && is_array($sync_required)) {
+			?>
+            <div class="notice notice-warning is-dismissible">
+                <p>
+					<?php
+					printf(
+						_n(
+							'There is %d Certifications field group that requires synchronization.',
+							'There are %d Certifications field groups that require synchronization.',
+							count($sync_required),
+							'certifications-plugin'
+						),
+						count($sync_required)
+					);
+					?>
+                    <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=certifications_sync_acf'), 'certifications_sync_acf')); ?>" class="button button-primary">
+						<?php _e('Sync Field Groups', 'certifications-plugin'); ?>
+                    </a>
+                </p>
+            </div>
+			<?php
+		}
+	}
+
+	/**
+	 * Get field groups that require synchronization
+	 *
+	 * @return array Array of field groups that require synchronization
+	 */
+	private function get_field_groups_requiring_sync() {
+		if (!function_exists('acf_get_field_group')) {
+			return array();
+		}
+
+		$sync_required = array();
+		$json_groups = $this->get_acf_json_files();
+
+		if (!is_array($json_groups)) {
+			if (WP_DEBUG) {
+				error_log('JSON groups is not an array: ' . print_r($json_groups, true));
+			}
+			return array();
+		}
+
+		foreach ($json_groups as $json_group) {
+			// Verify json_group is an array and has the required key
+			if (!is_array($json_group) || !isset($json_group['key'])) {
+				if (WP_DEBUG) {
+					error_log('Invalid JSON group format: ' . print_r($json_group, true));
+				}
+				continue;
+			}
+
+			// Get database version
+			$db_group = acf_get_field_group($json_group['key']);
+
+			// If DB version doesn't exist or has a different modified time, it needs sync
+			if (!$db_group) {
+				$sync_required[] = $json_group;
+			} else if (isset($json_group['modified']) && isset($db_group['modified']) && $db_group['modified'] != $json_group['modified']) {
+				$sync_required[] = $json_group;
+			}
+		}
+
+		return $sync_required;
+	}
+
+	/**
+	 * Handle the synchronization action
+	 */
+	public function handle_sync_action() {
+		// Security check - use a more inclusive approach for capabilities
+		if (!current_user_can('manage_acf') && !current_user_can('edit_posts') && !current_user_can('manage_options')) {
+			wp_die(__('You do not have sufficient permissions to access this page.', 'certifications-plugin'));
+		}
+
+		// Verify nonce for security
+		if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'certifications_sync_acf')) {
+			wp_die(__('Security check failed.', 'certifications-plugin'));
+		}
+
+		$json_groups = $this->get_acf_json_files();
+		$count = 0;
+
+		if (is_array($json_groups)) {
+			foreach ($json_groups as $json_group) {
+				if (is_array($json_group) && isset($json_group['key'])) {
+					acf_import_field_group($json_group);
+					$count++;
+				}
+			}
+		}
+
+		// Redirect to the main ACF field groups list
+		wp_redirect(add_query_arg(array(
+			'post_type' => 'acf-field-group',
+			'sync' => 'complete',
+			'count' => $count
+		), admin_url('edit.php')));
+
+		exit;
+	}
+
+	/**
+	 * Register certification field groups programmatically if needed
+	 *
+	 * This is a fallback in case the JSON synchronization doesn't work
+	 * or if you prefer to register fields via PHP.
+	 */
+	public function register_field_groups() {
+		// If no field groups exist in ACF, register them programmatically
+		if (!$this->field_groups_exist()) {
+			$this->register_certifications_fields();
+
+			if (WP_DEBUG) {
+				error_log('Registered certification field groups programmatically');
+			}
+		}
+	}
+
+	/**
+	 * Check if certification field groups already exist
+	 *
+	 * @return bool True if field groups exist, false otherwise.
+	 */
+	private function field_groups_exist() {
+		// Check if ACF function exists
+		if (!function_exists('acf_get_field_groups')) {
+			return false;
+		}
+
+		// Get field groups
+		$field_groups = acf_get_field_groups(array(
+			'post_type' => 'certification',
+		));
+
+		// Return true if certification field groups exist and it's an array with elements
+		return is_array($field_groups) && !empty($field_groups);
+	}
+
+	/**
+	 * Register certification field groups
+	 */
+	private function register_certifications_fields() {
+		// Only proceed if ACF function exists
+		if (!function_exists('acf_add_local_field_group')) {
+			return;
+		}
+
+		// Register Certifications Field Group
+		acf_add_local_field_group(array(
+			'key' => 'group_67bf615a25b23',
+			'title' => 'Certifications Field Group',
+			'fields' => array(
+				array(
+					'key' => 'field_67bf615add99b',
+					'label' => 'Intro',
+					'name' => 'intro',
+					'aria-label' => '',
+					'type' => 'wysiwyg',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'relevanssi_exclude' => 0,
+					'default_value' => '',
+					'allow_in_bindings' => 0,
+					'tabs' => 'all',
+					'toolbar' => 'full',
+					'media_upload' => 1,
+					'delay' => 0,
+				),
+				array(
+					'key' => 'field_67bf617add99g',
+					'label' => 'Apply Button URL',
+					'name' => 'apply_button_url',
+					'aria-label' => '',
+					'type' => 'url',
+					'instructions' => 'Enter the URL for the Apply Now button',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'relevanssi_exclude' => 0,
+					'default_value' => '',
+					'allow_in_bindings' => 0,
+					'placeholder' => '',
+				),
+				array(
+					'key' => 'field_67bf618add99h',
+					'label' => 'Renew Button URL',
+					'name' => 'renew_button_url',
+					'aria-label' => '',
+					'type' => 'url',
+					'instructions' => 'Enter the URL for the Renew button',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'relevanssi_exclude' => 0,
+					'default_value' => '',
+					'allow_in_bindings' => 0,
+					'placeholder' => '',
+				),
+				array(
+					'key' => 'field_67bf6184dd99c',
+					'label' => 'Prepare & Apply',
+					'name' => 'prepare_&_apply',
+					'aria-label' => '',
+					'type' => 'wysiwyg',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'relevanssi_exclude' => 0,
+					'default_value' => '',
+					'allow_in_bindings' => 0,
+					'tabs' => 'all',
+					'toolbar' => 'full',
+					'media_upload' => 1,
+					'delay' => 0,
+				),
+				array(
+					'key' => 'field_67bf6196dd99d',
+					'label' => 'Get Certified',
+					'name' => 'get_certified',
+					'aria-label' => '',
+					'type' => 'wysiwyg',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'relevanssi_exclude' => 0,
+					'default_value' => '',
+					'allow_in_bindings' => 0,
+					'tabs' => 'all',
+					'toolbar' => 'full',
+					'media_upload' => 1,
+					'delay' => 0,
+				),
+				array(
+					'key' => 'field_67bf61a3dd99e',
+					'label' => 'After The Exam',
+					'name' => 'after_the_exam',
+					'aria-label' => '',
+					'type' => 'wysiwyg',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'relevanssi_exclude' => 0,
+					'default_value' => '',
+					'allow_in_bindings' => 0,
+					'tabs' => 'all',
+					'toolbar' => 'full',
+					'media_upload' => 1,
+					'delay' => 0,
+				),
+				array(
+					'key' => 'field_67bf61afdd99f',
+					'label' => 'Documents',
+					'name' => 'documents',
+					'aria-label' => '',
+					'type' => 'wysiwyg',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'relevanssi_exclude' => 0,
+					'default_value' => '',
+					'allow_in_bindings' => 0,
+					'tabs' => 'all',
+					'toolbar' => 'full',
+					'media_upload' => 1,
+					'delay' => 0,
+				),
+			),
+			'location' => array(
+				array(
+					array(
+						'param' => 'post_type',
+						'operator' => '==',
+						'value' => 'certification',
+					),
+				),
+			),
+			'menu_order' => 0,
+			'position' => 'normal',
+			'style' => 'default',
+			'label_placement' => 'top',
+			'instruction_placement' => 'label',
+			'hide_on_screen' => '',
+			'active' => true,
+			'description' => '',
+			'show_in_rest' => 0,
+		));
+	}
+}
+
+================
+File: includes/class-certifications-cpt.php
+================
+<?php
+/**
+ * Custom Post Type Registration
+ *
+ * @package Certifications_Plugin
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Class to handle registration of the Certifications custom post type.
+ */
+class Certifications_CPT {
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		// Register the custom post type.
+		add_action( 'init', array( $this, 'register_post_type' ) );
+		// Add meta boxes
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+		add_action( 'save_post_certification', array( $this, 'save_meta_box_data' ) );
+		// Add custom admin columns
+		add_filter( 'manage_certification_posts_columns', array( $this, 'add_admin_columns' ) );
+		add_action( 'manage_certification_posts_custom_column', array( $this, 'custom_column_content' ), 10, 2 );
+		add_filter( 'manage_edit-certification_sortable_columns', array( $this, 'sortable_columns' ) );
+		add_action( 'pre_get_posts', array( $this, 'sort_by_display_order' ) );
+		// Add template filters
+		add_filter( 'single_template', array( $this, 'single_template' ) );
+		add_filter( 'archive_template', array( $this, 'archive_template' ) );
+		// Add logging for debugging.
+		if ( WP_DEBUG ) {
+			error_log( 'Certifications_CPT initialized' );
+		}
+	}
+
+	/**
+	 * Register Certifications custom post type.
+	 */
+	public function register_post_type() {
+		register_post_type( 'certification', $this->get_post_type_args() );
+		// Log registration for debugging
+		if ( WP_DEBUG ) {
+			error_log( 'Certification post type registered' );
+		}
+	}
+
+	/**
+	 * Get post type arguments
+	 */
+	private function get_post_type_args() {
+		return array(
+			'labels'              => $this->get_post_type_labels(),
+			'description'         => __( 'Certifications custom post type', 'certifications-plugin' ),
+			'public'              => true,
+			'hierarchical'        => false,
+			'exclude_from_search' => false,
+			'publicly_queryable'  => true,
+			'show_ui'             => true,
+			'show_in_menu'        => true,
+			'show_in_admin_bar'   => true,
+			'show_in_nav_menus'   => true,
+			'show_in_rest'        => true,
+			'menu_position'       => null,
+			'menu_icon'           => 'dashicons-media-document',
+			'capability_type'     => 'post',
+			'supports'            => array(
+				'title',
+				'editor',
+				'page-attributes',
+				'thumbnail',
+				'custom-fields',
+			),
+			'taxonomies'          => array(
+				'category',
+				'post_tag',
+			),
+			'has_archive'         => false,
+			'rewrite' => array(
+				'slug' => 'credentials/certification',
+				'with_front' => false,
+				'feeds' => false,
+				'pages' => true,
+			),
+			'query_var'           => true,
+			'can_export'          => true,
+		);
+	}
+
+	/**
+	 * Get post type labels
+	 */
+	private function get_post_type_labels() {
+		return array(
+			'name'                  => _x( 'Certifications', 'Post type general name', 'certifications-plugin' ),
+			'singular_name'         => _x( 'Certification', 'Post type singular name', 'certifications-plugin' ),
+			'menu_name'             => _x( 'Certifications', 'Admin Menu text', 'certifications-plugin' ),
+			'all_items'             => __( 'All Certifications', 'certifications-plugin' ),
+			'edit_item'             => __( 'Edit Certification', 'certifications-plugin' ),
+			'view_item'             => __( 'View Certification', 'certifications-plugin' ),
+			'view_items'            => __( 'View Certifications', 'certifications-plugin' ),
+			'add_new_item'          => __( 'Add New Certification', 'certifications-plugin' ),
+			'add_new'               => __( 'Add New Certification', 'certifications-plugin' ),
+			'new_item'              => __( 'New Certification', 'certifications-plugin' ),
+			'parent_item_colon'     => __( 'Parent Certification:', 'certifications-plugin' ),
+			'search_items'          => __( 'Search Certifications', 'certifications-plugin' ),
+			'not_found'             => __( 'No certifications found', 'certifications-plugin' ),
+			'not_found_in_trash'    => __( 'No certifications found in Trash', 'certifications-plugin' ),
+			'archives'              => __( 'Certification Archives', 'certifications-plugin' ),
+			'attributes'            => __( 'Certification Attributes', 'certifications-plugin' ),
+			'insert_into_item'      => __( 'Insert into certification', 'certifications-plugin' ),
+			'uploaded_to_this_item' => __( 'Uploaded to this certification', 'certifications-plugin' ),
+			'filter_items_list'     => __( 'Filter certifications list', 'certifications-plugin' ),
+			'filter_by_date'        => __( 'Filter certifications by date', 'certifications-plugin' ),
+			'items_list_navigation' => __( 'Certifications list navigation', 'certifications-plugin' ),
+			'items_list'            => __( 'Certifications list', 'certifications-plugin' ),
+			'item_published'        => __( 'Certification published.', 'certifications-plugin' ),
+			'item_published_privately' => __( 'Certification published privately.', 'certifications-plugin' ),
+			'item_reverted_to_draft' => __( 'Certification reverted to draft.', 'certifications-plugin' ),
+			'item_scheduled'        => __( 'Certification scheduled.', 'certifications-plugin' ),
+			'item_updated'          => __( 'Certification updated.', 'certifications-plugin' ),
+			'item_link'             => __( 'Certification Link', 'certifications-plugin' ),
+			'item_link_description' => __( 'A link to a certification.', 'certifications-plugin' ),
+		);
+	}
+
+	/**
+	 * Add meta boxes for certification post type
+	 */
+	public function add_meta_boxes() {
+		add_meta_box(
+			'certification_display_order',
+			__( 'Display Order', 'certifications-plugin' ),
+			array( $this, 'display_order_meta_box' ),
+			'certification',
+			'side',
+			'high'
+		);
+	}
+
+	/**
+	 * Display order meta box callback
+	 */
+	public function display_order_meta_box( $post ) {
+		// Add nonce for security
+		wp_nonce_field( 'certification_display_order_nonce', 'certification_display_order_nonce' );
+		// Get current value
+		$value = get_post_meta( $post->ID, '_certification_display_order', true );
+		echo '<label for="certification_display_order">';
+		echo __( 'Enter display order (lower numbers appear first):', 'certifications-plugin' );
+		echo '</label> ';
+		echo '<input type="number" id="certification_display_order" name="certification_display_order" value="' . esc_attr( $value ) . '" min="1" step="1" style="width: 100%">';
+	}
+
+	/**
+	 * Save meta box data
+	 */
+	public function save_meta_box_data( $post_id ) {
+		// Check if our nonce is set and verify it
+		if ( ! isset( $_POST['certification_display_order_nonce'] ) ||
+		     ! wp_verify_nonce( $_POST['certification_display_order_nonce'], 'certification_display_order_nonce' ) ) {
+			return;
+		}
+		// Check user permissions
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+		// Don't save on autosave
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+		// Save the display order
+		if ( isset( $_POST['certification_display_order'] ) ) {
+			$display_order = sanitize_text_field( $_POST['certification_display_order'] );
+			update_post_meta( $post_id, '_certification_display_order', $display_order );
+		}
+	}
+
+	/**
+	 * Add custom columns to admin list
+	 */
+	public function add_admin_columns( $columns ) {
+		$new_columns = array();
+		// Insert display order after checkbox but before title
+		foreach( $columns as $key => $value ) {
+			if ( $key === 'cb' ) {
+				$new_columns[$key] = $value;
+				$new_columns['display_order'] = __( 'Order', 'certifications-plugin' );
+			} else {
+				$new_columns[$key] = $value;
+			}
+		}
+		return $new_columns;
+	}
+
+	/**
+	 * Display content for custom columns
+	 */
+	public function custom_column_content( $column, $post_id ) {
+		if ( 'display_order' === $column ) {
+			$order = get_post_meta( $post_id, '_certification_display_order', true );
+			echo esc_html( $order ?: '-' );
+		}
+	}
+
+	/**
+	 * Make custom columns sortable
+	 */
+	public function sortable_columns( $columns ) {
+		$columns['display_order'] = 'display_order';
+		return $columns;
+	}
+
+	/**
+	 * Sort by display order in admin
+	 */
+	public function sort_by_display_order( $query ) {
+		if ( ! is_admin() ) {
+			return;
+		}
+		$orderby = $query->get( 'orderby' );
+		if ( 'display_order' === $orderby ) {
+			$query->set( 'meta_key', '_certification_display_order' );
+			$query->set( 'orderby', 'meta_value_num' );
+		}
+	}
+
+	/**
+	 * Use custom template for single certification
+	 *
+	 * @param string $template The path of the template to include.
+	 * @return string The path of the template to include.
+	 */
+	public function single_template( $template ) {
+		if ( is_singular( 'certification' ) ) {
+			// Check if a custom template exists in the theme
+			$theme_template = locate_template( array( 'single-certification.php' ) );
+			// If a theme template exists, use that
+			if ( $theme_template ) {
+				return apply_filters( 'certifications_plugin_theme_single_template', $theme_template );
+			}
+			// Otherwise use the plugin template
+			$plugin_template = CERTIFICATIONS_PLUGIN_PATH . 'templates/single-certification.php';
+			if ( file_exists( $plugin_template ) ) {
+				return apply_filters( 'certifications_plugin_single_template', $plugin_template );
+			}
+		}
+		return $template;
+	}
+
+	/**
+	 * Use custom template for certification archives
+	 *
+	 * @param string $template The path of the template to include.
+	 * @return string The path of the template to include.
+	 */
+	public function archive_template( $template ) {
+		if ( is_post_type_archive( 'certification' ) ) {
+			// Check if a custom template exists in the theme
+			$theme_template = locate_template( array( 'archive-certification.php' ) );
+			// If a theme template exists, use that
+			if ( $theme_template ) {
+				return apply_filters( 'certifications_plugin_theme_archive_template', $theme_template );
+			}
+			// Otherwise use the plugin template
+			$plugin_template = CERTIFICATIONS_PLUGIN_PATH . 'templates/archive-certification.php';
+			if ( file_exists( $plugin_template ) ) {
+				return apply_filters( 'certifications_plugin_archive_template', $plugin_template );
+			}
+		}
+		return $template;
+	}
+}
+
+================
+File: includes/class-certifications-shortcode.php
+================
+<?php
+/**
+ * Shortcode for displaying certifications
+ *
+ * @package Certifications_Plugin
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Class to handle certification shortcodes.
+ */
+class Certifications_Shortcode {
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		// Register shortcodes
+		add_shortcode( 'certifications', array( $this, 'certifications_grid_shortcode' ) );
+		add_shortcode( 'certification', array( $this, 'single_certification_shortcode' ) );
+
+		// Register the shortcode-specific stylesheet
+		add_action( 'wp_enqueue_scripts', array( $this, 'register_shortcode_styles' ) );
+
+		// Add logging for debugging
+		if ( WP_DEBUG ) {
+			error_log( 'Certifications_Shortcode initialized' );
+		}
+	}
+
+	/**
+	 * Register shortcode-specific stylesheet with file-based versioning
+	 */
+	public function register_shortcode_styles() {
+		$css_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/css/certifications-shortcode.css';
+		$css_version = file_exists($css_file) ? filemtime($css_file) : CERTIFICATIONS_PLUGIN_VERSION;
+
+		wp_register_style(
+			'certifications-shortcode-style',
+			CERTIFICATIONS_PLUGIN_URL . 'assets/css/certifications-shortcode.css',
+			array(),
+			$css_version
+		);
+	}
+
+	/**
+	 * Shortcode to display certifications in a grid layout
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string HTML output.
+	 */
+	public function certifications_grid_shortcode( $atts ) {
+		// Enqueue styles
+		wp_enqueue_style( 'certifications-plugin-style' );
+		wp_enqueue_style( 'certifications-responsive-style' );
+		wp_enqueue_style( 'certifications-shortcode-style' );
+
+		// Shortcode attributes
+		$atts = shortcode_atts(
+			array(
+				// Basic display parameters
+				'display_type'    => 'grid',     // 'grid' or 'list'
+				'columns'         => 4,          // Number of columns in grid view
+				'count'           => -1,         // Number of certifications to display
+				'pagination'      => 'false',    // Whether to show pagination
+
+				// Ordering parameters
+				'order'           => 'ASC',      // ASC or DESC
+				'orderby'         => 'menu_order', // Options: date, title, menu_order, rand, meta_value
+				'meta_key'        => '',         // For ordering by meta_value
+
+				// Filtering parameters
+				'category'        => '',         // Filter by category slug
+				'tag'             => '',         // Filter by tag slug
+				'include'         => '',         // Specific certification IDs to include
+				'exclude'         => '',         // Specific certification IDs to exclude
+
+				// Layout & content parameters
+				'show_image'      => 'true',     // Whether to show the certification image
+				'image_size'      => 'medium',   // Size of thumbnail
+				'show_title'      => 'true',     // Display certification's title
+				'excerpt_length'  => 25,         // Length of excerpt in words
+
+				// Link parameters
+				'link_target'     => '_self',    // Where to open links
+				'show_button'     => 'true',     // Display "Learn More" button
+				'button_text'     => 'Learn More', // Custom text for button
+
+				// Advanced parameters
+				'offset'          => 0,          // Number of posts to offset/skip
+				'cache'           => 'true',     // Whether to cache results
+				'class'           => '',         // Additional CSS classes
+			),
+			$atts,
+			'certifications'
+		);
+
+		// Convert string booleans to actual booleans
+		foreach (array('pagination', 'show_image', 'show_title', 'show_button', 'cache') as $bool_att) {
+			$atts[$bool_att] = filter_var($atts[$bool_att], FILTER_VALIDATE_BOOLEAN);
+		}
+
+		// Convert numeric attributes
+		$atts['columns'] = intval($atts['columns']);
+		$atts['count'] = intval($atts['count']);
+		$atts['excerpt_length'] = intval($atts['excerpt_length']);
+		$atts['offset'] = intval($atts['offset']);
+
+		// Start output buffering
+		ob_start();
+
+		// Get cached output if caching is enabled
+		$cache_key = 'certifications_' . md5(serialize($atts));
+		$cached_output = $atts['cache'] ? get_transient($cache_key) : false;
+
+		if ($cached_output !== false) {
+			echo $cached_output;
+			return ob_get_clean();
+		}
+
+		// Get certifications
+		$certifications = $this->get_certifications( $atts );
+
+		// Check if any certifications exist
+		if ( $certifications && $certifications->have_posts() ) {
+			// Add container class based on display type
+			$container_class = 'certifications-container';
+			if ($atts['display_type'] === 'grid') {
+				$container_class .= ' certifications-grid certifications-row justify-content-start certifications-mt-15 certifications-mb-5';
+			} else {
+				$container_class .= ' certifications-list';
+			}
+
+			// Add custom class if provided
+			if (!empty($atts['class'])) {
+				$container_class .= ' ' . esc_attr($atts['class']);
+			}
+
+			// Output container
+			echo '<div class="' . esc_attr($container_class) . '">';
+
+			while ( $certifications->have_posts() ) {
+				$certifications->the_post();
+
+				// Get certification data
+				$id = get_the_ID();
+				$title = get_the_title();
+				$permalink = get_permalink();
+				$description = '';
+				$image = '';
+
+				// Get card description from ACF field if available
+				if (function_exists('get_field')) {
+					$card_description = get_field('card_description', $id);
+					if (!empty($card_description)) {
+						$description = wp_kses_post($card_description);
+					}
+					else {
+						// Fall back to intro field if card description is empty
+						$intro_field = get_field('intro', $id);
+						if (!empty($intro_field)) {
+							$description = wp_strip_all_tags($intro_field);
+							$description = wp_trim_words($description, $atts['excerpt_length']);
+						}
+					}
+				}
+
+				// If no ACF fields available, fall back to excerpt or content
+				if (empty($description)) {
+					if (has_excerpt()) {
+						$description = get_the_excerpt();
+					} else {
+						$description = get_the_content();
+						$description = strip_shortcodes($description);
+						$description = excerpt_remove_blocks($description);
+						$description = wp_strip_all_tags($description);
+					}
+					$description = wp_trim_words($description, $atts['excerpt_length'], '...');
+				}
+
+				// Get image if needed
+				if ($atts['show_image']) {
+					if (has_post_thumbnail()) {
+						$image = get_the_post_thumbnail($id, $atts['image_size'], array('class' => 'certifications-thumbnail'));
+					} elseif (function_exists('get_field')) {
+						// Try to get field image from ACF if featured image is not set
+						$acf_image = get_field('certification_logo', $id);
+						if ($acf_image && is_array($acf_image)) {
+							$image_src = $acf_image['sizes'][$atts['image_size']] ?? $acf_image['url'];
+							$image = '<img src="' . esc_url($image_src) . '" alt="' . esc_attr($title) . '" class="certifications-thumbnail" />';
+						}
+					}
+				}
+
+				// Calculate column classes based on display type and columns
+				$column_class = 'certifications-item';
+				if ($atts['display_type'] === 'grid') {
+					$column_class .= ' certifications-col certifications-small-12 certifications-large-' . (12 / intval($atts['columns']));
+				} else {
+					$column_class .= ' certifications-list-item';
+				}
+
+				// Output certification item
+				?>
+                <div class="<?php echo esc_attr($column_class); ?>">
+                    <div class="certifications-card">
+                        <div class="certifications-card-body">
+							<?php if ($image && $atts['show_image']) : ?>
+                                <div class="certifications-image">
+                                    <a href="<?php echo esc_url($permalink); ?>" target="<?php echo esc_attr($atts['link_target']); ?>">
+										<?php echo $image; ?>
+                                    </a>
+                                </div>
+							<?php endif; ?>
+
+                            <div class="certifications-content">
+								<?php if ($atts['show_title']) : ?>
+                                    <h3 class="certifications-title">
+                                        <a href="<?php echo esc_url($permalink); ?>" target="<?php echo esc_attr($atts['link_target']); ?>">
+											<?php echo esc_html($title); ?>
+                                        </a>
+                                    </h3>
+								<?php endif; ?>
+
+                                <div class="certifications-description">
+									<?php echo wp_kses_post($description); ?>
+                                </div>
+
+								<?php if ($atts['show_button']) : ?>
+                                    <div class="certifications-button">
+                                        <a href="<?php echo esc_url($permalink); ?>" class="certifications-btn certifications-secondary" target="<?php echo esc_attr($atts['link_target']); ?>">
+											<?php echo esc_html($atts['button_text']); ?>
+                                        </a>
+                                    </div>
+								<?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<?php
+			}
+
+			// Close container
+			echo '</div>';
+
+			// Add pagination if enabled
+			if ($atts['pagination'] && $certifications->max_num_pages > 1) {
+				echo '<div class="certifications-pagination">';
+				$big = 999999999; // Need an unlikely integer
+				echo paginate_links(array(
+					'base' => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
+					'format' => '?paged=%#%',
+					'current' => max(1, get_query_var('paged')),
+					'total' => $certifications->max_num_pages,
+					'prev_text' => '&laquo;',
+					'next_text' => '&raquo;',
+					'before_page_number' => '',
+					'after_page_number' => '',
+					'class' => 'certifications-page-numbers',
+					'prev_class' => 'certifications-prev',
+					'next_class' => 'certifications-next',
+					'current_class' => 'certifications-current',
+				));
+				echo '</div>';
+			}
+
+			// Reset post data
+			wp_reset_postdata();
+
+		} else {
+			// No certifications found
+			echo '<p class="certifications-no-results">No certifications found.</p>';
+		}
+
+		// Get buffer contents
+		$output = ob_get_clean();
+
+		// Cache the output if caching is enabled
+		if ($atts['cache']) {
+			set_transient($cache_key, $output, HOUR_IN_SECONDS);
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Shortcode to display a single certification
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string HTML output.
+	 */
+	public function single_certification_shortcode( $atts ) {
+		// Enqueue styles
+		wp_enqueue_style( 'certifications-plugin-style' );
+		wp_enqueue_style( 'certifications-responsive-style' );
+		wp_enqueue_style( 'certifications-shortcode-style' );
+		wp_enqueue_script( 'certifications-plugin-script' );
+
+		// Shortcode attributes
+		$atts = shortcode_atts(
+			array(
+				'id'                => 0,          // Certification ID
+				'show_image'        => 'true',     // Whether to show the certification image
+				'show_buttons'      => 'true',     // Display action buttons
+				'show_sections'     => 'true',     // Display content sections
+				'sections'          => 'all',      // Which sections to display: all, intro, prepare, certified, exam, documents
+				'class'             => '',         // Additional CSS classes
+				'cache'             => 'true',     // Whether to cache results
+			),
+			$atts,
+			'certification'
+		);
+
+		// Convert string booleans to actual booleans
+		foreach ( array( 'show_image', 'show_buttons', 'show_sections', 'cache' ) as $bool_att ) {
+			$atts[ $bool_att ] = filter_var( $atts[ $bool_att ], FILTER_VALIDATE_BOOLEAN );
+		}
+
+		// Convert ID to integer
+		$atts['id'] = intval( $atts['id'] );
+
+		// Start output buffering
+		ob_start();
+
+		// Get cached output if caching is enabled
+		$cache_key = 'certification_single_' . $atts['id'] . '_' . md5(serialize($atts));
+		$cached_output = $atts['cache'] ? get_transient($cache_key) : false;
+
+		if ($cached_output !== false) {
+			echo $cached_output;
+			return ob_get_clean();
+		}
+
+		// Check if we have a valid ID
+		if ( $atts['id'] <= 0 ) {
+			echo '<p class="certifications-error">' . __( 'Error: No Certification ID specified.', 'certifications-plugin' ) . '</p>';
+			return ob_get_clean();
+		}
+
+		// Get the certification post
+		$certification = get_post( $atts['id'] );
+
+		// Check if the certification exists and is of the correct post type
+		if ( !$certification || 'certification' !== $certification->post_type ) {
+			echo '<p class="certifications-error">' . __( 'Error: Certification not found.', 'certifications-plugin' ) . '</p>';
+			return ob_get_clean();
+		}
+
+		// Set up post data
+		setup_postdata( $GLOBALS['post'] = $certification );
+
+		// Container class
+		$container_class = 'certifications-single certifications-shortcode';
+		if ( !empty( $atts['class'] ) ) {
+			$container_class .= ' ' . esc_attr( $atts['class'] );
+		}
+
+		// Parse sections to display
+		$display_sections = array(
+			'intro' => true,
+			'prepare' => true,
+			'certified' => true,
+			'exam' => true,
+			'documents' => true
+		);
+
+		if ( $atts['sections'] !== 'all' ) {
+			$sections_to_show = explode( ',', $atts['sections'] );
+			$display_sections = array(
+				'intro' => in_array( 'intro', $sections_to_show ),
+				'prepare' => in_array( 'prepare', $sections_to_show ),
+				'certified' => in_array( 'certified', $sections_to_show ),
+				'exam' => in_array( 'exam', $sections_to_show ),
+				'documents' => in_array( 'documents', $sections_to_show )
+			);
+		}
+
+		// Get field values if ACF is active
+		$intro = $prepare_apply = $get_certified = $after_exam = $documents = '';
+		$apply_button_url = $renew_button_url = '#';
+
+		if ( function_exists( 'get_field' ) ) {
+			$intro = get_field( 'intro', $certification->ID );
+			$prepare_apply = get_field( 'prepare_&_apply', $certification->ID );
+			$get_certified = get_field( 'get_certified', $certification->ID );
+			$after_exam = get_field( 'after_the_exam', $certification->ID );
+			$documents = get_field( 'documents', $certification->ID );
+
+			$apply_button_url = get_field( 'apply_button_url', $certification->ID ) ?: '#';
+			$renew_button_url = get_field( 'renew_button_url', $certification->ID ) ?: '#';
+		}
+
+		// Start output
+		?>
+        <div class="<?php echo esc_attr( $container_class ); ?>">
+            <h2 class="certifications-title"><?php the_title(); ?></h2>
+
+			<?php if ( $atts['show_image'] && has_post_thumbnail( $certification->ID ) ) : ?>
+                <div class="certifications-featured-image">
+					<?php echo get_the_post_thumbnail( $certification->ID, 'medium', array(
+						'class' => 'certifications-thumbnail',
+						'loading' => 'lazy'
+					) ); ?>
+                </div>
+			<?php endif; ?>
+
+			<?php if ( $atts['show_buttons'] ) : ?>
+                <div class="certifications-action-buttons">
+                    <a href="<?php echo esc_url( $apply_button_url ); ?>" class="certifications-btn certifications-primary">
+						<?php _e( 'APPLY NOW', 'certifications-plugin' ); ?>
+                    </a>
+                    <a href="<?php echo esc_url( $renew_button_url ); ?>" class="certifications-btn certifications-primary">
+						<?php _e( 'RENEW', 'certifications-plugin' ); ?>
+                    </a>
+                </div>
+			<?php endif; ?>
+
+			<?php if ( $atts['show_sections'] ) : ?>
+                <!-- Intro Section -->
+				<?php if ( $display_sections['intro'] && $intro ) : ?>
+                    <div class="certifications-section certifications-intro">
+                        <h3 class="certifications-text-to-uppercase"><?php _e( 'INTRO', 'certifications-plugin' ); ?></h3>
+                        <div class="certifications-field-content">
+							<?php echo $intro; ?>
+                        </div>
+                    </div>
+				<?php endif; ?>
+
+                <!-- Prepare & Apply Section -->
+				<?php if ( $display_sections['prepare'] && $prepare_apply ) : ?>
+                    <div class="certifications-section certifications-prepare">
+                        <h3 class="certifications-text-to-uppercase"><?php _e( 'PREPARE & APPLY', 'certifications-plugin' ); ?></h3>
+                        <div class="certifications-field-content">
+							<?php echo $prepare_apply; ?>
+                        </div>
+                    </div>
+				<?php endif; ?>
+
+                <!-- Get Certified Section -->
+				<?php if ( $display_sections['certified'] && $get_certified ) : ?>
+                    <div class="certifications-section certifications-get-certified">
+                        <h3 class="certifications-text-to-uppercase"><?php _e( 'GET CERTIFIED', 'certifications-plugin' ); ?></h3>
+                        <div class="certifications-field-content">
+							<?php echo $get_certified; ?>
+                        </div>
+                    </div>
+				<?php endif; ?>
+
+                <!-- After The Exam Section -->
+				<?php if ( $display_sections['exam'] && $after_exam ) : ?>
+                    <div class="certifications-section certifications-after-exam">
+                        <h3 class="certifications-text-to-uppercase"><?php _e( 'AFTER THE EXAM', 'certifications-plugin' ); ?></h3>
+                        <div class="certifications-field-content">
+							<?php echo $after_exam; ?>
+                        </div>
+                    </div>
+				<?php endif; ?>
+
+                <!-- Documents Section -->
+				<?php if ( $display_sections['documents'] && $documents ) : ?>
+                    <div class="certifications-section certifications-documents">
+                        <h3 class="certifications-text-to-uppercase"><?php _e( 'DOCUMENTS', 'certifications-plugin' ); ?></h3>
+                        <div class="certifications-field-content">
+							<?php echo $documents; ?>
+                        </div>
+                    </div>
+				<?php endif; ?>
+			<?php endif; ?>
+        </div>
+		<?php
+
+		// Reset post data
+		wp_reset_postdata();
+
+		// Get buffer contents and clean buffer
+		$output = ob_get_clean();
+
+		// Cache the output if caching is enabled
+		if ($atts['cache']) {
+			set_transient($cache_key, $output, HOUR_IN_SECONDS);
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Get certifications query
+	 *
+	 * @param array $atts Query parameters.
+	 * @return WP_Query Certifications query.
+	 */
+	private function get_certifications( $atts ) {
+		// Query arguments
+		$args = array(
+			'post_type'      => 'certification',
+			'posts_per_page' => $atts['count'],
+			'order'          => $atts['order'],
+			'orderby'        => $atts['orderby'],
+			'offset'         => $atts['offset'],
+		);
+
+		// Add meta key for ordering if specified
+		if ($atts['orderby'] === 'meta_value' && !empty($atts['meta_key'])) {
+			$args['meta_key'] = $atts['meta_key'];
+		} elseif ($atts['orderby'] === 'menu_order') {
+			// Default to using the display order meta for menu_order
+			$args['meta_key'] = '_certification_display_order';
+			$args['orderby'] = 'meta_value_num';
+		}
+
+		// Add category filter if specified
+		if ( ! empty( $atts['category'] ) ) {
+			// Check if category is an ID or slug
+			if (is_numeric($atts['category'])) {
+				$args['cat'] = intval($atts['category']);
+			} else {
+				$args['category_name'] = $atts['category'];
+			}
+		}
+
+		// Add tag filter if specified
+		if (!empty($atts['tag'])) {
+			// Check if tag is an ID or slug
+			if (is_numeric($atts['tag'])) {
+				$args['tag_id'] = intval($atts['tag']);
+			} else {
+				$args['tag'] = $atts['tag'];
+			}
+		}
+
+		// Add specific posts to include
+		if (!empty($atts['include'])) {
+			$include_ids = array_map('intval', explode(',', $atts['include']));
+			$args['post__in'] = $include_ids;
+		}
+
+		// Add specific posts to exclude
+		if (!empty($atts['exclude'])) {
+			$exclude_ids = array_map('intval', explode(',', $atts['exclude']));
+			$args['post__not_in'] = $exclude_ids;
+		}
+
+		// Add pagination if needed
+		if ($atts['pagination']) {
+			$args['paged'] = get_query_var('paged') ? get_query_var('paged') : 1;
+		}
+
+		// Create and return query
+		return new WP_Query( $args );
+	}
+}
+
+================
+File: templates/archive-certification.php
+================
+<?php
+/**
+ * The template for displaying certification archives
+ *
+ * @package Certifications_Plugin
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+get_header();
+
+// Get display options - can be filtered or set via theme customizer
+$display_type = apply_filters('certifications_archive_display_type', 'grid');
+$columns = apply_filters('certifications_archive_columns', 3);
+$show_image = apply_filters('certifications_archive_show_image', true);
+$image_size = apply_filters('certifications_archive_image_size', 'medium');
+$excerpt_length = apply_filters('certifications_archive_excerpt_length', 25);
+$button_text = apply_filters('certifications_archive_button_text', __('Learn More', 'certifications-plugin'));
+$link_target = apply_filters('certifications_archive_link_target', '_self');
+?>
+
+    <main id="main" class="certifications-archive">
+        <div class="certifications-page-wrapper">
+            <div class="certifications-container">
+                <div class="certifications-row">
+                    <div class="certifications-col certifications-large-12">
+                        <div class="certifications-col-inner">
+                            <header class="certifications-page-header">
+                                <h1 class="certifications-page-title"><?php post_type_archive_title(); ?></h1>
+                            </header>
+
+							<?php
+							// Add container class based on display type
+							$container_class = 'certifications-container';
+							if ($display_type === 'grid') {
+								$container_class .= ' certifications-grid certifications-row';
+							} else {
+								$container_class .= ' certifications-list';
+							}
+							?>
+
+                            <div class="<?php echo esc_attr($container_class); ?>">
+								<?php if ( have_posts() ) : ?>
+									<?php while ( have_posts() ) : the_post();
+										// Get certification data
+										$id = get_the_ID();
+										$title = get_the_title();
+										$permalink = get_permalink();
+										$description = '';
+										$image = '';
+
+										// Get card description from ACF field if available
+										if (function_exists('get_field')) {
+											$card_description = get_field('card_description', $id);
+											if (!empty($card_description)) {
+												$description = wp_kses_post($card_description);
+											}
+											else {
+												// Fall back to intro field if card description is empty
+												$intro_field = get_field('intro', $id);
+												if (!empty($intro_field)) {
+													$description = wp_strip_all_tags($intro_field);
+													$description = wp_trim_words($description, $excerpt_length);
+												}
+											}
+										}
+
+										// If no ACF fields available, fall back to excerpt or content
+										if (empty($description)) {
+											if (has_excerpt()) {
+												$description = get_the_excerpt();
+											} else {
+												$description = get_the_content();
+												$description = strip_shortcodes($description);
+												$description = excerpt_remove_blocks($description);
+												$description = wp_strip_all_tags($description);
+											}
+											$description = wp_trim_words($description, $excerpt_length, '...');
+										}
+
+										// Get image if needed
+										if ($show_image) {
+											if (has_post_thumbnail()) {
+												$image = get_the_post_thumbnail($id, $image_size, array('class' => 'certifications-thumbnail'));
+											} elseif (function_exists('get_field')) {
+												// Try to get field image from ACF if featured image is not set
+												$acf_image = get_field('certification_logo', $id);
+												if ($acf_image && is_array($acf_image)) {
+													$image_src = $acf_image['sizes'][$image_size] ?? $acf_image['url'];
+													$image = '<img src="' . esc_url($image_src) . '" alt="' . esc_attr($title) . '" class="certifications-thumbnail" />';
+												}
+											}
+										}
+
+										// Calculate column classes based on display type and columns
+										$column_class = 'certifications-item';
+										if ($display_type === 'grid') {
+											$column_class .= ' certifications-col certifications-small-12 certifications-large-' . (12 / intval($columns));
+										} else {
+											$column_class .= ' certifications-list-item';
+										}
+										?>
+                                        <div class="<?php echo esc_attr($column_class); ?>">
+                                            <div class="certifications-card">
+                                                <div class="certifications-card-body">
+													<?php if ($image && $show_image) : ?>
+                                                        <div class="certifications-image">
+                                                            <a href="<?php echo esc_url($permalink); ?>" target="<?php echo esc_attr($link_target); ?>">
+																<?php echo $image; ?>
+                                                            </a>
+                                                        </div>
+													<?php endif; ?>
+
+                                                    <div class="certifications-content">
+                                                        <h3 class="certifications-title">
+                                                            <a href="<?php echo esc_url($permalink); ?>" target="<?php echo esc_attr($link_target); ?>">
+																<?php echo esc_html($title); ?>
+                                                            </a>
+                                                        </h3>
+
+                                                        <div class="certifications-description">
+															<?php echo wp_kses_post($description); ?>
+                                                        </div>
+
+                                                        <div class="certifications-button">
+                                                            <a href="<?php echo esc_url($permalink); ?>" class="certifications-btn certifications-secondary" target="<?php echo esc_attr($link_target); ?>">
+																<?php echo esc_html($button_text); ?>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+									<?php endwhile; ?>
+								<?php else : ?>
+                                    <div class="certifications-col certifications-small-12">
+                                        <p class="certifications-no-results"><?php _e('No certifications found.', 'certifications-plugin'); ?></p>
+                                    </div>
+								<?php endif; ?>
+                            </div>
+
+							<?php
+							// Add standard WordPress pagination with custom class names
+							$pagination_args = array(
+								'prev_text' => '&laquo;',
+								'next_text' => '&raquo;',
+								'before_page_number' => '<span class="certifications-meta-nav certifications-screen-reader-text">' . __('Page', 'certifications-plugin') . ' </span>',
+								'class' => 'certifications-pagination',
+								'echo' => false
+							);
+
+							$pagination = paginate_links($pagination_args);
+
+							if (!empty($pagination)) {
+								// Replace default classes with our custom ones
+								$pagination = str_replace('page-numbers', 'certifications-page-numbers', $pagination);
+								$pagination = str_replace('prev', 'certifications-prev', $pagination);
+								$pagination = str_replace('next', 'certifications-next', $pagination);
+								$pagination = str_replace('current', 'certifications-current', $pagination);
+
+								echo '<div class="certifications-pagination">' . $pagination . '</div>';
+							}
+							?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<?php
+get_footer();
+
+================
+File: templates/single-certification.php
+================
+<?php
+/**
+ * The template for displaying single certification posts
+ *
+ * @package Certifications_Plugin
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+// Get the Flatsome theme header
+get_header();
+
+// Start the main content
+?>
+    <main id="main" class="certifications-single">
+        <div class="certifications-section-wrapper certifications-credentials-header">
+            <div class="certifications-container">
+                <div class="certifications-row">
+                    <div class="certifications-col-12">
+						<?php echo do_shortcode('[block id="certifications-header"]'); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<?php while ( have_posts() ) : the_post(); ?>
+
+			<?php
+			// Get field values
+			$intro = get_field('intro');
+			$prepare_apply = get_field('prepare_&_apply');
+			$get_certified = get_field('get_certified');
+			$after_exam = get_field('after_the_exam');
+			$documents = get_field('documents');
+			// Get button URLs
+			$apply_button_url = get_field('apply_button_url') ?: '#';
+			$renew_button_url = get_field('renew_button_url') ?: '#';
+			?>
+
+            <div class="certifications-container-of-boxes">
+                <!-- Sticky Menu Navigation -->
+                <div class="certifications-sticky-top" id="certifications-sticky-menu">
+                    <div class="certifications-container">
+                        <div class="certifications-row">
+                            <div class="certifications-col-md-12">
+                                <section class="certifications-credential-sections-links">
+                                    <nav>
+                                        <ul class="certifications-list-inline certifications-flex-container certifications-sticky-menu">
+                                            <li class="certifications-list-inline-item">
+                                                <a href="#certifications-overview">Overview</a>
+                                            </li>
+											<?php if ($intro) : ?>
+                                                <li class="certifications-list-inline-item">
+                                                    <a href="#certifications-intro">INTRO</a>
+                                                </li>
+											<?php endif; ?>
+											<?php if ($prepare_apply) : ?>
+                                                <li class="certifications-list-inline-item">
+                                                    <a href="#certifications-prepare-apply">PREPARE &amp; APPLY</a>
+                                                </li>
+											<?php endif; ?>
+											<?php if ($get_certified) : ?>
+                                                <li class="certifications-list-inline-item">
+                                                    <a href="#certifications-get-certified">GET CERTIFIED</a>
+                                                </li>
+											<?php endif; ?>
+											<?php if ($after_exam) : ?>
+                                                <li class="certifications-list-inline-item">
+                                                    <a href="#certifications-after-the-exam">AFTER THE EXAM</a>
+                                                </li>
+											<?php endif; ?>
+											<?php if ($documents) : ?>
+                                                <li class="certifications-list-inline-item">
+                                                    <a href="#certifications-documents">DOCUMENTS</a>
+                                                </li>
+											<?php endif; ?>
+                                        </ul>
+                                    </nav>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Overview Section -->
+                <div id="certifications-overview" class="certifications-section-wrapper">
+                    <div class="certifications-container certifications-pb-3">
+                        <div class="certifications-row certifications-pt-0">
+                            <div class="certifications-col-12">
+                                <div class="certifications-pt-2">
+                                    <p><?php echo get_the_excerpt(); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Intro Section -->
+				<?php if ($intro) : ?>
+                    <div id="certifications-intro" class="certifications-section-wrapper certifications-alternate-background-lightgrey">
+                        <div class="certifications-container certifications-pb-5 certifications-pt-5">
+                            <div class="certifications-row">
+                                <div class="certifications-col-12">
+                                    <div class="certifications-section-content">
+                                        <section class="certifications-pt-5">
+                                            <h3 class="certifications-text-to-uppercase">INTRO</h3>
+                                            <span class="certifications-back-to-top">
+                                                <a href="#certifications-sticky-menu">Back to Top</a>
+                                             </span>
+
+                                            <div class="certifications-row">
+                                                <div class="certifications-col-md-9">
+                                                    <div class="certifications-field-content">
+														<?php echo $intro; ?>
+
+                                                        <!-- Action Buttons -->
+                                                        <div class="certifications-action-buttons">
+                                                            <a href="<?php echo esc_url($apply_button_url); ?>" class="certifications-btn certifications-primary">APPLY NOW</a>
+                                                            <a href="<?php echo esc_url($renew_button_url); ?>" class="certifications-btn certifications-primary">RENEW</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="certifications-col-md-3">
+													<?php if (has_post_thumbnail()) : ?>
+                                                        <div class="certifications-featured-image">
+															<?php
+															$id = get_the_ID();
+															echo get_the_post_thumbnail($id, 'medium', array(
+																'class' => 'certifications-thumbnail',
+																'loading' => 'lazy'
+															));
+															?>
+                                                        </div>
+													<?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				<?php endif; ?>
+
+                <!-- Prepare & Apply Section -->
+				<?php if ($prepare_apply) : ?>
+                    <div id="certifications-prepare-apply" class="certifications-section-wrapper certifications-alternate-background-white">
+                        <div class="certifications-container certifications-pb-5 certifications-pt-5">
+                            <div class="certifications-row">
+                                <div class="certifications-col-12">
+                                    <div class="certifications-section-content">
+                                        <section class="certifications-pt-5">
+                                            <h3 class="certifications-text-to-uppercase">PREPARE &amp; APPLY</h3>
+                                            <span class="certifications-back-to-top">
+                                                <a href="#certifications-sticky-menu">Back to Top</a>
+                                            </span>
+                                            <div class="certifications-field-content">
+												<?php echo $prepare_apply; ?>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				<?php endif; ?>
+
+                <!-- Get Certified Section -->
+				<?php if ($get_certified) : ?>
+                    <div id="certifications-get-certified" class="certifications-section-wrapper certifications-alternate-background-lightgrey">
+                        <div class="certifications-container certifications-pb-5 certifications-pt-5">
+                            <div class="certifications-row">
+                                <div class="certifications-col-12">
+                                    <div class="certifications-section-content">
+                                        <section class="certifications-pt-5">
+                                            <h3 class="certifications-text-to-uppercase">GET CERTIFIED</h3>
+                                            <span class="certifications-back-to-top">
+                                                <a href="#certifications-sticky-menu">Back to Top</a>
+                                            </span>
+                                            <div class="certifications-field-content">
+												<?php echo $get_certified; ?>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				<?php endif; ?>
+
+                <!-- After The Exam Section -->
+				<?php if ($after_exam) : ?>
+                    <div id="certifications-after-the-exam" class="certifications-section-wrapper certifications-alternate-background-white">
+                        <div class="certifications-container certifications-pb-5 certifications-pt-5">
+                            <div class="certifications-row">
+                                <div class="certifications-col-12">
+                                    <div class="certifications-section-content">
+                                        <section class="certifications-pt-5">
+                                            <h3 class="certifications-text-to-uppercase">AFTER THE EXAM</h3>
+                                            <span class="certifications-back-to-top">
+                                                <a href="#certifications-sticky-menu">Back to Top</a>
+                                            </span>
+                                            <div class="certifications-field-content">
+												<?php echo $after_exam; ?>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				<?php endif; ?>
+
+                <!-- Documents Section -->
+				<?php if ($documents) : ?>
+                    <div id="certifications-documents" class="certifications-section-wrapper certifications-alternate-background-lightgrey">
+                        <div class="certifications-container certifications-pb-5 certifications-pt-5">
+                            <div class="certifications-row">
+                                <div class="certifications-col-12">
+                                    <div class="certifications-section-content">
+                                        <section class="certifications-pt-5">
+                                            <h3 class="certifications-text-to-uppercase">DOCUMENTS</h3>
+                                            <span class="certifications-back-to-top">
+                                                <a href="#certifications-sticky-menu">Back to Top</a>
+                                            </span>
+                                            <div class="certifications-field-content">
+												<?php echo $documents; ?>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				<?php endif; ?>
+
+            </div><!-- .certifications-container-of-boxes -->
+
+		<?php endwhile; ?>
+    </main>
+
+<?php
+// Get the Flatsome theme footer
+get_footer();
+
+================
+File: .gitignore
+================
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.zip
+
+# Build/dependency directories
+node_modules/
+vendor/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Compiled assets
+*.min.css
+*.min.js
+repomix-output.txt
+
+================
+File: certifications-plugin.php
+================
+<?php
+/**
+ * Plugin Name: Certifications Plugin
+ * Plugin URI: https://yourwebsite.com/
+ * Description: A custom plugin for managing and displaying certifications with ACF integration.
+ * Version: 1.0.23
+ * Author: Orases
+ * Author URI: https://orases.com/
+ * Text Domain: certifications-plugin
+ * Domain Path: /languages
+ * Requires at least: 5.8
+ * Requires PHP: 7.4
+ *
+ * @package Certifications_Plugin
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+// Define plugin constants.
+define( 'CERTIFICATIONS_PLUGIN_VERSION', '1.0.23' );
+define( 'CERTIFICATIONS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'CERTIFICATIONS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'CERTIFICATIONS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+
+// Check if ACF is active
+function certif_plugin_has_acf() {
+	return class_exists( 'ACF' );
+}
+
+// Plugin initialization
+function certifications_plugin_init() {
+	// Load plugin textdomain
+	load_plugin_textdomain( 'certifications-plugin', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+
+	// Include required files
+	require_once CERTIFICATIONS_PLUGIN_PATH . 'includes/class-certifications-cpt.php';
+
+	// Only load ACF integration if ACF is active
+	if ( certif_plugin_has_acf() ) {
+		require_once CERTIFICATIONS_PLUGIN_PATH . 'includes/class-certifications-acf.php';
+	} else {
+		// Admin notice if ACF is not active
+		add_action( 'admin_notices', 'certif_plugin_acf_missing_notice' );
+	}
+
+	// Load shortcode functionality
+	require_once CERTIFICATIONS_PLUGIN_PATH . 'includes/class-certifications-shortcode.php';
+
+	// Initialize classes
+	new Certifications_CPT();
+	if ( certif_plugin_has_acf() ) {
+		new Certifications_ACF();
+	}
+	new Certifications_Shortcode();
+
+	// Register assets
+	add_action( 'wp_enqueue_scripts', 'certifications_plugin_register_assets' );
+	add_action( 'admin_enqueue_scripts', 'certifications_plugin_register_admin_assets' );
+}
+add_action( 'plugins_loaded', 'certifications_plugin_init' );
+
+/**
+ * Add Help/Documentation page for the plugin
+ */
+function certifications_add_help_page() {
+	add_submenu_page(
+		'edit.php?post_type=certification',  // Parent menu slug
+		'Certifications Help',               // Page title
+		'How to Use',                        // Menu title
+		'edit_posts',                        // Capability
+		'certifications-help',               // Menu slug
+		'certifications_help_page_content'   // Callback function
+	);
+}
+add_action('admin_menu', 'certifications_add_help_page');
+
+/**
+ * Display the help page content
+ */
+function certifications_help_page_content() {
+	?>
+    <div class="wrap">
+        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+        <div class="card" style="max-width: 800px; padding: 20px; margin-top: 20px;">
+            <h2>How to Use Certifications Shortcode</h2>
+            <p>You can display certifications on any page or post using the shortcode below:</p>
+            <div style="background: #f5f5f5; padding: 15px; border-left: 4px solid #2271b1; font-family: monospace; margin: 20px 0;">
+                [certifications]
+            </div>
+            <h3>Available Options</h3>
+            <table class="widefat" style="margin-top: 15px;">
+                <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                    <th>Example</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><code>display_type</code></td>
+                    <td>Display as grid or list</td>
+                    <td>grid</td>
+                    <td><code>[certifications display_type="list"]</code></td>
+                </tr>
+                <tr>
+                    <td><code>count</code></td>
+                    <td>Number of certifications to display. Use -1 for all.</td>
+                    <td>-1</td>
+                    <td><code>[certifications count="4"]</code></td>
+                </tr>
+                <tr>
+                    <td><code>columns</code></td>
+                    <td>Number of columns in the grid display.</td>
+                    <td>4</td>
+                    <td><code>[certifications columns="3"]</code></td>
+                </tr>
+                <tr>
+                    <td><code>pagination</code></td>
+                    <td>Whether to show pagination controls</td>
+                    <td>false</td>
+                    <td><code>[certifications pagination="true"]</code></td>
+                </tr>
+                <tr>
+                    <td><code>category</code></td>
+                    <td>Filter by category slug. Separate multiple with commas.</td>
+                    <td>empty</td>
+                    <td><code>[certifications category="featured,popular"]</code></td>
+                </tr>
+                <tr>
+                    <td><code>order</code></td>
+                    <td>Order of certifications (ASC or DESC).</td>
+                    <td>ASC</td>
+                    <td><code>[certifications order="DESC"]</code></td>
+                </tr>
+                <tr>
+                    <td><code>show_image</code></td>
+                    <td>Whether to display the featured image</td>
+                    <td>true</td>
+                    <td><code>[certifications show_image="false"]</code></td>
+                </tr>
+                <tr>
+                    <td><code>button_text</code></td>
+                    <td>Custom text for the button</td>
+                    <td>Learn More</td>
+                    <td><code>[certifications button_text="View Details"]</code></td>
+                </tr>
+                </tbody>
+            </table>
+            <h3>Example</h3>
+            <p>To display 3 certifications from the "featured" category in 2 columns:</p>
+            <div style="background: #f5f5f5; padding: 15px; border-left: 4px solid #2271b1; font-family: monospace; margin: 20px 0;">
+                [certifications count="3" columns="2" category="featured"]
+            </div>
+
+            <h3>Single Certification Display</h3>
+            <p>You can also display a single certification using the following shortcode:</p>
+            <div style="background: #f5f5f5; padding: 15px; border-left: 4px solid #2271b1; font-family: monospace; margin: 20px 0;">
+                [certification id="123"]
+            </div>
+            <p>Where "123" is the ID of the certification you want to display.</p>
+        </div>
+    </div>
+	<?php
+}
+
+// Admin notice for missing ACF
+function certif_plugin_acf_missing_notice() {
+	?>
+    <div class="notice notice-error">
+        <p><?php _e( 'Certifications Plugin requires Advanced Custom Fields PRO to be installed and activated.', 'certifications-plugin' ); ?></p>
+    </div>
+	<?php
+}
+
+/**
+ * Clear plugin cache
+ * Used for clearing transients created by shortcodes
+ */
+function certifications_plugin_clear_cache() {
+	global $wpdb;
+
+	// Get all transients related to certifications
+	$sql = "SELECT `option_name` 
+            FROM {$wpdb->options} 
+            WHERE `option_name` LIKE '%_transient_certifications_%' 
+            OR `option_name` LIKE '%_transient_timeout_certifications_%'
+            OR `option_name` LIKE '%_transient_certification_single_%'
+            OR `option_name` LIKE '%_transient_timeout_certification_single_%'";
+
+	$transients = $wpdb->get_results($sql);
+
+	// Delete all found transients
+	if (!empty($transients)) {
+		foreach ($transients as $transient) {
+			$key = str_replace(array('_transient_', '_transient_timeout_'), '', $transient->option_name);
+			delete_transient($key);
+		}
+
+		if (WP_DEBUG) {
+			error_log('Certifications Plugin: Cache cleared');
+		}
+	}
+}
+
+// Register front-end assets
+function certifications_plugin_register_assets() {
+	// File paths for version calculation
+	$css_main_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/css/certifications.css';
+	$css_responsive_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/css/responsive-certifications.css';
+	$css_shortcode_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/css/certifications-shortcode.css';
+	$js_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/js/certifications.js';
+
+	// Calculate versions based on file modification time
+	$css_main_version = file_exists($css_main_file) ? filemtime($css_main_file) : CERTIFICATIONS_PLUGIN_VERSION;
+	$css_responsive_version = file_exists($css_responsive_file) ? filemtime($css_responsive_file) : CERTIFICATIONS_PLUGIN_VERSION;
+	$css_shortcode_version = file_exists($css_shortcode_file) ? filemtime($css_shortcode_file) : CERTIFICATIONS_PLUGIN_VERSION;
+	$js_version = file_exists($js_file) ? filemtime($js_file) : CERTIFICATIONS_PLUGIN_VERSION;
+
+	// Main CSS
+	wp_register_style(
+		'certifications-plugin-style',
+		CERTIFICATIONS_PLUGIN_URL . 'assets/css/certifications.css',
+		array(),
+		$css_main_version
+	);
+
+	// Responsive CSS
+	wp_register_style(
+		'certifications-plugin-responsive-style',
+		CERTIFICATIONS_PLUGIN_URL . 'assets/css/responsive-certifications.css',
+		array('certifications-plugin-style'), // This makes it load after the main CSS
+		$css_responsive_version
+	);
+
+	// Shortcode CSS
+	wp_register_style(
+		'certifications-shortcode-style',
+		CERTIFICATIONS_PLUGIN_URL . 'assets/css/certifications-shortcode.css',
+		array('certifications-plugin-style'),
+		$css_shortcode_version
+	);
+
+	// JavaScript
+	wp_register_script(
+		'certifications-plugin-script',
+		CERTIFICATIONS_PLUGIN_URL . 'assets/js/certifications.js',
+		array( 'jquery' ),
+		$js_version,
+		true
+	);
+
+	// Enqueue the assets
+	wp_enqueue_style( 'certifications-plugin-style' );
+	wp_enqueue_style( 'certifications-plugin-responsive-style' );
+	wp_enqueue_script( 'certifications-plugin-script' );
+
+	// Note: We don't enqueue shortcode CSS here because it will be enqueued
+	// by the shortcode function only when the shortcode is used
+}
+
+// Register admin assets
+function certifications_plugin_register_admin_assets($hook) {
+	// Only load on specific admin pages if needed
+	if ('post.php' === $hook || 'post-new.php' === $hook) {
+		global $post;
+		if ($post && 'certification' === $post->post_type) {
+			// File paths for version calculation
+			$css_main_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/css/certifications.css';
+			$css_responsive_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/css/responsive-certifications.css';
+			$css_shortcode_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/css/certifications-shortcode.css';
+			$js_file = CERTIFICATIONS_PLUGIN_PATH . 'assets/js/certifications.js';
+
+			// Calculate versions based on file modification time
+			$css_main_version = file_exists($css_main_file) ? filemtime($css_main_file) : CERTIFICATIONS_PLUGIN_VERSION;
+			$css_responsive_version = file_exists($css_responsive_file) ? filemtime($css_responsive_file) : CERTIFICATIONS_PLUGIN_VERSION;
+			$css_shortcode_version = file_exists($css_shortcode_file) ? filemtime($css_shortcode_file) : CERTIFICATIONS_PLUGIN_VERSION;
+			$js_version = file_exists($js_file) ? filemtime($js_file) : CERTIFICATIONS_PLUGIN_VERSION;
+
+			// Main CSS
+			wp_enqueue_style(
+				'certifications-plugin-style',
+				CERTIFICATIONS_PLUGIN_URL . 'assets/css/certifications.css',
+				array(),
+				$css_main_version
+			);
+
+			// Shortcode CSS
+			wp_enqueue_style(
+				'certifications-shortcode-style',
+				CERTIFICATIONS_PLUGIN_URL . 'assets/css/certifications-shortcode.css',
+				array('certifications-plugin-style'),
+				$css_shortcode_version
+			);
+
+			// Responsive CSS
+			wp_enqueue_style(
+				'certifications-responsive-style',
+				CERTIFICATIONS_PLUGIN_URL . 'assets/css/responsive-certifications.css',
+				array('certifications-plugin-style'),
+				$css_responsive_version
+			);
+
+			// Main JS
+			wp_enqueue_script(
+				'certifications-plugin-script',
+				CERTIFICATIONS_PLUGIN_URL . 'assets/js/certifications.js',
+				array('jquery'),
+				$js_version,
+				true
+			);
+		}
+	}
+}
+
+// Custom breadcrumbs shortcode for certification pages
+add_shortcode('certification_breadcrumbs', 'certifications_breadcrumbs_shortcode');
+function certifications_breadcrumbs_shortcode() {
+	if (!is_singular('certification')) {
+		return do_shortcode('[wpseo_breadcrumb]');
+	}
+
+	ob_start();
+	$post_title = get_the_title();
+	?>
+    <span>
+        <span><a href="<?php echo home_url(); ?>">Home</a></span>
+        <span class="yoast-divider">/</span>
+        <span><a href="<?php echo home_url('/credentials/'); ?>">Credentials</a></span>
+        <span class="yoast-divider">/</span>
+        <span><a href="<?php echo home_url('/credentials/certification/'); ?>">Certification</a></span>
+        <span class="yoast-divider">/</span>
+        <span class="breadcrumb_last" aria-current="page"><?php echo esc_html($post_title); ?></span>
+    </span>
+	<?php
+	return ob_get_clean();
+}
+
+// Force registration of ACF field groups from JSON
+function certif_force_acf_sync() {
+	if (!function_exists('acf_get_field_groups') || !function_exists('acf_add_local_field_group')) {
+		return;
+	}
+
+	// Path to the ACF JSON file
+	$json_file = CERTIFICATIONS_PLUGIN_PATH . 'acf-json/group_67bf615a25b23.json';
+	if (file_exists($json_file)) {
+		$json_content = file_get_contents($json_file);
+		// Check if json content is valid
+		if (!$json_content) {
+			error_log('Failed to read JSON file: ' . $json_file);
+			return;
+		}
+
+		$json_data = json_decode($json_content, true);
+		// Check if json_decode was successful
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			error_log('JSON decoding error: ' . json_last_error_msg());
+			return;
+		}
+
+		// Verify json_data is an array
+		if (!is_array($json_data)) {
+			error_log('JSON data is not an array');
+			return;
+		}
+
+		// Process each field group
+		foreach ($json_data as $field_group) {
+			// Verify field_group is an array
+			if (!is_array($field_group)) {
+				error_log('Field group is not an array');
+				continue;
+			}
+			// Verify field_group has a title
+			if (!isset($field_group['title'])) {
+				error_log('Field group has no title');
+				continue;
+			}
+
+			acf_add_local_field_group($field_group);
+			error_log('Registered field group: ' . $field_group['title']);
+		}
+	} else {
+		error_log('ACF JSON file not found: ' . $json_file);
+	}
+}
+add_action('acf/init', 'certif_force_acf_sync', 20);
+
+// Activation hook
+register_activation_hook( __FILE__, 'certif_plugin_activate' );
+function certif_plugin_activate() {
+	// Flush rewrite rules on activation
+	require_once CERTIFICATIONS_PLUGIN_PATH . 'includes/class-certifications-cpt.php';
+	$cpt = new Certifications_CPT();
+	$cpt->register_post_type();
+	flush_rewrite_rules();
+
+	// Clear any existing cache
+	certifications_plugin_clear_cache();
+
+	// Debug log on activation
+	if ( WP_DEBUG ) {
+		error_log( 'Certifications Plugin activated' );
+	}
+}
+
+// Deactivation hook
+register_deactivation_hook( __FILE__, 'certif_plugin_deactivate' );
+function certif_plugin_deactivate() {
+	// Flush rewrite rules on deactivation
+	flush_rewrite_rules();
+
+	// Clear any existing cache
+	certifications_plugin_clear_cache();
+
+	// Debug log on deactivation
+	if ( WP_DEBUG ) {
+		error_log( 'Certifications Plugin deactivated' );
+	}
+}
+
+================
+File: readme.txt
+================
+# Certifications Plugin
+
+A custom WordPress plugin for managing and displaying certifications with ACF integration.
+
+## Development
+
+This plugin uses Git for version control and GitHub Actions for automated deployment.
+
+### Workflow
+
+1. Create a feature branch from `develop`
+2. Make your changes
+3. Test thoroughly
+4. Push to GitHub and create a PR to `develop`
+5. Once approved, merge to `develop`
+6. When ready to deploy, create a PR from `develop` to `main`
+7. Merging to `main` will automatically:
+   - Increment the version number
+   - Deploy to the production server
+
+### Requirements
+
+- Advanced Custom Fields Pro
+- WordPress 5.8+
+- PHP 7.4+
+
+
+
+================================================================
+End of Codebase
+================================================================
