@@ -490,6 +490,43 @@ class Certifications_Help {
                 </div>
             </div>
 
+            <!-- Certification Images Shortcode Section -->
+            <div class="certifications-help-section">
+                <h2><?php esc_html_e('Shortcode: [certification_images]', 'certifications-plugin'); ?></h2>
+                <p><?php esc_html_e('This shortcode displays featured images of all certifications in a grid layout, with each image linking to its corresponding certification page.', 'certifications-plugin'); ?></p>
+
+                <h3><?php esc_html_e('Basic Usage', 'certifications-plugin'); ?></h3>
+                <div class="certifications-shortcode-example">
+                    [certification_images]
+                </div>
+
+                <h3><?php esc_html_e('Available Parameters', 'certifications-plugin'); ?></h3>
+                <table>
+                    <tr>
+                        <th><?php esc_html_e('Parameter', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Description', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Default', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Options', 'certifications-plugin'); ?></th>
+                        <th><?php esc_html_e('Examples', 'certifications-plugin'); ?></th>
+                    </tr>
+                    <tr>
+                        <td><code>cache</code></td>
+                        <td><?php esc_html_e('Whether to cache results', 'certifications-plugin'); ?></td>
+                        <td><code>true</code></td>
+                        <td><code>true</code>, <code>false</code></td>
+                        <td><code>cache="false"</code></td>
+                    </tr>
+                </table>
+
+                <h3><?php esc_html_e('Notes', 'certifications-plugin'); ?></h3>
+                <ul>
+                    <li><?php esc_html_e('Images are displayed in rows with 4 images per row.', 'certifications-plugin'); ?></li>
+                    <li><?php esc_html_e('Certifications are sorted by their menu order (page attributes) in ascending order.', 'certifications-plugin'); ?></li>
+                    <li><?php esc_html_e('Each image automatically links to its corresponding certification page.', 'certifications-plugin'); ?></li>
+                    <li><?php esc_html_e('The shortcode is responsive and will adjust to different screen sizes.', 'certifications-plugin'); ?></li>
+                </ul>
+            </div>
+
             <!-- Finding IDs Section -->
             <div class="certifications-help-section">
                 <h2><?php esc_html_e('Finding Certification IDs', 'certifications-plugin'); ?></h2>

@@ -346,3 +346,43 @@
     font-weight: 500;
     border-radius: 3px;
 }
+
+/* ----------------------------------------
+   11. CERTIFICATION IMAGES GRID
+   ---------------------------------------- */
+.certifications-images-container {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.certifications-images-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+    justify-content: flex-start;
+}
+
+.certifications-image-item {
+    flex: 0 0 25%;
+    max-width: 25%;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.certifications-image-item a {
+    display: block;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.certifications-image-item a:hover {
+    transform: translateY(-5px);
+}
+
+.certifications-image-thumbnail {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    display: block;
+    margin: 0 auto;
+}

@@ -289,3 +289,27 @@
         display: inline-block;
     }
 }
+
+/* ----------------------------------------
+   7. CERTIFICATION IMAGES RESPONSIVE STYLES
+   ---------------------------------------- */
+@media (max-width: 991px) {
+    .certifications-image-item {
+        flex: 0 0 33.333%;
+        max-width: 33.333%;
+    }
+}
+
+@media (max-width: 767px) {
+    .certifications-image-item {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 480px) {
+    .certifications-image-item {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
