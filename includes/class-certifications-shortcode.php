@@ -22,6 +22,8 @@ class Certifications_Shortcode {
 		// Register shortcodes
 		add_shortcode( 'certifications', array( $this, 'certifications_grid_shortcode' ) );
 		add_shortcode( 'certification', array( $this, 'single_certification_shortcode' ) );
+		// Add our new shortcode
+		add_shortcode( 'certification_images', array( $this, 'certification_images_shortcode' ) );
 
 		// Register the shortcode-specific stylesheet
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_shortcode_styles' ) );
@@ -481,6 +483,94 @@ class Certifications_Shortcode {
 
 		// Cache the output if caching is enabled
 		if ($atts['cache']) {
+			set_transient($cache_key, $output, HOUR_IN_SECONDS);
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Shortcode to display certification featured images in a grid
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string HTML output.
+	 */
+	public function certification_images_shortcode( $atts ) {
+		// Enqueue styles
+		wp_enqueue_style( 'certifications-plugin-style' );
+		wp_enqueue_style( 'certifications-responsive-style' );
+		wp_enqueue_style( 'certifications-shortcode-style' );
+
+		// Default attributes
+		$atts = shortcode_atts(
+			array(
+				'cache' => 'true',  // Whether to cache results
+			),
+			$atts,
+			'certification_images'
+		);
+
+		// Convert string boolean to actual boolean
+		$cache = filter_var($atts['cache'], FILTER_VALIDATE_BOOLEAN);
+
+		// Start output buffering
+		ob_start();
+
+		// Get cached output if caching is enabled
+		$cache_key = 'certification_images_' . md5(serialize($atts));
+		$cached_output = $cache ? get_transient($cache_key) : false;
+
+		if ($cached_output !== false) {
+			echo $cached_output;
+			return ob_get_clean();
+		}
+
+		// Query all certification posts ordered by menu_order
+		$certifications = new WP_Query( array(
+			'post_type'      => 'certification',
+			'posts_per_page' => -1,
+			'orderby'        => 'menu_order',
+			'order'          => 'ASC',
+		) );
+
+		if ( $certifications->have_posts() ) {
+			echo '<div class="certifications-images-container">';
+			echo '<div class="certifications-images-row">';
+
+			$counter = 0;
+
+			while ( $certifications->have_posts() ) {
+				$certifications->the_post();
+
+				if ( has_post_thumbnail() ) {
+					// Start a new row for every 4 items
+					if ( $counter > 0 && $counter % 4 === 0 ) {
+						echo '</div><div class="certifications-images-row">';
+					}
+
+					echo '<div class="certifications-image-item">';
+					echo '<a href="' . esc_url( get_permalink() ) . '">';
+					the_post_thumbnail( 'medium', array( 'class' => 'certifications-image-thumbnail' ) );
+					echo '</a>';
+					echo '</div>';
+
+					$counter++;
+				}
+			}
+
+			echo '</div>';
+			echo '</div>';
+
+			wp_reset_postdata();
+		} else {
+			echo '<p class="certifications-no-results">No certification images found.</p>';
+		}
+
+		// Get buffer contents
+		$output = ob_get_clean();
+
+		// Cache the output if caching is enabled
+		if ($cache) {
 			set_transient($cache_key, $output, HOUR_IN_SECONDS);
 		}
 
