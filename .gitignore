@@ -25,3 +25,4 @@ vendor/
 *.min.css
 *.min.js
 repomix-output.txt
+.aider*

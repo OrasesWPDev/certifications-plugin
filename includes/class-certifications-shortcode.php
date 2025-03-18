@@ -100,6 +100,11 @@ class Certifications_Shortcode {
 			$atts,
 			'certifications'
 		);
+		
+		// Allow cache to be disabled globally for testing
+		if ( defined('CERTIFICATIONS_DISABLE_CACHE') && CERTIFICATIONS_DISABLE_CACHE ) {
+			$atts['cache'] = false;
+		}
 
 		// Convert string booleans to actual booleans
 		foreach (array('pagination', 'show_image', 'show_title', 'show_button', 'cache') as $bool_att) {
@@ -316,6 +321,11 @@ class Certifications_Shortcode {
 			$atts,
 			'certification'
 		);
+		
+		// Allow cache to be disabled globally for testing
+		if ( defined('CERTIFICATIONS_DISABLE_CACHE') && CERTIFICATIONS_DISABLE_CACHE ) {
+			$atts['cache'] = false;
+		}
 
 		// Convert string booleans to actual booleans
 		foreach ( array( 'show_image', 'show_buttons', 'show_sections', 'cache' ) as $bool_att ) {
@@ -512,6 +522,11 @@ class Certifications_Shortcode {
 
 		// Convert string boolean to actual boolean
 		$cache = filter_var($atts['cache'], FILTER_VALIDATE_BOOLEAN);
+		
+		// Allow cache to be disabled globally for testing
+		if ( defined('CERTIFICATIONS_DISABLE_CACHE') && CERTIFICATIONS_DISABLE_CACHE ) {
+			$cache = false;
+		}
 
 		// Start output buffering
 		ob_start();

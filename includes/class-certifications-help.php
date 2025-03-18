@@ -24,6 +24,9 @@ class Certifications_Help {
 
 		// Add admin-specific styles
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
+		
+		// Add AJAX handler for dismissing the cache notice
+		add_action( 'wp_ajax_dismiss_certifications_cache_notice', array( $this, 'dismiss_cache_notice' ) );
 	}
 
 	/**
@@ -37,6 +40,16 @@ class Certifications_Help {
 			'edit_posts',                                         // Capability
 			'certifications-help',                                // Menu slug
 			array( $this, 'help_page_content' )                   // Callback function
+		);
+		
+		// Add Cache Management page
+		add_submenu_page(
+			'edit.php?post_type=certification',  // Parent menu slug
+			__( 'Cache Management', 'certifications-plugin' ), // Page title
+			__( 'Cache Management', 'certifications-plugin' ),  // Menu title
+			'manage_options',                                   // Capability - admin only
+			'certifications-cache',                             // Menu slug
+			array( $this, 'cache_management_page' )             // Callback function
 		);
 	}
 
@@ -60,6 +73,21 @@ class Certifications_Help {
 	 *
 	 * @return string CSS styles
 	 */
+	/**
+	 * AJAX handler for dismissing the cache notice
+	 */
+	public function dismiss_cache_notice() {
+		// Verify nonce
+		if (!isset($_REQUEST['nonce']) || !wp_verify_nonce($_REQUEST['nonce'], 'dismiss_certifications_cache_notice')) {
+			wp_die('Security check failed');
+		}
+		
+		// Update user meta to mark notice as dismissed
+		update_user_meta(get_current_user_id(), 'certifications_cache_notice_dismissed', true);
+		
+		wp_die();
+	}
+
 	private function get_admin_styles() {
 		return '
             .certifications-help-wrap {
@@ -157,6 +185,62 @@ class Certifications_Help {
                 word-break: break-word; /* Break words if necessary */
             }
         ';
+	}
+
+	/**
+	 * Content for cache management page
+	 */
+	public function cache_management_page() {
+		// Check if the clear cache button was clicked
+		if (isset($_POST['clear_certifications_cache']) && 
+			isset($_POST['certifications_cache_nonce']) && 
+			wp_verify_nonce($_POST['certifications_cache_nonce'], 'clear_certifications_cache')) {
+			
+			// Clear the cache
+			if (function_exists('certifications_plugin_clear_cache')) {
+				certifications_plugin_clear_cache();
+				echo '<div class="notice notice-success is-dismissible"><p>' . 
+					__('Certifications cache cleared successfully!', 'certifications-plugin') . 
+					'</p></div>';
+			}
+		}
+		?>
+		<div class="wrap">
+			<h1><?php _e('Certifications Cache Management', 'certifications-plugin'); ?></h1>
+			
+			<div class="card">
+				<h2><?php _e('Clear Cache', 'certifications-plugin'); ?></h2>
+				<p><?php _e('If you\'ve deleted or modified certifications and they still appear in shortcodes, clear the cache to refresh the data.', 'certifications-plugin'); ?></p>
+				
+				<form method="post" action="">
+					<?php wp_nonce_field('clear_certifications_cache', 'certifications_cache_nonce'); ?>
+					<p>
+						<input type="submit" name="clear_certifications_cache" class="button button-primary" 
+							value="<?php _e('Clear Certifications Cache', 'certifications-plugin'); ?>">
+					</p>
+				</form>
+			</div>
+			
+			<div class="card">
+				<h2><?php _e('About Caching', 'certifications-plugin'); ?></h2>
+				<p><?php _e('The Certifications plugin uses caching to improve performance. Cached data includes:', 'certifications-plugin'); ?></p>
+				<ul style="list-style-type: disc; margin-left: 20px;">
+					<li><?php _e('Certification grid/list shortcode output', 'certifications-plugin'); ?></li>
+					<li><?php _e('Single certification shortcode output', 'certifications-plugin'); ?></li>
+					<li><?php _e('Certification images shortcode output', 'certifications-plugin'); ?></li>
+				</ul>
+				<p><?php _e('Cache is automatically cleared when certifications are updated, but manual clearing may be needed after bulk operations.', 'certifications-plugin'); ?></p>
+			</div>
+			
+			<div class="card">
+				<h2><?php _e('Disable Caching Temporarily', 'certifications-plugin'); ?></h2>
+				<p><?php _e('You can also disable caching for individual shortcodes by adding the cache="false" parameter:', 'certifications-plugin'); ?></p>
+				<code>[certifications cache="false"]</code><br>
+				<code>[certification id="123" cache="false"]</code><br>
+				<code>[certification_images cache="false"]</code>
+			</div>
+		</div>
+		<?php
 	}
 
 	/**

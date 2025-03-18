@@ -24,6 +24,8 @@ define( 'CERTIFICATIONS_PLUGIN_VERSION', '1.0.27' );
 define( 'CERTIFICATIONS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CERTIFICATIONS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'CERTIFICATIONS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+// Set to true to disable all caching for testing purposes
+define( 'CERTIFICATIONS_DISABLE_CACHE', false );
 
 // Check if ACF is active
 function certif_plugin_has_acf() {
@@ -90,21 +92,28 @@ function certifications_plugin_clear_cache() {
             WHERE `option_name` LIKE '%_transient_certifications_%' 
             OR `option_name` LIKE '%_transient_timeout_certifications_%'
             OR `option_name` LIKE '%_transient_certification_single_%'
-            OR `option_name` LIKE '%_transient_timeout_certification_single_%'";
+            OR `option_name` LIKE '%_transient_timeout_certification_single_%'
+            OR `option_name` LIKE '%_transient_certification_images_%'
+            OR `option_name` LIKE '%_transient_timeout_certification_images_%'";
 
 	$transients = $wpdb->get_results($sql);
+	$count = 0;
 
 	// Delete all found transients
 	if (!empty($transients)) {
 		foreach ($transients as $transient) {
 			$key = str_replace(array('_transient_', '_transient_timeout_'), '', $transient->option_name);
-			delete_transient($key);
+			if (delete_transient($key)) {
+				$count++;
+			}
 		}
 
 		if (WP_DEBUG) {
-			error_log('Certifications Plugin: Cache cleared');
+			error_log('Certifications Plugin: ' . $count . ' cache items cleared');
 		}
 	}
+	
+	return $count;
 }
 
 // Register front-end assets

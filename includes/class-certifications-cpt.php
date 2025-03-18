@@ -31,6 +31,15 @@ class Certifications_CPT {
 		// Add template filters
 		add_filter( 'single_template', array( $this, 'single_template' ) );
 		add_filter( 'archive_template', array( $this, 'archive_template' ) );
+		// Add cache clearing hooks
+		add_action( 'save_post_certification', array( $this, 'clear_certification_cache' ) );
+		add_action( 'trash_post', array( $this, 'clear_certification_cache_on_trash' ) );
+		add_action( 'delete_post', array( $this, 'clear_certification_cache_on_trash' ) );
+		add_action( 'publish_post', array( $this, 'clear_certification_cache_on_status_change' ) );
+		add_action( 'draft_to_publish', array( $this, 'clear_certification_cache_on_status_change' ) );
+		add_action( 'pending_to_publish', array( $this, 'clear_certification_cache_on_status_change' ) );
+		// Add admin notices
+		add_action( 'admin_notices', array( $this, 'display_cache_admin_notice' ) );
 		// Add logging for debugging.
 		if ( WP_DEBUG ) {
 			error_log( 'Certifications_CPT initialized' );
@@ -272,5 +281,113 @@ class Certifications_CPT {
 			}
 		}
 		return $template;
+	}
+	
+	/**
+	 * Display admin notice about cache management
+	 */
+	public function display_cache_admin_notice() {
+		$screen = get_current_screen();
+		
+		// Only show on the certifications list page
+		if (!$screen || $screen->id !== 'edit-certification') {
+			return;
+		}
+		
+		// Don't show if the user has dismissed this notice
+		if (get_user_meta(get_current_user_id(), 'certifications_cache_notice_dismissed', true)) {
+			return;
+		}
+		
+		// Show the notice
+		?>
+		<div class="notice notice-info is-dismissible certifications-cache-notice">
+			<p>
+				<?php _e('<strong>Certifications Plugin:</strong> If deleted or modified certifications still appear in shortcodes, you may need to clear the cache.', 'certifications-plugin'); ?>
+				<a href="<?php echo admin_url('edit.php?post_type=certification&page=certifications-cache'); ?>" class="button button-small">
+					<?php _e('Manage Cache', 'certifications-plugin'); ?>
+				</a>
+			</p>
+		</div>
+		<script>
+			jQuery(document).ready(function($) {
+				$(document).on('click', '.certifications-cache-notice .notice-dismiss', function() {
+					$.ajax({
+						url: ajaxurl,
+						data: {
+							action: 'dismiss_certifications_cache_notice',
+							nonce: '<?php echo wp_create_nonce('dismiss_certifications_cache_notice'); ?>'
+						}
+					});
+				});
+			});
+		</script>
+		<?php
+	}
+
+	/**
+	 * Clear certification cache when a certification is saved
+	 *
+	 * @param int $post_id The post ID.
+	 */
+	public function clear_certification_cache( $post_id ) {
+		// Only proceed if this is a certification post
+		if ( get_post_type( $post_id ) !== 'certification' ) {
+			return;
+		}
+
+		// Call the main plugin's cache clearing function
+		if ( function_exists( 'certifications_plugin_clear_cache' ) ) {
+			certifications_plugin_clear_cache();
+			
+			if ( WP_DEBUG ) {
+				error_log( 'Certification cache cleared on save: ' . $post_id );
+			}
+		}
+	}
+
+	/**
+	 * Clear certification cache when a post is trashed or deleted
+	 *
+	 * @param int $post_id The post ID.
+	 */
+	public function clear_certification_cache_on_trash( $post_id ) {
+		// Only proceed if this is a certification post
+		if ( get_post_type( $post_id ) !== 'certification' ) {
+			return;
+		}
+
+		// Call the main plugin's cache clearing function
+		if ( function_exists( 'certifications_plugin_clear_cache' ) ) {
+			certifications_plugin_clear_cache();
+			
+			if ( WP_DEBUG ) {
+				error_log( 'Certification cache cleared on trash/delete: ' . $post_id );
+			}
+		}
+	}
+
+	/**
+	 * Clear certification cache when a post status changes
+	 *
+	 * @param WP_Post $post The post object.
+	 */
+	public function clear_certification_cache_on_status_change( $post ) {
+		// Get the post ID if we received a post object
+		$post_id = is_object( $post ) ? $post->ID : $post;
+		
+		// Only proceed if this is a certification post
+		if ( get_post_type( $post_id ) !== 'certification' ) {
+			return;
+		}
+
+		// Call the main plugin's cache clearing function
+		if ( function_exists( 'certifications_plugin_clear_cache' ) ) {
+			certifications_plugin_clear_cache();
+			
+			if ( WP_DEBUG ) {
+				error_log( 'Certification cache cleared on status change: ' . $post_id );
+			}
+		}
 	}
 }
