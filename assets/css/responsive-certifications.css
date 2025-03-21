@@ -5,7 +5,7 @@
 /* ----------------------------------------
    1. SMALL SCREENS (MOBILE)
    ---------------------------------------- */
-@media (max-width: 767px) {
+@media (max-width: 549px) {
     /* Sticky Menu */
     .certifications-sticky-menu li {
         margin: 0 8px;
@@ -29,6 +29,16 @@
     .certifications-large-4,
     .certifications-large-6 {
         width: 100%;
+    }
+    
+    /* Force grid to stack vertically */
+    .certifications-grid {
+        flex-direction: column;
+    }
+    
+    .certifications-item {
+        width: 100%;
+        max-width: 100%;
     }
 
     /* Certification Cards */
@@ -98,7 +108,7 @@
 /* ----------------------------------------
    2. MEDIUM SCREENS (TABLETS)
    ---------------------------------------- */
-@media (min-width: 768px) and (max-width: 991px) {
+@media (min-width: 550px) and (max-width: 849px) {
     /* Column system for tablets */
     .certifications-large-3,
     .certifications-large-4 {
@@ -153,7 +163,7 @@
 /* ----------------------------------------
    3. LARGE SCREENS ADJUSTMENTS
    ---------------------------------------- */
-@media (min-width: 992px) {
+@media (min-width: 850px) {
     .certifications-card:hover {
         transform: translateY(-5px);
     }
@@ -204,7 +214,16 @@
 /* ----------------------------------------
    5. CERTIFICATIONS SHORTCODE RESPONSIVE STYLES
    ---------------------------------------- */
-@media (max-width: 767px) {
+@media (max-width: 549px) {
+    /* Ensure all items in grid are full width */
+    .certifications-item {
+        width: 100% !important;
+    }
+    
+    /* Force grid to stack vertically */
+    .certifications-grid {
+        flex-direction: column;
+    }
     /* Shortcode Card Styles - Mobile */
     .certifications-title {
         font-size: 13px;
@@ -247,7 +266,7 @@
     }
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
+@media (min-width: 550px) and (max-width: 849px) {
     /* Shortcode Card Styles - Tablet */
     .certifications-card-body {
         padding: 15px;
@@ -293,14 +312,14 @@
 /* ----------------------------------------
    7. CERTIFICATION IMAGES RESPONSIVE STYLES
    ---------------------------------------- */
-@media (max-width: 991px) {
+@media (max-width: 549px) {
     .certifications-image-item {
         flex: 0 0 33.333%;
         max-width: 33.333%;
     }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 849px) {
     .certifications-image-item {
         flex: 0 0 50%;
         max-width: 50%;
