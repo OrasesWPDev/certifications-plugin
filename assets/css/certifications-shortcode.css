@@ -80,27 +80,7 @@
     box-sizing: border-box;
 }
 
-/* Responsive breakpoints for Flatsome compatibility */
-@media (max-width: 549px) {
-    .certifications-item {
-        width: 100% !important;
-    }
-    
-    .certifications-grid {
-        flex-direction: column;
-    }
-}
-
-@media (min-width: 550px) and (max-width: 849px) {
-    .certifications-large-3,
-    .certifications-large-4 {
-        width: 50%;
-    }
-    
-    .certifications-large-6 {
-        width: 100%;
-    }
-}
+/* Responsive styles moved to responsive-certifications.css */
 
 /* Column system */
 .certifications-col {
@@ -408,3 +388,5 @@
     display: block;
     margin: 0 auto;
 }
+
+/* Responsive styles for certification images moved to responsive-certifications.css */

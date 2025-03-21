@@ -1,6 +1,36 @@
 /**
  * Certifications Plugin Responsive Styles
+ * 
+ * This file contains all responsive styles for the Certifications plugin.
+ * Organized by breakpoints:
+ * - Common styles for tablet and mobile (max-width: 849px)
+ * - Mobile styles (max-width: 549px)
+ * - Tablet styles (min-width: 550px) and (max-width: 849px)
+ * - Desktop styles (min-width: 850px)
  */
+
+/* ----------------------------------------
+   0. COMMON STYLES FOR MOBILE AND TABLET (849px and below)
+   ---------------------------------------- */
+@media (max-width: 849px) {
+    /* Grid Layout - Force vertical stacking while keeping flex display */
+    .certifications-grid {
+        display: flex !important;
+        flex-direction: column !important; /* Stack items vertically */
+        flex-wrap: nowrap !important; /* Prevent wrapping to multiple columns */
+    }
+    
+    /* Ensure each item takes full width */
+    .certifications-item,
+    .certifications-large-3,
+    .certifications-large-4,
+    .certifications-large-6 {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important; /* Prevent flex items from shrinking */
+        float: none !important; /* Ensure no floating */
+    }
+}
 
 /* ----------------------------------------
    1. SMALL SCREENS (MOBILE)
@@ -109,14 +139,12 @@
    2. MEDIUM SCREENS (TABLETS)
    ---------------------------------------- */
 @media (min-width: 550px) and (max-width: 849px) {
-    /* Column system for tablets */
+    /* Column system for tablets - force full width in flex column */
     .certifications-large-3,
-    .certifications-large-4 {
-        width: 50%;
-    }
-
+    .certifications-large-4,
     .certifications-large-6 {
-        width: 100%;
+        width: 100% !important;
+        flex: 0 0 100% !important;
     }
 
     .certifications-item {
@@ -215,15 +243,17 @@
    5. CERTIFICATIONS SHORTCODE RESPONSIVE STYLES
    ---------------------------------------- */
 @media (max-width: 549px) {
-    /* Ensure all items in grid are full width */
+    /* Grid Layout - Mobile */
     .certifications-item {
         width: 100% !important;
+        flex: 0 0 100% !important;
     }
     
-    /* Force grid to stack vertically */
     .certifications-grid {
-        flex-direction: column;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
     }
+    
     /* Shortcode Card Styles - Mobile */
     .certifications-title {
         font-size: 13px;
@@ -267,6 +297,26 @@
 }
 
 @media (min-width: 550px) and (max-width: 849px) {
+    /* Grid Layout - Tablet */
+    .certifications-large-3,
+    .certifications-large-4,
+    .certifications-large-6 {
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        float: none !important;
+    }
+    
+    .certifications-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+    }
+    
+    .certifications-item {
+        width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+    
     /* Shortcode Card Styles - Tablet */
     .certifications-card-body {
         padding: 15px;
@@ -312,14 +362,16 @@
 /* ----------------------------------------
    7. CERTIFICATION IMAGES RESPONSIVE STYLES
    ---------------------------------------- */
-@media (max-width: 549px) {
+@media (min-width: 550px) and (max-width: 849px) {
+    /* Tablet view - 2 images per row */
     .certifications-image-item {
-        flex: 0 0 33.333%;
-        max-width: 33.333%;
+        flex: 0 0 50%;
+        max-width: 50%;
     }
 }
 
-@media (max-width: 849px) {
+@media (max-width: 549px) {
+    /* Mobile view - 1 image per row for very small screens, 2 for larger phones */
     .certifications-image-item {
         flex: 0 0 50%;
         max-width: 50%;
@@ -327,6 +379,7 @@
 }
 
 @media (max-width: 480px) {
+    /* Very small screens - 1 image per row */
     .certifications-image-item {
         flex: 0 0 100%;
         max-width: 100%;
